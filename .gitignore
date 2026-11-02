@@ -218,3 +218,14 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# --- Node / Astro ---
+node_modules/
+.astro/
+npm-debug.log*
+
+# --- Entorno y SO ---
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db

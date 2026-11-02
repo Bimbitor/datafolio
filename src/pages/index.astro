@@ -1,0 +1,25 @@
+---
+import Base from "../layouts/Base.astro";
+---
+<Base
+  lang="es"
+  title="Javi Rodríguez Giraldo · Data Engineer"
+  description="Portafolio de Javi Rodríguez Giraldo, Data Engineer con base en ciencia de datos. En construcción."
+>
+  <p class="prompt">&gt; whoami</p>
+  <h1>Javi Rodríguez Giraldo</h1>
+  <p class="role">Data Engineer con base en ciencia de datos · Bogotá, Colombia</p>
+  <p>
+    Estoy construyendo este portafolio siguiendo un proceso de spec-driven development.
+    Mientras tanto, puedes ver mi trabajo en GitHub.
+  </p>
+  <ul>
+    <li><a href="https://github.com/Bimbitor">GitHub</a></li>
+    <li><a href="https://github.com/Bimbitor/datafolio/tree/main/specs">Specs de este sitio</a></li>
+  </ul>
+</Base>
+<style>
+  .prompt { font-family: var(--mono); color: var(--accent); margin: 0; }
+  h1 { margin: 0.25rem 0; font-size: clamp(1.75rem, 5vw, 2.5rem); line-height: 1.2; }
+  .role { color: var(--muted); margin-top: 0; }
+</style>
