@@ -1,0 +1,11 @@
+dist/
+.astro/
+.vercel/
+package-lock.json
+
+# Plantillas de spec-kit y skills instaladas: las gestiona su propia herramienta
+.specify/
+.claude/skills/
+
+# Material de investigacion recibido y fechado: se conserva tal cual llego
+docs/research/
