@@ -1,0 +1,3 @@
+# Todo texto se normaliza y se mantiene en LF, aqui y en el disco.
+# El deploy corre en Linux, asi que LF en todas partes evita diffs fantasma.
+* text=auto eol=lf
