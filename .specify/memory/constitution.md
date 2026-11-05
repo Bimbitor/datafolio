@@ -1,161 +1,179 @@
 # Datafolio Constitution
 
-Portafolio profesional de Javi, Data Engineer híbrido entre ciencia de datos e ingeniería de
-datos (AWS, Airflow, Spark). Su propósito es demostrar con evidencia verificable que construye
-sistemas de datos reales, y llevar a quien lo visita hasta esos proyectos en el menor número de
-clics. Las reglas de esta constitución son inmutables y el agente de IA MUST respetarlas
-estrictamente.
+Datafolio es el portafolio personal de Javi Giraldo: su carta de presentación profesional
+y académica, y su punto de contacto con reclutadores. Esta constitución gobierna cómo se
+construye. Las decisiones de producto viven en `docs/project-brief.md`; los valores
+visuales, en `docs/design-tokens.md`. Esta constitución manda sobre cómo se trabaja; esos
+documentos mandan sobre qué se construye.
 
 ## Core Principles
 
-### I. Evidencia Verificable (NO NEGOCIABLE)
+### I. Especificación antes que código (NO NEGOCIABLE)
 
-- Es la regla crítica del sistema: toda afirmación sobre una habilidad o un resultado MUST ir
-  acompañada de un enlace que la demuestre, sea un repositorio, un caso de estudio o una métrica.
-- MUST NOT publicarse barras de nivel de habilidad ni listas de tecnologías sin respaldo.
-- MUST NOT usarse datasets de tutorial como Titanic, Iris o MNIST: no demuestran nada.
-- Toda plantilla de terceros MUST personalizarse hasta no ser reconocible.
-- Todo lo construido con asistencia de IA MUST registrarse en `AI_USAGE.md`, y Javi MUST poder
-  explicar y defender cada línea del repositorio.
+Ninguna línea de código de la aplicación se escribe antes de que exista una especificación
+aprobada para la feature que la contiene. El orden es constitución → `/speckit-specify` →
+`/speckit-clarify` → `/speckit-plan` → `/speckit-tasks` → `/speckit-implement`, y una
+feature no avanza al siguiente paso con preguntas abiertas en el actual.
 
-**Razón**: un portafolio que no se puede verificar es peor que no tener portafolio. El lector
-técnico descuenta todo lo que no puede comprobar, y una sola afirmación inflada contamina las
-que sí eran ciertas.
+Toda duda sin resolver se marca explícitamente en el documento donde aparece y se decide
+antes de planificar. Está prohibido resolverla asumiendo en silencio durante la
+implementación: una suposición no escrita es una decisión que nadie tomó.
 
-### II. Los Proyectos Viven Fuera (NO NEGOCIABLE)
+Rationale: este proyecto nació de una idea dictada en desorden. El valor de SDD está en
+que la discusión ocurra en documentos baratos de cambiar y no en código ya escrito.
 
-- Los proyectos del portafolio viven en sus propios repositorios y URLs. Este repositorio
-  MUST NOT alojar el código de ningún proyecto, solo una ficha con su enlace.
-- Añadir un proyecto o una entrada MUST ser crear un único archivo Markdown.
-- MUST NOT introducirse un gestor de contenidos ni una base de datos para el contenido del sitio.
-- Una mejora visual del sitio MUST NOT bloquear la publicación de un caso de estudio.
+### II. Un valor, un solo lugar
 
-**Razón**: contratan por los proyectos, no por el sitio. Y este portafolio se mantiene en ratos
-libres, así que lo que exige ceremonia se abandona a la tercera semana.
+Todo valor que aparece más de una vez tiene exactamente un origen:
 
-### III. Estático por Defecto y Presupuestos Duros
+- Los colores, tipografías, espaciados, radios y sombras salen del archivo de tokens, que
+  implementa `docs/design-tokens.md`. Ningún componente escribe un valor literal. Si hay
+  que tocar un componente para que un cambio de paleta se vea, ese componente está mal
+  escrito y es un defecto.
+- El contenido estático (home, experiencia, contacto, política de datos) vive en el código
+  y se despliega con commits. El contenido administrable (proyectos, artículos,
+  comentarios) vive en la base de datos. Ningún dato vive en los dos sitios.
+- Las direcciones de correo, el destino del formulario y cualquier parámetro de entorno son
+  variables de entorno, nunca literales en el código.
+- Los PDFs del CV son archivos versionados que el sitio sirve tal cual. El sitio no genera,
+  renderiza ni transforma documentos en tiempo de ejecución.
 
-- Las páginas MUST servirse como HTML estático. MUST NOT enviarse JavaScript al cliente salvo en
-  una isla justificada en el plan de su feature.
-- Toda dependencia MUST fijarse con versión exacta, sin rangos. Node y Python se cuentan por
-  separado.
-- El bundle de Python en Vercel MUST NOT superar los 500 MB, controlado con `excludeFiles` en
-  `vercel.json`.
-- Los servicios MUST ser gratuitos por defecto. Todo recurso de pago MUST tener presupuesto y
-  alerta configurados antes de crearse.
-- Cada dependencia nueva MUST justificarse en el `plan.md` de su feature indicando qué aporta,
-  cuánto pesa y quién la mantiene.
+Rationale: el portafolio va a cambiar de paleta, de correo y de contenido muchas veces.
+Cada valor duplicado es un cambio futuro que se hará a medias.
 
-**Razón**: cada kilobyte y cada dependencia es un costo que nadie va a revisar después. El límite
-se pone ahora, cuando cuesta una línea de configuración.
+### III. El servidor es la única autoridad
 
-### IV. Spec Primero y Cero Código Sombra
+La seguridad de este sitio nunca depende de que algo esté oculto.
 
-- Se construye estrictamente lo documentado en la spec de la feature. MUST NOT añadirse
-  características "por si acaso", como pasarelas de pago, notificaciones o paneles de
-  administración.
-- Ninguna funcionalidad se implementa sin una spec en estado listo bajo `specs/`. Ante una
-  petición sin spec, el agente MUST proponer la spec primero.
-- Si una instrucción del usuario contradice esta constitución, o si se detecta una falla lógica,
-  el agente MUST detenerse, advertir del problema y solicitar la actualización de la spec o de
-  esta constitución antes de tocar el código fuente.
-- Las decisiones estructurales MUST registrarse como ADR en `docs/adr/` con estado Propuesto. Un
-  agente MUST NOT marcar un ADR como Aceptado.
+- Toda operación de escritura verifica la credencial en el servidor. Ocultar un botón o una
+  ruta no protege nada: un visitante no autenticado no puede escribir ni llamando a la API
+  directamente.
+- El frontend nunca se comunica con la base de datos. Solo el backend tiene credenciales de
+  datos.
+- Ningún secreto aparece en el repositorio, en su historial, ni en el JavaScript que llega
+  al navegador. El repositorio es público y eso es una decisión, no un descuido: obliga a
+  que la protección sea real.
+- Hay un único usuario administrador y no existe forma de crear otro desde la interfaz.
+- Todo contenido que entra desde fuera del proyecto — el README de un repositorio, el
+  cuerpo de un comentario — se trata como texto sin confianza y nunca como HTML ejecutable.
 
-**Razón**: Spec-Driven Development requiere que la especificación y el código no divergan. Un
-agente que improvisa produce código que nadie pidió y que nadie podrá defender en una entrevista.
+Rationale: el formulario de login será sondeado por robots a los pocos días de estar en
+línea, y un portafolio comprometido daña justo lo que este sitio existe para proteger, que
+es la reputación profesional de su dueño.
 
-### V. Test Antes que Lógica
+### IV. Del visitante no se guarda nada
 
-- Toda lógica nueva no trivial MUST tener una prueba que falle antes de escribirla.
-- El alcance exacto de las pruebas MUST definirse en un ADR propio cuando exista el primer código
-  que testear.
-- Hasta que ese ADR exista, MUST NOT instalarse ninguna herramienta de pruebas.
+No se almacena dirección IP, agente de usuario, cookie de identificación ni huella de
+dispositivo de ninguna persona que visite el sitio. De un comentario se guarda el texto, la
+fecha y el nombre solo si quien comenta decide escribirlo. Los mensajes del formulario de
+contacto se envían por correo y no se persisten. La analítica es agregada por hora y
+anónima.
 
-**Razón**: elegir el marco de pruebas antes de saber qué se testea deja herramientas que nadie usa
-y tests de adorno que no protegen nada.
+La consecuencia se acepta de frente y se comunica: el panel cuenta eventos, no personas. No
+habrá visitantes únicos ni sesiones, y las cifras son aproximadas. Donde el límite de abuso
+necesite distinguir orígenes, se usa un hash con sal que se purga al expirar la ventana y
+del que no se puede reconstruir la dirección.
 
-### VI. Observable por Diseño
+La página de política de tratamiento de datos describe exactamente lo que el sistema hace.
+Si el comportamiento cambia, la política cambia en el mismo cambio, nunca después.
 
-- Toda feature MUST declarar en su plan qué se mide y qué umbral la rompe. Una feature sin métrica
-  declarada MUST NOT considerarse terminada.
-- El backend MUST emitir logs estructurados con identificador de petición, latencia y resultado.
-- Cada PR MUST verificar el peso de `dist/`, el puntaje de Lighthouse y que no haya enlaces roto.
+Rationale: no guardar es la única forma de no filtrar, y una política que no corresponde
+con el sistema es peor que no tenerla.
 
-**Razón**: sin una señal declarada de antemano no hay forma de saber si una feature sigue
-funcionando un mes después, y un portafolio roto en silencio es peor que uno sin publicar.
+### V. Lo mínimo que cumple, terminado
 
-### VII. Accesible y Rápido
+Se construye la versión más pequeña que satisface el requisito, y se construye completa.
 
-- Lighthouse MUST marcar 95 o más en las cuatro categorías en móvil.
-- El contraste MUST cumplir WCAG AA.
-- Toda funcionalidad MUST poder usarse solo con teclado, con foco visible.
-- Los diagramas MUST llevar texto alternativo y un resumen en texto.
+- Sin abstracciones, envoltorios, opciones ni configuración que nadie pidió. Sin código
+  "para después".
+- No se añade una dependencia por unas pocas líneas. Se prefiere lo que el proyecto o la
+  plataforma ya ofrecen.
+- Ser perezoso aplica a la solución, nunca al trabajo: un cambio incluye todo lo que rompe
+  —llamadores, pruebas, datos de prueba, documentación— o no está hecho.
+- Nunca se recorta: validación en los límites de confianza, manejo de errores que evita
+  pérdida de datos, seguridad, accesibilidad, ni nada que el titular haya pedido.
+- Un atajo con un límite conocido se documenta en el código, diciendo cuál es el límite y
+  cuándo habría que reemplazarlo.
 
-**Razón**: un sitio inaccesible o lento contradice en la práctica todo lo que el portafolio afirma
-saber de ingeniería.
+Rationale: este portafolio lo mantiene una sola persona en ratos libres. Cada pieza de más
+es deuda que nadie va a pagar.
 
-## Stack Tecnológico
+## Restricciones técnicas y de producto
 
-- **Arquitectura**: un solo proyecto de Vercel. Astro estático sirve el sitio y los archivos de
-  `api/` son funciones Python independientes.
-- **Frontend**: Astro con TypeScript en modo estricto. Estilos con Tailwind CSS v4 sobre tokens
-  propios de color, tipografía y escala.
-- **Backend**: FastAPI sobre el runtime de Python de Vercel. Atiende servicios del sitio y
-  MUST NOT procesar datos.
-- **Datos**: sin base de datos. El contenido vive en archivos Markdown versionados.
-- **Idiomas**: español primero. La estructura de internacionalización (rutas, claves, hreflang)
-  MUST existir desde el inicio para que añadir inglés no obligue a rehacer el ruteo.
-- **Gestores**: npm para Node, uv para Python.
-- **Versiones**: Node 24 o superior, igual en local y en CI. La versión de Python se fija a la que
-  acepte el runtime de Vercel.
+Estas restricciones son vinculantes y solo se cambian enmendando esta constitución o
+actualizando `docs/project-brief.md`, que es su fuente.
 
-Cualquier dependencia o tecnología adicional MUST justificarse en el `plan.md` de su feature
-frente al Principio III.
+- **Stack fijo**: Astro con islas interactivas y Tailwind en el frontend; FastAPI en Python
+  como única puerta de escritura; Supabase como base de datos; monorepo; despliegue en
+  Vercel.
+- **Costo cero**: todo debe funcionar dentro de los planes gratuitos de Vercel y Supabase, y
+  con cuentas de Gmail. No hay dominio propio ni hosting de pago. Cualquier propuesta que
+  introduzca un costo recurrente requiere aprobación explícita del titular antes de
+  implementarse.
+- **Sin estado en memoria**: el backend corre como función serverless. El límite de tasa, la
+  caché de los README y cualquier otro estado persisten en la base de datos, nunca en
+  variables de proceso.
+- **Bilingüe o no se publica**: todo artículo y todo proyecto publicado existe en español y
+  en inglés. El formulario de administración no permite publicar con un idioma vacío.
+  Guardar como borrador con un solo idioma sí está permitido.
+- **Presupuesto de rendimiento**: en las páginas públicas, LCP por debajo de 2.5 s y CLS por
+  debajo de 0.1 en móvil, y menos de 100 KB de JavaScript. Un cambio que rompa el
+  presupuesto se revisa antes de seguir.
+- **Accesibilidad**: navegación completa por teclado con foco visible, y texto alternativo
+  en los dos idiomas en toda imagen con contenido. Las reglas de contraste de
+  `docs/design-tokens.md` se respetan sin excepción.
+- **Sin animaciones** en esta versión. Los cambios de estado usan transiciones de 150 ms
+  como máximo, o ninguna.
+- **Datos de prueba fuera de producción**: los proyectos inventados que se usan para
+  desarrollar no se publican en el sitio en producción. Un portafolio que muestra proyectos
+  falsos a un reclutador es un problema peor que uno incompleto.
 
-## Estilo de Código, Errores y Secretos
+## Flujo de trabajo y puertas de calidad
 
-- **Estilo**: priorizar funciones puras y módulos pequeños. Evitar clases salvo que una librería
-  lo haga obligatorio.
-- **Nomenclatura**: camelCase para funciones y variables en TypeScript, PascalCase para tipos y
-  componentes, snake_case en Python.
-- **Errores en UI**: MUST NOT exponerse errores crudos ni *stack traces* al visitante. Todo error
-  técnico MUST traducirse a un mensaje claro (ej.: "No pude enviar el mensaje, intenta de nuevo").
-- **Errores en el backend**: MUST retornarse códigos HTTP semánticos: 400 petición inválida, 422
-  validación fallida, 429 demasiadas peticiones, y 500 solo para fallas no previstas y sin detalle
-  técnico en el cuerpo.
-- **Secretos**: las credenciales MUST vivir solo en variables de entorno de Vercel. Se versiona
-  `.env.example` sin valores y `.env` MUST NOT versionarse nunca. Ningún dato confidencial de un
-  empleador entra al repositorio.
-
-## Estilo de Escritura
-
-- Los textos públicos se escriben en primera persona, directos, sin rayas ni guiones dobles. Las
-  frases se separan con comas o puntos.
-- MUST NOT quedar texto visible escrito directamente dentro de un componente: toda cadena vive en
-  los archivos de idioma.
-- Todo texto público MUST pasar por la skill `humanizer` antes de publicarse.
+- **Orden de las features**: 01 sitio base → 02 contenido estático → 03 admin y
+  autenticación → 04 proyectos → 05 blog y comentarios → 06 analítica → 07 diseño visual.
+  La feature 03 va obligatoriamente antes que la 04 y la 05, porque ambas dependen de la
+  autenticación.
+- **Pruebas exigidas**: toda operación CRUD (proyectos, artículos, borradores,
+  comentarios), los dos formularios públicos, el flujo de autenticación, el renderizado y
+  saneado de Markdown, y la lógica de filtros. Lógica nueva no trivial sin su prueba o
+  verificación está incompleta.
+- **Secretos**: `.env` y `.env.*` nunca se versionan; `.env.example` lleva solo nombres de
+  variables. El escaneo automático de secretos corre antes de cada commit y en integración
+  continua. Un secreto publicado por error se rota en el proveedor; borrar el commit no
+  basta.
+- **Skills del proyecto**: el diseño visual se trabaja con Impeccable; los textos del sitio,
+  en los dos idiomas, pasan por `humanizer`; la implementación sigue el criterio de
+  `ponytail`. Impeccable sustituye a `frontend-design`, que queda retirada.
+- **Commits**: formato `vX.Y.Z-AAAA-MM-DD-tipo: descripción`, en español, describiendo el
+  cambio y no el proceso.
+- **Definición de hecho**: una feature está terminada cuando cumple sus criterios de
+  aceptación, sus pruebas pasan, no deja secretos expuestos, respeta el presupuesto de
+  rendimiento y la accesibilidad, y está desplegada y verificada en el sitio real. "Funciona
+  en mi máquina" no cuenta.
 
 ## Governance
 
-- Esta constitución prevalece sobre cualquier otra práctica, instrucción o documento del proyecto.
-  Las specs, los planes y las tareas MUST ser coherentes con ella.
-- **Precedencia ante conflicto**: esta constitución, luego un ADR aceptado, luego
-  `docs/architecture/`, luego la spec de la feature, y por último el código existente.
-- **Dueño y aprobador único**: Javi. Los agentes de IA proponen y ejecutan, y MUST NOT aprobar.
-- **Citación**: los principios se citan por su número, por ejemplo "cumple el Principio III".
-- **Enmiendas**: se realizan mediante `/speckit-constitution`, documentando el cambio en el Sync
-  Impact Report y revisando la coherencia de los artefactos existentes.
-- **Versionado** (SemVer):
-  - MAJOR: eliminación o redefinición incompatible de principios o reglas de dominio.
-  - MINOR: nuevo principio o sección, o ampliación material de una guía.
-  - PATCH: aclaraciones, redacción o erratas sin cambio semántico.
-- **Bitácora**: un cambio por commit, siempre revertible por separado. Asunto con el formato
-  `vX.Y.Z-AAAA-MM-DD-tipo: descripción`, cuerpo de dos renglones como máximo, y tag anotado por
-  versión.
-- **Cumplimiento**: cada plan (`/speckit-plan`) MUST superar el "Constitution Check", y toda
-  revisión de código MUST verificar en especial los Principios I (evidencia) y IV (cero código
-  sombra). Todo cambio de código MUST seguir la skill `ponytail` y todo diseño de interfaz la
-  skill `frontend-design`. Toda complejidad adicional MUST justificarse por escrito.
+Esta constitución está por encima de cualquier otra práctica del proyecto. Ante un
+conflicto entre esta constitución y una spec, un plan o una costumbre, manda la
+constitución.
 
-**Version**: 1.0.0 | **Ratified**: 2026-11-02 | **Last Amended**: 2026-11-02
+**Enmiendas**: cualquier cambio a un principio o a una restricción requiere aprobación
+explícita del titular, queda registrado en el Sync Impact Report del propio archivo y se
+aplica en un commit propio. Una restricción no se "interpreta con flexibilidad" durante una
+implementación: o se cumple, o se enmienda antes.
+
+**Versionado**: MAJOR cuando se elimina o redefine un principio de forma incompatible;
+MINOR cuando se añade un principio o se amplía materialmente una sección; PATCH para
+precisiones, redacción y correcciones sin efecto semántico.
+
+**Cumplimiento**: cada `/speckit-plan` verifica que el plan no contradiga esta
+constitución, y lo deja por escrito. Cada revisión de código comprueba lo mismo. Toda
+complejidad añadida debe justificarse contra el Principio V; si no hay justificación, se
+quita.
+
+**Guía de ejecución**: `docs/project-brief.md` para qué se construye y
+`docs/design-tokens.md` para los valores visuales. Esos documentos se actualizan cuando una
+decisión cambia, en el mismo cambio que la aplica.
+
+**Version**: 1.0.0 | **Ratified**: 2026-11-05 | **Last Amended**: 2026-11-05

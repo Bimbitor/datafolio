@@ -22,3 +22,6 @@ __pycache__/
 # Sistema
 Thumbs.db
 .DS_Store
+
+# Originales sin procesar de las fotografias
+images_results/
