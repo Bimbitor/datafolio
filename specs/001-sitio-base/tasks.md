@@ -377,7 +377,10 @@ entera por correo.
 - [ ] T074 Comprobar SC-010 **ocho días después de integrar**: abrir el sitio tras una semana sin
       visitas y verificar que responde con normalidad y que el historial de la tarea programada no tiene
       fallos. Es el único criterio de la feature que necesita que pase el tiempo
-- [ ] T075 Integrar la rama a `main` y comprobar el sitio en producción. Según la constitución 1.5.0,
+- [ ] T075 **Cambiar `URL_SALUD` en GitHub al dominio de producción** al integrar. Hasta
+      entonces apunta a la dirección de vista previa de la rama, porque `main` todavía no sirve
+      `/api/salud` y el flujo fallaría cada seis horas contra un 404
+- [ ] T076 Integrar la rama a `main` y comprobar el sitio en producción. Según la constitución 1.5.0,
       el código solo entra cuando cumple la Definición de hecho y se ha revisado en la vista previa.
       Comprobar además en el panel de las dos plataformas que el consumo del mes es cero (SC-011)
 
