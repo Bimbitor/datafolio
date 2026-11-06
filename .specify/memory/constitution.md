@@ -2,9 +2,11 @@
 
 Datafolio es el portafolio personal de Javi Giraldo: su carta de presentación profesional
 y académica, y su punto de contacto con reclutadores. Esta constitución gobierna cómo se
-construye. Las decisiones de producto viven en `docs/project-brief.md`; los valores
-visuales, en `docs/design-tokens.md`. Esta constitución manda sobre cómo se trabaja; esos
-documentos mandan sobre qué se construye.
+construye. Las decisiones de producto viven en la spec de cada feature, bajo `specs/`; los
+valores visuales, en `docs/design-tokens.md`. El brief que originó el proyecto se conserva
+como entrada histórica en `docs/historico/project-brief.md`: de él saldrán las specs que
+faltan, pero donde contradiga una spec aprobada, manda la spec. Esta constitución manda
+sobre cómo se trabaja.
 
 ## Core Principles
 
@@ -100,8 +102,7 @@ es deuda que nadie va a pagar.
 
 ## Restricciones técnicas y de producto
 
-Estas restricciones son vinculantes y solo se cambian enmendando esta constitución o
-actualizando `docs/project-brief.md`, que es su fuente.
+Estas restricciones son vinculantes y solo se cambian enmendando esta constitución.
 
 - **Stack fijo**: Astro con islas interactivas y Tailwind en el frontend; FastAPI en Python
   como única puerta de escritura; Supabase como base de datos; monorepo; despliegue en
@@ -192,8 +193,10 @@ constitución, y lo deja por escrito. Cada revisión de código comprueba lo mis
 complejidad añadida debe justificarse contra el Principio V; si no hay justificación, se
 quita.
 
-**Guía de ejecución**: `docs/project-brief.md` para qué se construye y
-`docs/design-tokens.md` para los valores visuales. Esos documentos se actualizan cuando una
-decisión cambia, en el mismo cambio que la aplica.
+**Guía de ejecución**: la spec de la feature en curso para qué se construye,
+`docs/design-tokens.md` para los valores visuales, y `docs/historico/project-brief.md` como
+entrada de las features que todavía no tienen spec. La spec y los tokens se actualizan
+cuando una decisión cambia, en el mismo cambio que la aplica; el brief histórico no se
+mantiene al día.
 
-**Version**: 1.2.0 | **Ratified**: 2026-11-05 | **Last Amended**: 2026-11-05
+**Version**: 1.3.0 | **Ratified**: 2026-11-05 | **Last Amended**: 2026-11-05
