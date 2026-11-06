@@ -145,13 +145,15 @@ actualizando `docs/project-brief.md`, que es su fuente.
 - **Skills del proyecto**: el diseño visual se trabaja con Impeccable; los textos del sitio,
   en los dos idiomas, pasan por `humanizer`; la implementación sigue el criterio de
   `ponytail`. Impeccable sustituye a `frontend-design`, que queda retirada.
-- **Ramas y `main`**: `main` es producción. Vercel despliega desde ahí, así que integrar a
-  `main` es publicar, no archivar. A `main` solo entra trabajo que cumple la Definición de
-  hecho: nunca código a medias, roto o sin probar. Cada feature o bloque funcional vive en
-  su propia rama, nombrada por la feature (`feat/01-sitio-base`), y se prueba en el
-  despliegue de vista previa que Vercel genera para esa rama antes de integrarla. La
-  documentación de especificación se integra completa, de una sola vez, antes de la
-  primera rama de código.
+- **Ramas y `main`**: se sigue la convención de Spec Kit. Cada feature tiene **una rama
+  propia, nombrada como su carpeta de spec** (`001-sitio-base`), creada al especificarla, y
+  esa rama acompaña a la feature de principio a fin: spec, plan, tareas y código viajan
+  juntos y se integran juntos. `main` es producción —Vercel despliega desde ahí, así que
+  integrar es publicar— y solo recibe trabajo que cumple la Definición de hecho: nunca
+  código a medias, roto o sin probar. Antes de integrar, la rama se revisa en el despliegue
+  de vista previa que la plataforma genera para ella. Los documentos de alcance del
+  proyecto —constitución, brief, tokens, viabilidad, política— no pertenecen a ninguna
+  feature y viven en `main`.
 - **Un solo entorno de datos.** Hay un único proyecto de Supabase, el de producción. No hay
   base de pruebas ni pila local: las vistas previa comparten la base de producción y la
   verificación se hace sobre el sitio desplegado. Es una decisión tomada a conciencia, y
@@ -194,4 +196,4 @@ quita.
 `docs/design-tokens.md` para los valores visuales. Esos documentos se actualizan cuando una
 decisión cambia, en el mismo cambio que la aplica.
 
-**Version**: 1.1.0 | **Ratified**: 2026-11-05 | **Last Amended**: 2026-11-05
+**Version**: 1.2.0 | **Ratified**: 2026-11-05 | **Last Amended**: 2026-11-05

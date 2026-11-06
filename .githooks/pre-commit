@@ -1,0 +1,72 @@
+#!/bin/sh
+# Pre-commit de Datafolio. Implementa RS-16 de la constitucion: ningun secreto
+# puede llegar al repositorio, que es publico.
+#
+# Se activa con:  git config core.hooksPath .githooks
+# Saltarlo:       git commit --no-verify   (deliberado, y que se note)
+
+set -u
+
+fallo=0
+rojo=$(printf '\033[31m')
+normal=$(printf '\033[0m')
+
+error() {
+	printf '%spre-commit: %s%s\n' "$rojo" "$1" "$normal" >&2
+	fallo=1
+}
+
+# Solo lo que se anade o modifica, nunca lo borrado.
+staged=$(git diff --cached --name-only --diff-filter=ACM)
+[ -z "$staged" ] && exit 0
+
+# --- 1. Archivos que nunca se commitean -------------------------------------
+for f in $staged; do
+	case "$f" in
+	.env.example | *.env.example) ;;
+	.env | .env.* | *.env | *.pem | *.key | *.p12 | *.pfx)
+		error "no se commitea '$f'. Esos valores viven en variables de entorno."
+		;;
+	esac
+done
+
+# --- 2. Secretos en el contenido anadido ------------------------------------
+# Cada patron apunta a un formato concreto, no a una palabra suelta, para no
+# saltar cada vez que la documentacion menciona 'password'.
+buscar() {
+	if printf '%s\n' "$nuevo" | grep -Eq -- "$1"; then
+		error "posible $2 en $f"
+	fi
+}
+
+for f in $staged; do
+	git diff --cached -- "$f" | grep -qI '' || continue
+	nuevo=$(git diff --cached -U0 -- "$f" | grep '^+' | grep -v '^+++')
+	[ -z "$nuevo" ] && continue
+
+	buscar 'eyJ[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}\.' 'clave de Supabase o JWT'
+	buscar 'sb_secret_[A-Za-z0-9_-]{16,}' 'clave secreta de Supabase'
+	buscar 'gh[pousr]_[A-Za-z0-9]{30,}' 'token de GitHub'
+	buscar 'AKIA[0-9A-Z]{16}' 'clave de acceso de AWS'
+	buscar 'BEGIN [A-Z ]*PRIVATE KEY' 'clave privada'
+	buscar '(SMTP_PASSWORD|SESSION_SECRET|SUPABASE_SERVICE_ROLE_KEY|RATE_LIMIT_SALT|GITHUB_TOKEN)[[:space:]]*[=:][[:space:]]*.?[A-Za-z0-9+/_-]{8,}' 'variable de entorno con valor real'
+	# Contrasena de aplicacion de Google: cuatro grupos de cuatro letras.
+	buscar '(^|[^A-Za-z])[a-z]{4} [a-z]{4} [a-z]{4} [a-z]{4}([^A-Za-z]|$)' 'contrasena de aplicacion de Google'
+done
+
+# --- 3. Formato -------------------------------------------------------------
+formateables=$(printf '%s\n' "$staged" | grep -E '\.(md|json|js|mjs|cjs|ts|tsx|jsx|css|yml|yaml|astro)$')
+if [ -n "$formateables" ]; then
+	# shellcheck disable=SC2086
+	if ! npx --no-install prettier --check $formateables >/dev/null 2>&1; then
+		error "hay archivos sin formatear. Corre: npm run format"
+	fi
+fi
+
+if [ "$fallo" -ne 0 ]; then
+	printf '%scommit detenido.%s\n' "$rojo" "$normal" >&2
+	printf 'Si un secreto ya salio del repositorio, no basta con borrar el commit: rotalo en el proveedor.\n' >&2
+	exit 1
+fi
+
+exit 0

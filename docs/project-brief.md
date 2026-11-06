@@ -444,9 +444,10 @@ Alcance acordado, deliberadamente acotado:
 - Diseño visual con la skill **Impeccable** (`pbakaus/impeccable`, Apache-2.0), ya instalada. Sustituye a `frontend-design`, que queda retirada del proyecto: Impeccable nació de esa misma skill y la amplía, así que usar las dos a la vez significa dos conjuntos de criterios estéticos compitiendo sobre el mismo código.
 - Implementación con la skill `ponytail`: código modular, funcional, simple y fácil de mantener.
 - Commits con el formato ya usado en el repo (`vX.Y.Z-YYYY-MM-DD-tipo: descripción`).
-- **Ramas.** `main` es producción: Vercel despliega desde ahí, así que integrar es publicar. A `main` solo entra lo que cumple la Definición de hecho de la constitución.
-  - La documentación de especificación vive en `docs/sdd-base` y se integra **completa y de una sola vez**: constitución, brief y las specs de las siete features.
-  - Después, una rama por feature o bloque funcional (`feat/01-sitio-base`), probada en su despliegue de vista previa antes de integrarla.
+- **Ramas: convención de Spec Kit.** `main` es producción —Vercel despliega desde ahí, así que integrar es publicar— y solo recibe lo que cumple la Definición de hecho de la constitución.
+  - Una rama por feature, con el nombre de su carpeta de spec (`001-sitio-base`), creada al especificarla. Spec, plan, tareas y código viajan en ella y se integran juntos.
+  - Los documentos de alcance del proyecto —constitución, brief, tokens, viabilidad, política— no pertenecen a ninguna feature y viven en `main`.
+  - Antes de integrar, la rama se revisa en su despliegue de vista previa.
   - **Un solo entorno de datos**: un proyecto de Supabase, el de producción. Sin base de pruebas ni pila local; las vistas previa comparten esa base y la verificación se hace sobre el sitio desplegado. A cambio, tres reglas: las pruebas automáticas no son destructivas y limpian lo que crean; el contenido creado al probar nace como borrador y se elimina al terminar; y las migraciones se aplican al integrar a `main`, nunca desde una rama en curso.
 
 ## 11. Criterios de aceptación de la primera versión
