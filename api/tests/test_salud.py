@@ -131,3 +131,30 @@ def test_la_variable_de_entorno_que_falta_se_nota(monkeypatch):
     with pytest.raises(RuntimeError, match="KeyError"):
         salud.comprobar()
     assert "SUPABASE_URL" not in os.environ
+
+
+def test_el_aviso_lleva_el_motivo_real_y_no_solo_el_codigo(monkeypatch):
+    """Lo que paso de verdad viene en el cuerpo de la respuesta, no en el codigo HTTP.
+    Sin esto el correo decia "HTTP Error 400: Bad Request", que no diagnostica nada.
+    Comprobado en produccion el 2026-11-06 provocando un fallo a proposito."""
+    import io as _io
+    import urllib.error
+
+    cuerpo = b'{"code":"P0001","message":"fallo provocado a proposito"}'
+
+    def romper(peticion, timeout=None):
+        raise urllib.error.HTTPError(
+            "https://ejemplo.supabase.co", 400, "Bad Request", {}, _io.BytesIO(cuerpo)
+        )
+
+    avisos = []
+    monkeypatch.setenv("SUPABASE_URL", "https://ejemplo.supabase.co")
+    monkeypatch.setenv("SUPABASE_SERVICE_ROLE_KEY", "sb_secret_de_prueba")
+    monkeypatch.setattr(salud.urllib.request, "urlopen", romper)
+    monkeypatch.setattr(salud, "enviar", lambda asunto, texto: avisos.append(texto))
+
+    with pytest.raises(RuntimeError):
+        salud.comprobar()
+
+    assert "fallo provocado a proposito" in avisos[0]
+    assert "400" in avisos[0]

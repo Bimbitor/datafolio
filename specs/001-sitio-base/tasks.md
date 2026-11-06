@@ -346,9 +346,12 @@ entera por correo.
       `204`; la fila de `salud` pasó de las 15:45 a las 22:21. Eso prueba el secreto, la clave de
       Supabase, la escritura y el servicio. **Lo que NO prueba** es que la tarea programada de la
       plataforma dispare sola: el panel no muestra Schedules y eso sigue abierto
-- [ ] T068 [US6] Provocar un fallo: invalidar temporalmente la clave de la base en las variables de
-      entorno, disparar la tarea a mano, comprobar que llega el correo con la causa, y **restaurar la
-      clave**
+- [x] T068 [US6] **Hecho el 2026-11-06, provocando el fallo desde la base en vez de desde las
+      variables**: un disparador temporal hizo fallar la escritura, sin redespliegues y sin tocar
+      la configuración. La peticion devolvió `500` y el aviso llegó al correo del titular con el
+      asunto y la causa. El disparador se eliminó y se comprobó que la escritura volvió a
+      funcionar. La prueba destapó que el aviso solo decía "HTTP Error 400", sin el motivo real;
+      corregido para que lleve el cuerpo de la respuesta
 
 **Checkpoint**: el sitio sobrevive a semanas sin visitas, y sus fallos se avisan solos.
 

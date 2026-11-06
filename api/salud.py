@@ -13,6 +13,7 @@ Ver specs/001-sitio-base/research.md, D-04 y D-12.
 
 import json
 import os
+import urllib.error
 import urllib.request
 from datetime import datetime, timezone
 
@@ -46,9 +47,18 @@ def _escribir_fila(resultado: str, detalle: str | None) -> None:
             "User-Agent": "datafolio-salud/1.0",
         },
     )
-    with urllib.request.urlopen(peticion, timeout=TIEMPO_LIMITE) as respuesta:
-        if respuesta.status >= 300:
-            raise RuntimeError(f"la base de datos respondio {respuesta.status}")
+    try:
+        with urllib.request.urlopen(peticion, timeout=TIEMPO_LIMITE) as respuesta:
+            if respuesta.status >= 300:
+                raise RuntimeError(f"la base de datos respondio {respuesta.status}")
+    except urllib.error.HTTPError as fallo:
+        # El motivo real viene en el CUERPO, no en el codigo. Sin esto el aviso dice
+        # "HTTP Error 400: Bad Request" y no se puede diagnosticar nada con eso.
+        try:
+            motivo = fallo.read().decode("utf-8", "replace").strip()[:300]
+        except Exception:
+            motivo = "(no se pudo leer el cuerpo de la respuesta)"
+        raise RuntimeError(f"la base de datos respondio {fallo.code}: {motivo}") from fallo
 
 
 def comprobar() -> dict:
