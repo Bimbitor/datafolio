@@ -14,6 +14,13 @@
       }
     }
   },
+  "schedules": {
+    "salud": {
+      "schedule": "0 */6 * * *",
+      "path": "/api/salud",
+      "requestMethod": "POST"
+    }
+  },
   "rewrites": [
     { "source": "/api/(.*)", "destination": { "service": "api" } },
     { "source": "/(.*)", "destination": { "service": "web" } }

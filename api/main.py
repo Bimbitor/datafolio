@@ -7,7 +7,11 @@ tanto que la autenticacion de la feature 03 sea posible.
 Contrato: specs/001-sitio-base/contracts/http.md, seccion 4.
 """
 
-from fastapi import FastAPI, Response
+import os
+
+from fastapi import FastAPI, Request, Response
+
+import salud as comprobacion
 
 # Sin documentacion interactiva: FastAPI publicaria /docs, /redoc y /openapi.json, que
 # describirian el login del administrador en cuanto exista. Nadie pidio esa superficie.
@@ -35,6 +39,24 @@ def estado() -> Response:
         media_type="application/json",
         headers={"Cache-Control": "no-store"},
     )
+
+
+@app.post("/api/salud")
+def salud(peticion: Request) -> Response:
+    """Comprobacion programada. La dispara la tarea de la plataforma cada seis horas.
+
+    La ruta es publica porque el destino de funcion privada exigiria hacer privada toda
+    la API, que es una sola aplicacion ASGI. Lo que la protege es el secreto que la
+    plataforma envia en cada peticion suya. Ver research.md, D-03.
+    """
+    secreto = os.environ.get("CRON_SECRET")
+    if not secreto or peticion.headers.get("authorization") != f"Bearer {secreto}":
+        # Antes de cualquier trabajo, y sin decir por que: a quien llame sin el secreto no
+        # se le explica si falta la variable o si el valor es otro.
+        return Response(status_code=401, headers={"Cache-Control": "no-store"})
+
+    comprobacion.comprobar()
+    return Response(status_code=204, headers={"Cache-Control": "no-store"})
 
 
 @app.get("/api/cookie-prueba")

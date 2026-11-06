@@ -98,8 +98,19 @@ prueba nada.
 
 ## D-03. La comprobación programada usa Schedules, no Cron Jobs
 
-**Decisión**: **Vercel Schedules**, estática, declarada en `vercel.json`, con destino **función
-privada** —sin URL pública— ejecutándose **cada seis horas**.
+**Decisión**: **Vercel Schedules**, estática, declarada en `vercel.json`, con destino **ruta**
+—`POST /api/salud`— ejecutándose **cada seis horas**.
+
+**Corrección del 2026-11-06**: esta decisión decía "función privada, sin URL pública", y al ir a
+implementarla resultó impracticable con nuestra pila. El destino de función exige tres cosas: el
+SDK `@vercel/schedules`, que es de Node; un disparador `schedule/v1beta` que **hace privada la
+función entera**, y nuestra API es una sola aplicación ASGI que tiene que seguir sirviendo
+`/api/estado`; y un identificador que es la ruta en la salida del build, que hay que averiguar
+con `vercel build` y que, si no coincide, **tumba el despliegue**.
+
+El destino de ruta funciona con FastAPI tal cual, y no queda desprotegido: la plataforma envía
+`Authorization: Bearer <CRON_SECRET>` en cada petición suya, y el manejador lo comprueba antes de
+hacer nada. Eso añade una octava variable de entorno.
 
 **Razón**: tres cosas que Cron Jobs no da en el plan gratuito.
 
@@ -108,9 +119,9 @@ privada** —sin URL pública— ejecutándose **cada seis horas**.
 2. **Visibilidad.** Schedules guarda historial de ejecución por tarea, en el panel y en la CLI. Cron
    Jobs solo deja registros de función. Eso alimenta directamente el requisito de que el titular pueda
    consultar si falló.
-3. **Sin URL pública.** Schedules puede invocar una función privada, que no es alcanzable desde
-   internet. Con Cron Jobs la tarea es un `GET` a una ruta pública, que habría que proteger con un
-   secreto para que nadie más la dispare.
+3. **Entornos.** Schedules corre en producción, en ramas de vista previa y en entornos propios;
+   Cron Jobs, solo en producción. Como la verificación de esta feature se hace sobre la vista
+   previa, eso deja de ser un detalle.
 
 Además, Cron Jobs es explícitamente **legado**: "Cron Jobs are a legacy feature and will be migrated
 to Schedules". Empezar en lo legado es firmar una migración futura por nada.
