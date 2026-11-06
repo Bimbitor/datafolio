@@ -34,8 +34,22 @@ VERSION = "0.1.0"
 @app.get("/api/estado")
 def estado() -> Response:
     """Estado del servicio. Sin autenticacion y sin registrar nada de la peticion."""
+    # shortcut: diagnostico temporal, se borra al cerrar la historia P1 de la US6.
+    # Dice si cada variable LLEGA al servicio, nunca su valor. Los nombres ya son
+    # publicos -estan en .env.example, y el repositorio es publico-, asi que esto no
+    # revela nada nuevo. Existe para distinguir "el secreto no coincide" de "el
+    # servicio no recibe variables", que dan el mismo 401 y tienen arreglos opuestos.
+    esperadas = (
+        "CRON_SECRET",
+        "SUPABASE_URL",
+        "SUPABASE_SERVICE_ROLE_KEY",
+        "SMTP_USER",
+        "SMTP_PASSWORD",
+        "ADMIN_EMAIL",
+    )
+    presentes = ",".join('"%s":%s' % (v, "true" if os.environ.get(v) else "false") for v in esperadas)
     return Response(
-        content='{"servicio":"api","version":"%s"}' % VERSION,
+        content='{"servicio":"api","version":"%s","variables":{%s}}' % (VERSION, presentes),
         media_type="application/json",
         headers={"Cache-Control": "no-store"},
     )

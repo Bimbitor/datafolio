@@ -30,9 +30,22 @@ def test_solo_existen_las_rutas_del_contrato():
 
 def test_estado_devuelve_lo_pactado():
     respuesta = estado()
+    cuerpo = json.loads(respuesta.body)
     assert respuesta.status_code == 200
-    assert json.loads(respuesta.body) == {"servicio": "api", "version": "0.1.0"}
+    assert cuerpo["servicio"] == "api"
+    assert cuerpo["version"] == "0.1.0"
     assert respuesta.headers["cache-control"] == "no-store"
+
+
+def test_el_diagnostico_no_filtra_ningun_valor(monkeypatch):
+    """Dice si la variable llega, nunca que contiene. Es temporal, pero mientras exista
+    tiene que ser incapaz de filtrar un secreto."""
+    monkeypatch.setenv("CRON_SECRET", "valor-secretisimo-que-no-debe-salir")
+    monkeypatch.setenv("SUPABASE_SERVICE_ROLE_KEY", "sb_secret_tampoco_este")
+    crudo = estado().body.decode()
+    assert "valor-secretisimo-que-no-debe-salir" not in crudo
+    assert "sb_secret_tampoco_este" not in crudo
+    assert json.loads(crudo)["variables"]["CRON_SECRET"] is True
 
 
 def test_cookie_de_prueba_viaja_con_las_defensas_puestas():
