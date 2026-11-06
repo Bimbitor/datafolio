@@ -148,13 +148,26 @@ Estas restricciones son vinculantes y solo se cambian enmendando esta constituci
   `ponytail`. Impeccable sustituye a `frontend-design`, que queda retirada.
 - **Ramas y `main`**: se sigue la convención de Spec Kit. Cada feature tiene **una rama
   propia, nombrada como su carpeta de spec** (`001-sitio-base`), creada al especificarla, y
-  esa rama acompaña a la feature de principio a fin: spec, plan, tareas y código viajan
-  juntos y se integran juntos. `main` es producción —Vercel despliega desde ahí, así que
-  integrar es publicar— y solo recibe trabajo que cumple la Definición de hecho: nunca
-  código a medias, roto o sin probar. Antes de integrar, la rama se revisa en el despliegue
-  de vista previa que la plataforma genera para ella. Los documentos de alcance del
-  proyecto —constitución, brief, tokens, viabilidad, política— no pertenecen a ninguna
-  feature y viven en `main`.
+  esa rama acompaña a la feature de principio a fin. Pero no todo espera al final, porque
+  los documentos y el código corren riesgos distintos y tienen puertas distintas:
+  - **Los documentos de la feature —spec, plan y tareas— se integran a `main` en cuanto
+    están terminados y aprobados**, sin esperar al código. Son texto: no se despliegan y no
+    pueden romper producción. En `main` dejan de ser un borrador que solo existe en una
+    rama, y el trabajo hecho queda a salvo aunque la feature se alargue o se abandone. Una
+    integración de solo documentos no necesita revisión en vista previa, porque no hay nada
+    que ver.
+  - **El código se integra solo cuando cumple la Definición de hecho**, y antes se revisa
+    en el despliegue de vista previa que la plataforma genera para la rama. `main` es
+    producción —Vercel despliega desde ahí, así que integrar es publicar— y nunca recibe
+    código a medias, roto o sin probar.
+  - Integrar los documentos no cierra la rama: sigue viva con el código, y **se pone al día
+    con `main`** antes de seguir, para que las dos no divergan.
+- **Documentos que no pertenecen a ninguna feature**: la constitución, los tokens de diseño
+  y la política de datos viven en `main` y se mantienen al día. El brief de origen y el
+  estudio de viabilidad son material de entrada ya consumido: se conservan por su valor
+  histórico, no se actualizan, y ninguno de los dos dicta nada. La cadena de autoridad es
+  constitución → spec → plan → tareas → código, y nada de fuera de esa cadena entra en
+  ella.
 - **Un solo entorno de datos.** Hay un único proyecto de Supabase, el de producción. No hay
   base de pruebas ni pila local: las vistas previa comparten la base de producción y la
   verificación se hace sobre el sitio desplegado. Es una decisión tomada a conciencia, y
@@ -199,4 +212,4 @@ entrada de las features que todavía no tienen spec. La spec y los tokens se act
 cuando una decisión cambia, en el mismo cambio que la aplica; el brief histórico no se
 mantiene al día.
 
-**Version**: 1.3.0 | **Ratified**: 2026-11-05 | **Last Amended**: 2026-11-05
+**Version**: 1.4.0 | **Ratified**: 2026-11-05 | **Last Amended**: 2026-11-05
