@@ -312,15 +312,18 @@ entera por correo.
 
 ### Implementation for User Story 6
 
-- [ ] T061 [US6] Crear el proyecto de Supabase en el plan gratuito y guardar `SUPABASE_URL` y
+- [ ] T061 [US6] **A medias.** El proyecto de Supabase ya existe: `datafolio`, región `us-east-1`,
+      plan gratuito. Falta que el titular copie la clave de servicio del panel y la ponga en las
+      variables de entorno de Vercel; la conexión automatica solo expone las claves publicables, y
+      eso está bien diseñado. Guardar `SUPABASE_URL` y
       `SUPABASE_SERVICE_ROLE_KEY` en las variables de entorno de Vercel. La clave **solo** la lee el
       servicio de la API
-- [ ] T062 [US6] Crear la migración de la tabla `salud` con exactamente estos campos y restricciones
+- [x] T062 [US6] Crear la migración de la tabla `salud` con exactamente estos campos y restricciones
       (`data-model.md` §1): `id smallint` clave primaria fijo en `1` con `CHECK (id = 1)` para impedir
       una segunda fila; `comprobado_en timestamptz` **nunca nulo**; `resultado text` **nunca nulo**, con
       valores `correcto` o `fallido`; `detalle text` nulo cuando el resultado es `correcto`. La tabla
       **no** se expone a lectura anónima
-- [ ] T063 [US6] Insertar la fila única inicial con `id = 1`, `resultado = 'correcto'` y la fecha de
+- [x] T063 [US6] Insertar la fila única inicial con `id = 1`, `resultado = 'correcto'` y la fecha de
       creación. A partir de ahí la fila solo se actualiza, nunca se borra
 - [ ] T064 [P] [US6] Crear `api/correo.py` con el envío por SMTP usando `smtplib` y `email.message` de
       la biblioteca estándar, al puerto **587** con **STARTTLS**, **esperando** a que el envío termine
