@@ -6,7 +6,12 @@
     },
     "api": {
       "root": "api/",
-      "entrypoint": "main:app"
+      "entrypoint": "main:app",
+      "functions": {
+        "main.py": {
+          "excludeFiles": "{tests/**,.venv/**}"
+        }
+      }
     }
   },
   "rewrites": [

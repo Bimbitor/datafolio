@@ -465,5 +465,11 @@ Python en vez de CSS.
 - En cualquier checkpoint se puede parar y verificar la historia por separado.
 - Los dos archivos a vigilar en revisión son `web/src/styles/tokens.css` y `web/src/i18n/rutas.ts`: si
   un color o un slug aparece fuera de ellos, es un defecto, no una excepción.
+- `npm test` ejecuta las pruebas del sitio y las de la API en un solo comando. El guión
+  `test:api` usa la ruta del entorno virtual en forma de Windows, porque npm ejecuta sus guiones
+  con `cmd` y rechaza las barras normales. `atajo: ruta solo valida en Windows, se cambia si el
+proyecto se mueve a otro sistema.`
+- Las pruebas del sitio pasan con cero archivos (`--passWithNoTests`) hasta que la fase 4 escriba
+  las primeras. Ese flag se quita en cuanto existan.
 - Lo que esta feature **no** construye está listado en `data-model.md`. Si una tarea parece pedir un
   usuario, un proyecto, un artículo o un evento de analítica, está mal entendida.

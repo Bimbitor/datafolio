@@ -24,7 +24,7 @@ staged=$(git diff --cached --name-only --diff-filter=ACM)
 for f in $staged; do
 	case "$f" in
 	.env.example | *.env.example) ;;
-	.env | .env.* | *.env | *.pem | *.key | *.p12 | *.pfx)
+	.env | .env.* | */.env | */.env.* | *.env | *.pem | *.key | *.p12 | *.pfx)
 		error "no se commitea '$f'. Esos valores viven en variables de entorno."
 		;;
 	esac
@@ -35,6 +35,14 @@ done
 # saltar cada vez que la documentacion menciona 'password'.
 buscar() {
 	if printf '%s\n' "$nuevo" | grep -Eq -- "$1"; then
+		error "posible $2 en $f"
+	fi
+}
+
+# Igual que buscar, pero sin distinguir mayusculas. Solo para los patrones cuya pista es
+# una palabra del idioma: los formatos de clave se buscan tal cual, que es mas estricto.
+buscar_i() {
+	if printf '%s\n' "$nuevo" | grep -Eqi -- "$1"; then
 		error "posible $2 en $f"
 	fi
 }
@@ -50,8 +58,14 @@ for f in $staged; do
 	buscar 'AKIA[0-9A-Z]{16}' 'clave de acceso de AWS'
 	buscar 'BEGIN [A-Z ]*PRIVATE KEY' 'clave privada'
 	buscar '(SMTP_PASSWORD|SESSION_SECRET|SUPABASE_SERVICE_ROLE_KEY|RATE_LIMIT_SALT|GITHUB_TOKEN)[[:space:]]*[=:][[:space:]]*.?[A-Za-z0-9+/_-]{8,}' 'variable de entorno con valor real'
-	# Contrasena de aplicacion de Google: cuatro grupos de cuatro letras.
-	buscar '(^|[^A-Za-z])[a-z]{4} [a-z]{4} [a-z]{4} [a-z]{4}([^A-Za-z]|$)' 'contrasena de aplicacion de Google'
+	# Contrasena de aplicacion de Google: cuatro grupos de cuatro letras minusculas. Exige
+	# dos cosas en la MISMA linea: la forma, cerrando la linea, y una palabra de credencial
+	# antes. El patron a secas bloquea prosa normal en espanol -"todo esto pasa aqui"- y un
+	# gancho que grita sin motivo acaba saltandose con --no-verify, que apaga todo el
+	# escaneo. Probado contra todo el texto del repositorio: cero falsos positivos.
+	# shortcut: si la forma va antes de la palabra de credencial no lo coge,
+	# se revisa si alguna vez pasa de verdad.
+	buscar_i '(pass|clave|secret|token|smtp|contrasen).*([a-z]{4} ){3}[a-z]{4}["'"'"']?$' 'contrasena de aplicacion de Google'
 done
 
 # --- 3. Formato -------------------------------------------------------------

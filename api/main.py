@@ -9,7 +9,15 @@ Contrato: specs/001-sitio-base/contracts/http.md, seccion 4.
 
 from fastapi import FastAPI, Response
 
-app = FastAPI(title="Datafolio API", version="0.1.0")
+# Sin documentacion interactiva: FastAPI publicaria /docs, /redoc y /openapi.json, que
+# describirian el login del administrador en cuanto exista. Nadie pidio esa superficie.
+app = FastAPI(
+    title="Datafolio API",
+    version="0.1.0",
+    docs_url=None,
+    redoc_url=None,
+    openapi_url=None,
+)
 
 VERSION = "0.1.0"
 

@@ -8,6 +8,12 @@ dependencies = ["fastapi>=0.162.0"]
 [project.optional-dependencies]
 dev = ["pytest>=9.2.0"]
 
+# `pythonpath` deja importar `main` desde las pruebas sin instalar el paquete ni inventar
+# una carpeta de codigo fuente. Es relativo a este archivo, que es la raiz del servicio.
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
 # Vercel carga la variable `app` del modulo `main`. El runtime de Python ejecuta
 # aplicaciones ASGI tal cual, sin adaptador. Ver specs/001-sitio-base/research.md, D-02.
 [tool.vercel]

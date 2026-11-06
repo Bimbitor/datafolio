@@ -1,6 +1,7 @@
 dist/
 .astro/
 .vercel/
+.pytest_cache/
 package-lock.json
 
 # Plantillas de spec-kit y skills instaladas: las gestiona su propia herramienta
