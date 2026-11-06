@@ -145,6 +145,24 @@ actualizando `docs/project-brief.md`, que es su fuente.
 - **Skills del proyecto**: el diseño visual se trabaja con Impeccable; los textos del sitio,
   en los dos idiomas, pasan por `humanizer`; la implementación sigue el criterio de
   `ponytail`. Impeccable sustituye a `frontend-design`, que queda retirada.
+- **Ramas y `main`**: `main` es producción. Vercel despliega desde ahí, así que integrar a
+  `main` es publicar, no archivar. A `main` solo entra trabajo que cumple la Definición de
+  hecho: nunca código a medias, roto o sin probar. Cada feature o bloque funcional vive en
+  su propia rama, nombrada por la feature (`feat/01-sitio-base`), y se prueba en el
+  despliegue de vista previa que Vercel genera para esa rama antes de integrarla. La
+  documentación de especificación se integra completa, de una sola vez, antes de la
+  primera rama de código.
+- **Un solo entorno de datos.** Hay un único proyecto de Supabase, el de producción. No hay
+  base de pruebas ni pila local: las vistas previa comparten la base de producción y la
+  verificación se hace sobre el sitio desplegado. Es una decisión tomada a conciencia, y
+  deja tres reglas que la hacen sostenible:
+  - **Las pruebas automáticas no son destructivas.** Crean sus propios registros y los
+    borran al terminar. Nunca vacían tablas, nunca tocan el usuario administrador, nunca
+    borran contenido que no hayan creado ellas.
+  - **El contenido creado al probar nace como borrador** y se elimina al terminar. Un
+    borrador no es visible para nadie, así que probar el panel no ensucia el sitio público.
+  - Las migraciones de esquema se aplican **de forma deliberada, al integrar a `main`**,
+    nunca desde una rama en curso: si no, la base queda por delante del código desplegado.
 - **Commits**: formato `vX.Y.Z-AAAA-MM-DD-tipo: descripción`, en español, describiendo el
   cambio y no el proceso.
 - **Definición de hecho**: una feature está terminada cuando cumple sus criterios de
@@ -176,4 +194,4 @@ quita.
 `docs/design-tokens.md` para los valores visuales. Esos documentos se actualizan cuando una
 decisión cambia, en el mismo cambio que la aplica.
 
-**Version**: 1.0.0 | **Ratified**: 2026-11-05 | **Last Amended**: 2026-11-05
+**Version**: 1.1.0 | **Ratified**: 2026-11-05 | **Last Amended**: 2026-11-05
