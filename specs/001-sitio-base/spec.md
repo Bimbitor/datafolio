@@ -188,7 +188,7 @@ El titular no tiene que acordarse de entrar al sitio para que siga funcionando. 
 
 **Comportamiento de entrega**
 
-- **FR-028**: Las secciones cuyo contenido vive en el código MUST servirse de forma estática; las que dependerán de datos administrables MUST renderizarse en servidor con caché; la zona de administración y las funciones de servidor MUST responder sin caché.
+- **FR-028**: Las secciones cuyo contenido vive en el código MUST servirse de forma estática. El catálogo de proyectos y el índice del blog MUST renderizarse en servidor con caché corta de CDN. MUST responder **sin caché** la raíz, la página de error, las rutas de detalle mientras devuelvan 404, la zona de administración y las funciones de servidor: **una respuesta que depende de la petición, o que dice que algo no existe todavía, no se cachea**.
 - **FR-029**: El servicio de datos MUST quedar creado en esta feature con **una única tabla**, la de la propia comprobación programada, y sin nada del esquema de la aplicación. Sus credenciales MUST estar disponibles solo para las funciones de servidor.
 - **FR-030**: Una comprobación programada MUST ejecutarse **al menos cuatro veces al día**, escribir en ese servicio de datos de forma que cuente como actividad de base de datos, y dejar constancia de su resultado.
 - **FR-031**: Cuando la comprobación falle, el titular MUST recibir un aviso por correo en su dirección de administración, indicando qué falló. El envío de correo desde el servidor MUST quedar configurado y verificado en esta feature.
@@ -202,7 +202,7 @@ El titular no tiene que acordarse de entrar al sitio para que siga funcionando. 
 
 - **FR-034**: Si el navegador no permite guardar preferencias, el sitio MUST seguir funcionando con el idioma por defecto y el tema del sistema, sin errores visibles.
 - **FR-035**: Una dirección inexistente MUST llevar a la página de error con estado 404, en el idioma del prefijo de la dirección pedida —o en inglés si la dirección no tiene prefijo—, con salida hacia el inicio.
-- **FR-036**: Las rutas de detalle —ficha de proyecto y artículo— MUST responder **404** mientras no exista el contenido que piden, que es el caso en toda esta feature. NO MUST devolver una página válida para un identificador cualquiera: el sitio no tiene direcciones infinitas. La plantilla de esas fichas se construye aquí y se ve con el primer contenido real, en las features 04 y 05.
+- **FR-036**: Las rutas de detalle —ficha de proyecto y artículo— MUST responder **404 sin caché, con la misma página de error que cualquier otra dirección inexistente**, mientras no exista el contenido que piden, que es el caso en toda esta feature. NO MUST devolver una página válida para un identificador cualquiera: el sitio no tiene direcciones infinitas. La plantilla de esas fichas se construye aquí y se ve con el primer contenido real, en las features 04 y 05.
 
 ## Success Criteria _(mandatory)_
 

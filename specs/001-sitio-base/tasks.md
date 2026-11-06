@@ -173,11 +173,13 @@ historias US3, US4 y US5 se apoyan en ella.
 - [ ] T033 [US2] Crear las nueve páginas en español bajo `web/src/pages/es/` con los slugs traducidos
       del contrato: `index`, `experiencia`, `proyectos`, `proyectos/[slug]`, `blog`, `blog/[slug]`,
       `contacto`, `politica-de-datos`
-- [ ] T034 [US2] Declarar el modo de entrega de cada ruta según `contracts/http.md` §1: estáticas el
+- [ ] T034 [US2] Declarar el modo de entrega de cada ruta según `contracts/http.md` §1 y §3 (FR-028): estáticas el
       inicio, la experiencia, el contacto y la política; servidor con caché de CDN de 60 s el catálogo
       y las fichas de proyecto, el índice del blog y los artículos
 - [ ] T035 [US2] Hacer que las cuatro rutas de detalle devuelvan **404** con cualquier identificador
-      mientras no exista contenido, en lugar de una página válida y vacía (FR-036). La plantilla de la
+      mientras no exista contenido, en lugar de una página válida y vacía (FR-036). Sirven **la misma
+      página de error** que cualquier otra dirección inexistente, con `Cache-Control: no-store`: un 404
+      cacheado seguiría sirviéndose cuando la feature 04 publique el primer proyecto. La plantilla de la
       ficha se construye, pero no se sirve hasta que haya algo dentro
 - [ ] T036 [US2] Mostrar en cada sección sin contenido su armazón y una indicación visible de que el
       contenido está pendiente. **Sin texto de relleno que simule contenido real** (FR-009)

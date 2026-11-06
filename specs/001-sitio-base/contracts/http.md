@@ -12,18 +12,18 @@ existe todavía y debe responder con la página de error.
 Nueve secciones por dos idiomas. Los slugs salen del mapa único de rutas; los de abajo son los
 acordados.
 
-| Sección               | Inglés                 | Español                  | Entrega                                               |
-| --------------------- | ---------------------- | ------------------------ | ----------------------------------------------------- |
-| Raíz                  | `/`                    | `/`                      | **Servidor**, sin caché. Redirige por idioma (ver §2) |
-| Inicio                | `/en/`                 | `/es/`                   | Estática                                              |
-| Experiencia           | `/en/experience/`      | `/es/experiencia/`       | Estática                                              |
-| Catálogo de proyectos | `/en/projects/`        | `/es/proyectos/`         | Servidor + caché de CDN 60 s                          |
-| Ficha de proyecto     | `/en/projects/[slug]/` | `/es/proyectos/[slug]/`  | Servidor; **404** mientras no haya contenido          |
-| Índice del blog       | `/en/blog/`            | `/es/blog/`              | Servidor + caché de CDN 60 s                          |
-| Artículo              | `/en/blog/[slug]/`     | `/es/blog/[slug]/`       | Servidor; **404** mientras no haya contenido          |
-| Contacto              | `/en/contact/`         | `/es/contacto/`          | Estática                                              |
-| Política de datos     | `/en/data-policy/`     | `/es/politica-de-datos/` | Estática                                              |
-| Error                 | cualquier otra         | cualquier otra           | **Servidor**, sin caché, estado **404** (ver §2 bis)  |
+| Sección               | Inglés                 | Español                  | Entrega                                                 |
+| --------------------- | ---------------------- | ------------------------ | ------------------------------------------------------- |
+| Raíz                  | `/`                    | `/`                      | **Servidor**, sin caché. Redirige por idioma (ver §2)   |
+| Inicio                | `/en/`                 | `/es/`                   | Estática                                                |
+| Experiencia           | `/en/experience/`      | `/es/experiencia/`       | Estática                                                |
+| Catálogo de proyectos | `/en/projects/`        | `/es/proyectos/`         | Servidor + caché de CDN 60 s                            |
+| Ficha de proyecto     | `/en/projects/[slug]/` | `/es/proyectos/[slug]/`  | Servidor, sin caché; **404** mientras no haya contenido |
+| Índice del blog       | `/en/blog/`            | `/es/blog/`              | Servidor + caché de CDN 60 s                            |
+| Artículo              | `/en/blog/[slug]/`     | `/es/blog/[slug]/`       | Servidor, sin caché; **404** mientras no haya contenido |
+| Contacto              | `/en/contact/`         | `/es/contacto/`          | Estática                                                |
+| Política de datos     | `/en/data-policy/`     | `/es/politica-de-datos/` | Estática                                                |
+| Error                 | cualquier otra         | cualquier otra           | **Servidor**, sin caché, estado **404** (ver §2 bis)    |
 
 **Nota sobre las rutas de servidor**: en esta feature no hay contenido administrable. El catálogo y el
 índice del blog sirven un armazón con la indicación de contenido pendiente; las **rutas de detalle
@@ -75,6 +75,10 @@ GET /cualquier-cosa-que-no-existe
 
 Cabeceras: `Cache-Control: no-store`.
 
+**Es la misma página para todos los casos.** Una dirección inventada y una ruta de detalle sin contenido devuelven exactamente esta respuesta, con la misma regla de idioma. No hay una página de error propia para las fichas.
+
+**Y nunca se cachea.** Un 404 cacheado sesenta segundos es una trampa: cuando la feature 04 publique el primer proyecto, el 404 viejo seguiría sirviéndose y parecería que la publicación no funcionó.
+
 **Por qué en servidor y no estática**: una única página de error estática solo puede estar en un
 idioma, y el idioma correcto depende de la dirección que se pidió. Resolverlo en servidor es la forma
 más corta que funciona de verdad, y un 404 es una respuesta rara: no tiene presupuesto de
@@ -82,10 +86,10 @@ rendimiento que defender.
 
 ## 3. Cabeceras de toda respuesta del sitio
 
-| Cabecera        | Valor                                                                                                                                                               | Hasta cuándo                                                |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| `X-Robots-Tag`  | `noindex`                                                                                                                                                           | Se retira en la feature 02, al publicarse el contenido real |
-| `Cache-Control` | `no-store` en la raíz, en `/admin/*` y en `/api/*`; caché de CDN de 60 s en las rutas de servidor del sitio; el valor por defecto de la plataforma en las estáticas | Permanente                                                  |
+| Cabecera        | Valor                                                                                                                                                                                                                                               | Hasta cuándo                                                |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| `X-Robots-Tag`  | `noindex`                                                                                                                                                                                                                                           | Se retira en la feature 02, al publicarse el contenido real |
+| `Cache-Control` | **`no-store`**: la raíz, la página de error, las rutas de detalle mientras devuelvan 404, `/admin/*` y `/api/*`. **Caché de CDN de 60 s**: solo el catálogo de proyectos y el índice del blog. **Estáticas**: el valor por defecto de la plataforma | Permanente                                                  |
 
 Cada página declara además, en su encabezado:
 
@@ -147,7 +151,11 @@ olvido. `atajo: endpoint de verificación, se borra al terminar la historia P1.`
 ## 5. Comprobación programada
 
 **No tiene dirección pública.** Es una función privada invocada por la tarea programada de la
-plataforma cada seis horas. No se puede disparar desde internet, así que no necesita secreto que la
+plataforma cada seis horas.
+
+**Dos términos, dos cosas distintas**, y conviene no mezclarlos: la **comprobación programada** es
+esta función, el código que escribe en la base y avisa; la **tarea programada** es el disparador de
+la plataforma que la invoca. No se puede disparar desde internet, así que no necesita secreto que la
 proteja.
 
 **Qué hace, en orden:**

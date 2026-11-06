@@ -65,7 +65,9 @@ Sobre el sitio desplegado:
 
 - [ ] Las doce direcciones fijas del contrato HTTP, §1, responden al abrirlas directamente.
 - [ ] Las cuatro rutas de detalle —proyecto y artículo, en dos idiomas— responden **404** con
-      cualquier identificador, porque no existe ningún contenido (FR-036).
+      cualquier identificador, porque no existe ningún contenido (FR-036), sirviendo la misma página de
+      error que el resto.
+- [ ] Esos 404 llegan con `Cache-Control: no-store`, no con la caché de 60 s del catálogo.
 - [ ] Desde cualquier página, el menú lleva a todas las secciones.
 - [ ] Desde cualquier página, el enlace de correo del pie abre un mensaje dirigido a la dirección
       pública del titular.
