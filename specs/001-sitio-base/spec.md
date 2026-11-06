@@ -110,7 +110,7 @@ Alguien que no usa ratón —por costumbre, por discapacidad o porque está en u
 
 ### User Story 6 - El sitio se mantiene en pie sin vigilancia (Priority: P6)
 
-El titular no tiene que acordarse de entrar al sitio para que siga funcionando. Una comprobación automática diaria se encarga.
+El titular no tiene que acordarse de entrar al sitio para que siga funcionando. Una comprobación automática periódica se encarga.
 
 **Why this priority**: Resuelve un fallo conocido y silencioso: el servicio de datos del plan gratuito se suspende tras una semana sin actividad, y un portafolio nuevo pasa semanas sin visitas. El fallo aparecería justo ante el primer visitante tras una pausa.
 
@@ -133,7 +133,7 @@ El titular no tiene que acordarse de entrar al sitio para que siga funcionando. 
 - **El visitante tiene activada la preferencia de movimiento reducido**: como esta versión no lleva animaciones, no debe haber ninguna diferencia perceptible; la preferencia nunca debe degradar la usabilidad.
 - **Una sección existe en un idioma y se pide en el otro**: en esta feature todas existen en ambos, pero el enrutado no debe dar un error genérico si alguna vez falta.
 - **El dispositivo es muy estrecho o el texto está muy ampliado**: el contenido debe seguir leyéndose sin desbordes horizontales.
-- **La comprobación programada falla varios días seguidos**: cada ejecución fallida avisa, y como corre una vez al día el aviso no se convierte en una avalancha.
+- **La comprobación programada falla varios días seguidos**: cada ejecución fallida avisa. Cuatro correos al día durante una caída son ruido aceptable frente a no enterarse.
 - **El aviso de fallo no se puede enviar** (credenciales caducadas, proveedor de correo caído): el fallo original debe quedar igualmente registrado en la plataforma, para que no desaparezca en silencio.
 - **El visitante abre una dirección de la zona de administración**, que todavía no existe: debe recibir la página de error, y esa zona no debe aparecer en los buscadores.
 
@@ -186,8 +186,8 @@ El titular no tiene que acordarse de entrar al sitio para que siga funcionando. 
 **Comportamiento de entrega**
 
 - **FR-028**: Las secciones cuyo contenido vive en el código MUST servirse de forma estática; las que dependerán de datos administrables MUST renderizarse en servidor con caché; la zona de administración y las funciones de servidor MUST responder sin caché.
-- **FR-029**: El servicio de datos MUST quedar creado en esta feature, sin esquema ni contenido, con sus credenciales disponibles para las funciones de servidor.
-- **FR-030**: Una comprobación programada MUST ejecutarse a diario, consultar ese servicio de datos de forma que cuente como actividad, y dejar constancia de su resultado.
+- **FR-029**: El servicio de datos MUST quedar creado en esta feature con **una única tabla**, la de la propia comprobación programada, y sin nada del esquema de la aplicación. Sus credenciales MUST estar disponibles solo para las funciones de servidor.
+- **FR-030**: Una comprobación programada MUST ejecutarse **al menos cuatro veces al día**, escribir en ese servicio de datos de forma que cuente como actividad de base de datos, y dejar constancia de su resultado.
 - **FR-031**: Cuando la comprobación falle, el titular MUST recibir un aviso por correo en su dirección de administración, indicando qué falló. El envío de correo desde el servidor MUST quedar configurado y verificado en esta feature.
 - **FR-032**: Las credenciales del envío de correo MUST vivir únicamente en variables de entorno de la plataforma, nunca en el repositorio.
 
@@ -227,6 +227,6 @@ El titular no tiene que acordarse de entrar al sitio para que siga funcionando. 
 - **El rendimiento se verifica en laboratorio, no con visitantes.** Todavía no hay tráfico del que sacar datos reales, y medir en el navegador del visitante chocaría con el principio de no guardar nada suyo y gastaría parte del propio presupuesto de JavaScript. La auditoría es la puerta antes de integrar a `main`.
 - **Hay un único entorno de datos.** No existe base de pruebas: la verificación se hace sobre el sitio desplegado, y lo que se cree al probar se elimina.
 - **El correo sale de una cuenta gratuita del titular**, con una contraseña de aplicación guardada como variable de entorno en la plataforma. La dirección de administración que recibe los avisos no es la dirección pública de contacto.
-- **La comprobación programada se ejecuta una vez al día**, que es lo que permite el plan gratuito y sobra frente al umbral de suspensión de una semana.
+- **La comprobación programada se ejecuta cada seis horas.** La investigación de la Fase 0 corrigió dos errores de esta suposición: el plan gratuito permite más de una ejecución diaria, y una sola al día no garantiza evitar la suspensión, porque el proveedor advierte que su propio umbral de actividad no está asegurado con poco tráfico. Cuatro escrituras diarias siguen siendo gratis y dejan holgura. Ver `research.md`, D-04.
 - **Se asume que la convivencia del sitio y las funciones de servidor en un mismo despliegue es posible.** La historia P1 existe precisamente para confirmarlo antes de construir encima; si no lo fuera, se aplica la disposición alternativa ya prevista en `docs/viabilidad-tecnica.md`, que conserva el origen único.
-- **El servicio de datos se crea aquí, vacío.** No tiene esquema ni contenido: el esquema llega en la feature 03. Se crea ahora porque el plazo de suspensión del plan gratuito empieza a contar desde que el proyecto existe, y porque así las credenciales y la tarea programada se verifican en el mismo despliegue de prueba de la historia P1.
+- **El servicio de datos se crea aquí, casi vacío.** Una única tabla de una sola fila, para la propia comprobación: sin ella no hay forma de hacer una escritura que cuente como actividad ni dónde dejar el resultado. El esquema de la aplicación llega en la feature 03. Ver `research.md`, D-05. Se crea ahora porque el plazo de suspensión del plan gratuito empieza a contar desde que el proyecto existe, y porque así las credenciales y la tarea programada se verifican en el mismo despliegue de prueba de la historia P1.
