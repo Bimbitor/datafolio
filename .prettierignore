@@ -7,5 +7,5 @@ package-lock.json
 .specify/
 .claude/skills/
 
-# Material de investigacion recibido y fechado: se conserva tal cual llego
-docs/research/
+# Material de entrada ya consumido: se conserva tal cual llego
+docs/historico/

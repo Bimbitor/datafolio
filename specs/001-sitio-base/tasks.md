@@ -38,34 +38,37 @@ Monorepo con dos servicios de Vercel, según la estructura de [plan.md](./plan.m
 **Purpose**: dejar el monorepo en pie, con los dos servicios declarados y el sitio bloqueado a
 buscadores **antes** del primer despliegue público.
 
-- [ ] T001 Crear la estructura de carpetas `web/` y `api/` en la raíz del repositorio, según la
+- [x] T001 Crear la estructura de carpetas `web/` y `api/` en la raíz del repositorio, según la
       estructura de `plan.md`
-- [ ] T002 Declarar los espacios de trabajo `web` y `api` y los guiones `dev`, `build`, `test`,
-      `format` en `package.json`, conservando `"engines": { "node": "26.x" }`
-- [ ] T003 [P] Fijar la versión de Python en `.python-version` con el valor `3.12`, que es la versión
+- [x] T002 Declarar el espacio de trabajo `web` y los guiones `dev`, `build`, `test`, `format` en
+      `package.json`, conservando `"engines": { "node": "26.x" }`. **Solo `web`**: `api/` es Python y
+      no tiene `package.json`, asi que no hay espacio de trabajo de npm que declarar
+- [x] T003 [P] Fijar la versión de Python en `.python-version` con el valor `3.12`, que es la versión
       por defecto de la plataforma según `research.md` D-02
-- [ ] T004 Inicializar el sitio en `web/` con Astro y el adaptador de Vercel, y registrar
+- [x] T004 Inicializar el sitio en `web/` con Astro y el adaptador de Vercel, y registrar
       `@tailwindcss/vite` en `vite.plugins` de `web/astro.config.mjs` — **no** la integración
       `@astrojs/tailwind`, que está deprecada (`research.md` D-08)
-- [ ] T005 Instalar y configurar **Vitest** en el espacio de trabajo `web`, con
+- [x] T005 Instalar y configurar **Vitest** en el espacio de trabajo `web`, con
       `web/vitest.config.ts` y el guión `test`. Sin esto, las pruebas de las fases 4 y 5 no tienen
       con qué ejecutarse
-- [ ] T006 Inicializar la API en `api/` con `api/pyproject.toml`: `requires-python = ">=3.12"`,
+- [x] T006 Inicializar la API en `api/` con `api/pyproject.toml`: `requires-python = ">=3.12"`,
       dependencia de FastAPI, y `[tool.vercel] entrypoint = "main:app"`
-- [ ] T007 Añadir **pytest** como dependencia de desarrollo en `api/pyproject.toml` y crear la
+- [x] T007 Añadir **pytest** como dependencia de desarrollo en `api/pyproject.toml` y crear la
       carpeta `api/tests/`
-- [ ] T008 Declarar los dos servicios y sus reescrituras en `vercel.json`: `web` con raíz `web/`,
+- [x] T008 Declarar los dos servicios y sus reescrituras en `vercel.json`: `web` con raíz `web/`,
       `api` con raíz `api/` y entrypoint `main:app`; reescritura de `/api/(.*)` al servicio `api` y de
       `/(.*)` al servicio `web` (`research.md` D-01)
-- [ ] T009 Añadir en `vercel.json` la cabecera `X-Robots-Tag: noindex` para **todas** las rutas, y las
+- [x] T009 Añadir en `vercel.json` la cabecera `X-Robots-Tag: noindex` para **todas** las rutas, y las
       reglas de `Cache-Control` del contrato: `no-store` en `/`, `/admin/*` y `/api/*`
       (`contracts/http.md` §3). Esta tarea va antes del primer despliegue: el sitio no debe llegar
       indexable a internet ni un minuto
-- [ ] T010 [P] Crear `.env.example` con los siete nombres de variable del contrato —`SUPABASE_URL`,
+- [x] T010 [P] Crear `.env.example` con los siete nombres de variable del contrato —`SUPABASE_URL`,
       `SUPABASE_SERVICE_ROLE_KEY`, `SMTP_USER`, `SMTP_PASSWORD`, `ADMIN_EMAIL`, `SITE_URL`,
       `PUBLIC_CONTACT_EMAIL`— **sin
       ningún valor** (`contracts/http.md` §6)
-- [ ] T011 [P] Crear `web/public/robots.txt` con `Disallow: /admin` y la declaración del sitemap
+- [x] T011 [P] Crear `web/src/pages/robots.txt.ts` con `Disallow: /admin` y la declaración del
+      sitemap. **Se genera en lugar de vivir en `public/`** para que el dominio salga de `SITE_URL` y
+      no quede escrito a mano; si la variable no está puesta, se omite la línea del sitemap
 
 ---
 
@@ -76,17 +79,17 @@ buscadores **antes** del primer despliegue público.
 **⚠️ CRÍTICO**: ninguna historia empieza hasta que esta fase esté hecha, y **ninguna salvo la US1
 empieza hasta que la US1 pase**.
 
-- [ ] T012 Crear la aplicación FastAPI en `api/main.py` con la variable `app` al nivel superior del
+- [x] T012 Crear la aplicación FastAPI en `api/main.py` con la variable `app` al nivel superior del
       módulo, que es lo que el runtime de Python busca (`research.md` D-02)
-- [ ] T013 Implementar `GET /api/estado` en `api/main.py`, que devuelve `200` con
+- [x] T013 Implementar `GET /api/estado` en `api/main.py`, que devuelve `200` con
       `{ "servicio": "api", "version": "0.1.0" }` y `Cache-Control: no-store`, sin autenticación y sin
       registrar nada (`contracts/http.md` §4)
-- [ ] T014 Implementar `GET /api/cookie-prueba` en `api/main.py`, que devuelve `204` y
+- [x] T014 Implementar `GET /api/cookie-prueba` en `api/main.py`, que devuelve `204` y
       `Set-Cookie: datafolio_prueba=1; Path=/; HttpOnly; Secure; SameSite=Strict`. Añadir el comentario
       `# atajo: endpoint de verificacion, se borra al terminar la historia P1`
-- [ ] T015 Crear una página mínima en `web/src/pages/index.astro` que construya sin errores, solo para
+- [x] T015 Crear una página mínima en `web/src/pages/index.astro` que construya sin errores, solo para
       que el servicio del sitio tenga algo que servir en el despliegue de prueba
-- [ ] T016 Conectar el repositorio al proyecto de Vercel en el plan gratuito fijar `main` como su rama de
+- [ ] T016 Conectar el repositorio al proyecto de Vercel en el plan gratuito, fijar `main` como su rama de
       producción, y configurar las siete variables de entorno **en la plataforma**, nunca en un archivo
       del repositorio
 

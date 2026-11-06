@@ -1,0 +1,14 @@
+[project]
+name = "datafolio-api"
+version = "0.1.0"
+description = "API de Datafolio: la unica puerta de escritura del sitio"
+requires-python = ">=3.12"
+dependencies = ["fastapi>=0.162.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=9.2.0"]
+
+# Vercel carga la variable `app` del modulo `main`. El runtime de Python ejecuta
+# aplicaciones ASGI tal cual, sin adaptador. Ver specs/001-sitio-base/research.md, D-02.
+[tool.vercel]
+entrypoint = "main:app"
