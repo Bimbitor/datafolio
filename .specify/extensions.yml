@@ -1,0 +1,43 @@
+# Ganchos del flujo SDD de Datafolio.
+#
+# Cada comando de Spec Kit, antes de empezar y al terminar, mira este archivo y busca
+# ganchos registrados para su momento: hooks.before_<comando> y hooks.after_<comando>.
+# Los momentos disponibles son los diez comandos instalados: specify, clarify, plan,
+# tasks, implement, analyze, checklist, constitution, converge, taskstoissues.
+#
+# Un gancho solo puede invocar un comando que exista en este proyecto. El nombre se
+# escribe con puntos y el agente lo traduce a barra y guiones:
+#   speckit.clarify  ->  /speckit-clarify
+#
+# optional: false  el comando se ejecuta solo, y el agente espera a que termine.
+# optional: true   no se ejecuta nada: se imprime una sugerencia con su prompt.
+# enabled: false   el gancho se aparca sin borrarlo.
+
+hooks:
+  # El Principio I dice que una feature no avanza con preguntas abiertas. Esto lo hace
+  # cumplir sin depender de que alguien se acuerde.
+  after_specify:
+    - extension: flujo-datafolio
+      command: speckit.clarify
+      description: "Clarificar la spec recien creada antes de planificar"
+      optional: false
+      enabled: true
+
+  # El analisis cruzado de la feature 01 encontro once desajustes, uno de ellos
+  # imposible de implementar. Se gano el derecho a correr solo.
+  after_tasks:
+    - extension: flujo-datafolio
+      command: speckit.analyze
+      description: "Buscar incoherencias entre spec, plan y tareas antes de escribir codigo"
+      optional: false
+      enabled: true
+# Ejemplo de la forma opcional, aparcado. Si se activa, al terminar un plan el agente
+# imprime la sugerencia y espera a que el titular decida, sin ejecutar nada:
+#
+# after_plan:
+#   - extension: flujo-datafolio
+#     command: speckit.checklist
+#     description: "Lista de comprobacion enfocada, por ejemplo de accesibilidad"
+#     prompt: "El plan esta listo. Una lista de comprobacion de accesibilidad ayudaria antes de implementar."
+#     optional: true
+#     enabled: true
