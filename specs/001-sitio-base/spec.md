@@ -8,6 +8,15 @@
 
 **Input**: Feature 1 de la división en `docs/project-brief.md` §12. Alcance: prueba de despliegue conjunto, monorepo, enrutado bilingüe con slugs traducidos, archivo único de tokens, modo claro y oscuro, navegación por teclado, responsive, rutas estáticas contra renderizadas, tarea programada de salud, SEO y despliegue. Sin animaciones.
 
+## Clarifications
+
+### Session 2026-11-05
+
+- Q: ¿El sitio debe ser visible para los buscadores desde el primer despliegue, aunque sus secciones todavía no tengan contenido real? → A: No. Se publica bloqueado a buscadores y el bloqueo se retira cuando el contenido real esté puesto, en la feature 02.
+- Q: ¿Esta feature crea ya el proyecto de base de datos, aunque esté vacío, para que la comprobación diaria tenga algo que consultar? → A: Sí. Se crea vacío en esta feature y la comprobación lo consulta desde el primer despliegue; el esquema llega en la feature 03.
+- Q: ¿Cómo se entera el titular de que la comprobación diaria falló, si el panel de administración no existe hasta la feature 03? → A: Por correo. La comprobación avisa al titular cuando falla, así que el canal de correo se configura en esta feature.
+- Q: ¿Con qué método se comprueba que el sitio cumple los números de rendimiento del criterio de aceptación? → A: Con una auditoría de laboratorio sobre el sitio desplegado, perfil de móvil y red simulada, tomando la mediana de tres ejecuciones, antes de integrar a `main`.
+
 ## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - El sitio y su API pueden convivir en un mismo despliegue (Priority: P1)
@@ -112,7 +121,8 @@ El titular no tiene que acordarse de entrar al sitio para que siga funcionando. 
 1. **Given** el sitio desplegado, **When** pasa un día, **Then** la comprobación programada se ha ejecutado y ha dejado constancia del resultado.
 2. **Given** la comprobación, **When** se ejecuta, **Then** consulta el servicio de datos de forma que cuente como actividad.
 3. **Given** siete días seguidos sin ninguna visita, **When** alguien abre el sitio al octavo, **Then** funciona con normalidad.
-4. **Given** una comprobación fallida, **When** el titular la consulta, **Then** puede ver que falló y por qué.
+4. **Given** una comprobación fallida, **When** termina su ejecución, **Then** el titular recibe un aviso por correo que dice qué falló.
+5. **Given** que el propio envío del aviso falla, **When** el titular revisa el registro de la plataforma, **Then** encuentra constancia del fallo original.
 
 ---
 
@@ -123,7 +133,8 @@ El titular no tiene que acordarse de entrar al sitio para que siga funcionando. 
 - **El visitante tiene activada la preferencia de movimiento reducido**: como esta versión no lleva animaciones, no debe haber ninguna diferencia perceptible; la preferencia nunca debe degradar la usabilidad.
 - **Una sección existe en un idioma y se pide en el otro**: en esta feature todas existen en ambos, pero el enrutado no debe dar un error genérico si alguna vez falta.
 - **El dispositivo es muy estrecho o el texto está muy ampliado**: el contenido debe seguir leyéndose sin desbordes horizontales.
-- **La comprobación programada falla varios días seguidos**: el titular debe poder enterarse, no descubrirlo cuando el sitio ya está caído.
+- **La comprobación programada falla varios días seguidos**: cada ejecución fallida avisa, y como corre una vez al día el aviso no se convierte en una avalancha.
+- **El aviso de fallo no se puede enviar** (credenciales caducadas, proveedor de correo caído): el fallo original debe quedar igualmente registrado en la plataforma, para que no desaparezca en silencio.
 - **El visitante abre una dirección de la zona de administración**, que todavía no existe: debe recibir la página de error, y esa zona no debe aparecer en los buscadores.
 
 ## Requirements _(mandatory)_
@@ -175,13 +186,19 @@ El titular no tiene que acordarse de entrar al sitio para que siga funcionando. 
 **Comportamiento de entrega**
 
 - **FR-028**: Las secciones cuyo contenido vive en el código MUST servirse de forma estática; las que dependerán de datos administrables MUST renderizarse en servidor con caché; la zona de administración y las funciones de servidor MUST responder sin caché.
-- **FR-029**: Una comprobación programada MUST ejecutarse a diario, consultar el servicio de datos y dejar constancia de su resultado.
-- **FR-030**: El titular MUST poder consultar si esa comprobación falló y por qué.
+- **FR-029**: El servicio de datos MUST quedar creado en esta feature, sin esquema ni contenido, con sus credenciales disponibles para las funciones de servidor.
+- **FR-030**: Una comprobación programada MUST ejecutarse a diario, consultar ese servicio de datos de forma que cuente como actividad, y dejar constancia de su resultado.
+- **FR-031**: Cuando la comprobación falle, el titular MUST recibir un aviso por correo en su dirección de administración, indicando qué falló. El envío de correo desde el servidor MUST quedar configurado y verificado en esta feature.
+- **FR-032**: Las credenciales del envío de correo MUST vivir únicamente en variables de entorno de la plataforma, nunca en el repositorio.
+
+**Indexación**
+
+- **FR-033**: Mientras alguna sección muestre la indicación de contenido pendiente de FR-009, el sitio completo MUST declararse no indexable para los buscadores. El índice de direcciones de FR-015 y FR-016 se construye y publica igual en esta feature; el bloqueo se retira en la feature 02, al publicarse el contenido real.
 
 **Degradación**
 
-- **FR-031**: Si el navegador no permite guardar preferencias, el sitio MUST seguir funcionando con el idioma por defecto y el tema del sistema, sin errores visibles.
-- **FR-032**: Una dirección inexistente MUST llevar a la página de error en el idioma del visitante, con salida hacia el inicio.
+- **FR-034**: Si el navegador no permite guardar preferencias, el sitio MUST seguir funcionando con el idioma por defecto y el tema del sistema, sin errores visibles.
+- **FR-035**: Una dirección inexistente MUST llevar a la página de error en el idioma del visitante, con salida hacia el inicio.
 
 ## Success Criteria _(mandatory)_
 
@@ -189,8 +206,8 @@ El titular no tiene que acordarse de entrar al sitio para que siga funcionando. 
 
 - **SC-001**: Las dieciocho direcciones públicas —nueve secciones en dos idiomas— responden correctamente al abrirlas directamente.
 - **SC-002**: Desde cualquier página, un visitante alcanza cualquier otra sección en un clic, y un canal de contacto en un clic.
-- **SC-003**: En un móvil de gama media y red móvil típica, el contenido principal de la página de inicio aparece en menos de 2,5 segundos y la página no se desplaza sola mientras carga.
-- **SC-004**: Las páginas públicas se cargan con menos de 100 KB de código ejecutable en el navegador.
+- **SC-003**: Medido con una auditoría de laboratorio sobre el sitio desplegado, con perfil de móvil de gama media y red móvil simulada, tomando la mediana de tres ejecuciones: el contenido principal de la página de inicio aparece en menos de 2,5 segundos y el desplazamiento involuntario de la página mientras carga se mantiene por debajo de 0,1.
+- **SC-004**: En la misma auditoría, cada página pública se carga con menos de 100 KB de código ejecutable en el navegador, comprimido tal como lo sirve la plataforma.
 - **SC-005**: Un visitante con el navegador en español llega a la versión en español y uno con el navegador en cualquier otro idioma llega a la inglesa, en el 100 % de los casos.
 - **SC-006**: Cambiar de idioma desde cualquier sección conserva la sección; nunca devuelve al inicio.
 - **SC-007**: La elección de tema y de idioma sobrevive a la navegación y a la recarga, y no se percibe ningún destello del tema contrario al cargar.
@@ -198,6 +215,8 @@ El titular no tiene que acordarse de entrar al sitio para que siga funcionando. 
 - **SC-009**: El sitio completo se recorre y se opera usando solo el teclado, sin que el foco quede atrapado ni se pierda de vista en ningún punto, en los dos temas.
 - **SC-010**: El sitio permanece operativo tras siete días consecutivos sin visitas.
 - **SC-011**: El sitio está publicado y el coste mensual de operarlo es cero.
+- **SC-012**: Una comprobación fallida provoca un aviso por correo al titular en la misma ejecución, verificable provocando un fallo a propósito.
+- **SC-013**: Mientras las secciones muestren la indicación de contenido pendiente, ninguna página del sitio se declara indexable, y el índice de direcciones existe y es válido desde el primer despliegue.
 
 ## Assumptions
 
@@ -205,7 +224,9 @@ El titular no tiene que acordarse de entrar al sitio para que siga funcionando. 
 - **El contenido real llega en la feature 02.** Esta feature entrega la estructura; las secciones muestran su armazón y una indicación de que el contenido está pendiente, nunca texto de relleno que parezca real.
 - **Los valores visuales ya están decididos** en `docs/design-tokens.md`. Esta feature los implementa en un único archivo; la composición y el ritmo visual corresponden a la feature 07.
 - **El sitio vive en el subdominio gratuito de la plataforma de despliegue.** No hay dominio propio y no está planeado.
+- **El rendimiento se verifica en laboratorio, no con visitantes.** Todavía no hay tráfico del que sacar datos reales, y medir en el navegador del visitante chocaría con el principio de no guardar nada suyo y gastaría parte del propio presupuesto de JavaScript. La auditoría es la puerta antes de integrar a `main`.
 - **Hay un único entorno de datos.** No existe base de pruebas: la verificación se hace sobre el sitio desplegado, y lo que se cree al probar se elimina.
+- **El correo sale de una cuenta gratuita del titular**, con una contraseña de aplicación guardada como variable de entorno en la plataforma. La dirección de administración que recibe los avisos no es la dirección pública de contacto.
 - **La comprobación programada se ejecuta una vez al día**, que es lo que permite el plan gratuito y sobra frente al umbral de suspensión de una semana.
 - **Se asume que la convivencia del sitio y las funciones de servidor en un mismo despliegue es posible.** La historia P1 existe precisamente para confirmarlo antes de construir encima; si no lo fuera, se aplica la disposición alternativa ya prevista en `docs/viabilidad-tecnica.md`, que conserva el origen único.
-- **No hay base de datos con contenido todavía.** La comprobación programada se construye en esta feature y pasa a consultar datos reales en cuanto exista el esquema, en la feature 03.
+- **El servicio de datos se crea aquí, vacío.** No tiene esquema ni contenido: el esquema llega en la feature 03. Se crea ahora porque el plazo de suspensión del plan gratuito empieza a contar desde que el proyecto existe, y porque así las credenciales y la tarea programada se verifican en el mismo despliegue de prueba de la historia P1.
