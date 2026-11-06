@@ -151,54 +151,54 @@ historias US3, US4 y US5 se apoyan en ella.
 
 > Escribir estas pruebas antes de la implementación y comprobar que fallan.
 
-- [ ] T024 [P] [US2] Prueba en `web/tests/rutas.test.ts`: toda sección del mapa tiene slug **en los dos
+- [x] T024 [P] [US2] Prueba en `web/tests/rutas.test.ts`: toda sección del mapa tiene slug **en los dos
       idiomas**; un slug vacío es un error de construcción, no una página sin traducir
       (`data-model.md` §2, regla 1)
-- [ ] T025 [P] [US2] Prueba en `web/tests/rutas.test.ts`: dos secciones no comparten slug dentro del
+- [x] T025 [P] [US2] Prueba en `web/tests/rutas.test.ts`: dos secciones no comparten slug dentro del
       mismo idioma (`data-model.md` §2, regla 2)
-- [ ] T026 [P] [US2] Prueba en `web/tests/rutas.test.ts`: toda sección con `enNavegacion` tiene etiqueta
+- [x] T026 [P] [US2] Prueba en `web/tests/rutas.test.ts`: toda sección con `enNavegacion` tiene etiqueta
       en los dos idiomas (`data-model.md` §2, regla 3)
 
 ### Implementation for User Story 2
 
-- [ ] T027 [US2] Crear `web/src/styles/tokens.css` como **único** origen de valores visuales: la paleta
+- [x] T027 [US2] Crear `web/src/styles/tokens.css` como **único** origen de valores visuales: la paleta
       clara en `@theme`, la oscura redefinida bajo el selector del tema oscuro, y las tipografías,
       espaciados, radios y sombras de `docs/design-tokens.md`. Ningún componente escribirá nunca uno de
       estos valores
-- [ ] T028 [US2] Crear `web/src/i18n/rutas.ts` con las nueve secciones y sus campos `clave`, `slug.en`,
+- [x] T028 [US2] Crear `web/src/i18n/rutas.ts` con las nueve secciones y sus campos `clave`, `slug.en`,
       `slug.es`, `enNavegacion`, `enIndice`, usando los slugs de `contracts/http.md` §1. Las tres reglas
       de `data-model.md` §2 se validan en construcción
-- [ ] T029 [P] [US2] Crear `web/src/i18n/textos.ts` con las cadenas de interfaz en los dos idiomas:
+- [x] T029 [P] [US2] Crear `web/src/i18n/textos.ts` con las cadenas de interfaz en los dos idiomas:
       etiquetas de navegación, del selector de idioma, del botón de tema y de la página de error
-- [ ] T030 [US2] Crear `web/src/layouts/Base.astro` con el documento base, la navegación, el pie y los
+- [x] T030 [US2] Crear `web/src/layouts/Base.astro` con el documento base, la navegación, el pie y los
       enlaces de encabezado, leyendo todo del mapa de rutas (depende de T028, T029)
-- [ ] T031 [P] [US2] Crear `web/src/components/Navegacion.astro`, que genera sus enlaces desde el mapa
+- [x] T031 [P] [US2] Crear `web/src/components/Navegacion.astro`, que genera sus enlaces desde el mapa
       de rutas y nunca desde una lista propia
-- [ ] T032 [US2] Crear las nueve páginas en inglés bajo `web/src/pages/en/` con los slugs del contrato:
+- [x] T032 [US2] Crear las nueve páginas en inglés bajo `web/src/pages/en/` con los slugs del contrato:
       `index`, `experience`, `projects`, `projects/[slug]`, `blog`, `blog/[slug]`, `contact`,
       `data-policy`
-- [ ] T033 [US2] Crear las nueve páginas en español bajo `web/src/pages/es/` con los slugs traducidos
+- [x] T033 [US2] Crear las nueve páginas en español bajo `web/src/pages/es/` con los slugs traducidos
       del contrato: `index`, `experiencia`, `proyectos`, `proyectos/[slug]`, `blog`, `blog/[slug]`,
       `contacto`, `politica-de-datos`
-- [ ] T034 [US2] Declarar el modo de entrega de cada ruta según `contracts/http.md` §1 y §3 (FR-028): estáticas el
+- [x] T034 [US2] Declarar el modo de entrega de cada ruta según `contracts/http.md` §1 y §3 (FR-028): estáticas el
       inicio, la experiencia, el contacto y la política; servidor con caché de CDN de 60 s el catálogo
       y las fichas de proyecto, el índice del blog y los artículos
-- [ ] T035 [US2] Hacer que las cuatro rutas de detalle devuelvan **404** con cualquier identificador
+- [x] T035 [US2] Hacer que las cuatro rutas de detalle devuelvan **404** con cualquier identificador
       mientras no exista contenido, en lugar de una página válida y vacía (FR-036). Sirven **la misma
       página de error** que cualquier otra dirección inexistente, con `Cache-Control: no-store`: un 404
       cacheado seguiría sirviéndose cuando la feature 04 publique el primer proyecto. La plantilla de la
       ficha se construye, pero no se sirve hasta que haya algo dentro
-- [ ] T036 [US2] Mostrar en cada sección sin contenido su armazón y una indicación visible de que el
+- [x] T036 [US2] Mostrar en cada sección sin contenido su armazón y una indicación visible de que el
       contenido está pendiente. **Sin texto de relleno que simule contenido real** (FR-009)
-- [ ] T037 [P] [US2] Crear `web/src/pages/404.astro` **renderizada en servidor**
+- [x] T037 [P] [US2] Crear `web/src/pages/404.astro` **renderizada en servidor**
       (`prerender = false`), que responde estado **404** con `Cache-Control: no-store` y toma el idioma
       del **prefijo de la dirección pedida** —inglés si no hay prefijo—, con salida hacia el inicio.
       Una única página estática solo podría estar en un idioma (`contracts/http.md` §2 bis,
       `research.md` D-07 bis)
-- [ ] T038 [US2] Añadir en el pie de `web/src/layouts/Base.astro` un enlace de correo hacia
+- [x] T038 [US2] Añadir en el pie de `web/src/layouts/Base.astro` un enlace de correo hacia
       `PUBLIC_CONTACT_EMAIL`, presente en todas las páginas. La dirección se lee de la variable de
       entorno, nunca escrita en el código (FR-008)
-- [ ] T039 [US2] Hacer el sitio utilizable y legible en móvil, tableta y escritorio sin desbordes
+- [x] T039 [US2] Hacer el sitio utilizable y legible en móvil, tableta y escritorio sin desbordes
       horizontales, con los puntos de ruptura estándar y comprobado también con el texto ampliado al
       200 %
 
