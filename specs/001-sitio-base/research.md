@@ -270,7 +270,18 @@ quede pendiente cuando la respuesta sale puede no ejecutarse nunca.
 ## D-12. Consultar la base desde Python, sin dependencias
 
 **Decisión**: `urllib.request` de la biblioteca estándar contra el endpoint REST del proyecto de datos,
-con la clave de servicio en una cabecera, para escribir la fila de `salud`.
+con la clave secreta en la cabecera **`apikey`**, para escribir la fila de `salud`.
+
+**Dos detalles que la documentación de Supabase fija y que es fácil equivocar:**
+
+- La clave va en `apikey`, **no** en `Authorization: Bearer`. Las claves nuevas se envían así.
+- La clave secreta devuelve **401 si la petición parece venir de un navegador**: el servidor mira el
+  `User-Agent`. Es una defensa a nuestro favor, pero obliga a que la petición de Python no finja ser
+  un navegador. Si alguna vez da 401 sin motivo aparente, mirar ahí primero.
+
+**Qué clave**: la **secreta moderna** (`sb_secret_...`), que sustituye a la antigua `service_role` y
+salta las políticas de acceso igual. Supabase deprecia las claves JWT heredadas a finales de 2026,
+así que empezar con ellas sería firmar una migración por nada.
 
 **Razón**: es una sola petición HTTP. El cliente oficial de Supabase traería una dependencia y su árbol
 entero para eso. Si la feature 03 necesita consultas de verdad, se reconsidera entonces, con el
