@@ -132,6 +132,32 @@ se use.
 
 ---
 
+### Segunda corrección, 2026-11-06: el disparador sale de Vercel
+
+La tarea nunca apareció en el panel de Vercel. Se verificó que Schedules está en beta pública
+**en todos los planes**, así que no es la cuenta; y se descartó que el servicio no recibiera
+variables, porque las seis llegan. Quedan dos explicaciones, y ninguna se puede comprobar desde
+fuera: que el bloque `schedules` no se aplique dentro de un proyecto con `services` —dos betas
+conviviendo— o que el panel lo muestre en un sitio que no encontramos.
+
+**Decisión**: el disparador pasa a una tarea programada de **GitHub Actions** contra el mismo
+endpoint, cada seis horas. El bloque de `vercel.json` se conserva: si funciona, escribe de más y
+no estorba; si no, no se pierde nada. Son dos mecanismos con fallos distintos, y esa redundancia
+sí se justifica.
+
+**Lo que gana**: no depende de ninguna beta, es gratis, el repositorio ya está en GitHub, y el
+endpoint y el secreto ya están probados, así que no se toca una línea de código.
+
+**Lo que cuesta, y hay que saberlo**: en un repositorio público, GitHub **desactiva las tareas
+programadas tras 60 días sin actividad en el repositorio**, y la ejecución de la propia tarea no
+cuenta como actividad. O sea que el mecanismo que protege contra la inactividad caduca por
+inactividad. La red de abajo es el aviso por correo que el proveedor de datos manda una semana
+antes de suspender, y que restaurar es un clic. Además, las tareas programadas de GitHub se
+retrasan bajo carga y algunas se descartan: por eso corre en el minuto 17 y cada seis horas, no
+en punto y no una vez al día.
+
+---
+
 ## D-04. Una comprobación al día **no** garantiza mantener despierta la base
 
 **Hallazgo que corrige una suposición de la spec.** La documentación de Supabase dice que un proyecto

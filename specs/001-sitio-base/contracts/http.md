@@ -168,6 +168,10 @@ plataforma haría privada toda la API, que es una sola aplicación ASGI; la corr
 `research.md`, D-03. La plataforma envía el secreto en cada petición suya, y el manejador lo
 comprueba **antes** de cualquier trabajo.
 
+**Quien dispara**: una tarea programada de **GitHub Actions**, cada seis horas, definida en
+`.github/workflows/salud.yml`. El bloque `schedules` de `vercel.json` se conserva por si llega a
+funcionar, pero no se cuenta con él. Ver `research.md`, D-03.
+
 **Dos términos, dos cosas distintas**, y conviene no mezclarlos: la **comprobación programada** es
 el código que escribe en la base y avisa; la **tarea programada** es el disparador de la plataforma
 que lo invoca.

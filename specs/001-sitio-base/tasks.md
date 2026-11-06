@@ -337,10 +337,11 @@ entera por correo.
       endpoint REST del proyecto de datos; si falla, envía el correo de aviso a `ADMIN_EMAIL` con la
       causa; si el correo también falla, deja el fallo original en el registro de la plataforma
       (`contracts/http.md` §5)
-- [x] T066 [US6] Declarar en `vercel.json` una tarea programada de **Vercel Schedules** con destino
-      **ruta** —`POST /api/salud`, protegida por `CRON_SECRET`— **cada seis horas**. El destino de
-      función privada resultó impracticable con una API que es una sola aplicación ASGI; la
-      corrección está en `research.md`, D-03
+- [x] T066 [US6] **El disparador sale de Vercel.** Se conserva el bloque `schedules` de
+      `vercel.json`, que puede funcionar y no estorba, pero el disparador real es
+      `.github/workflows/salud.yml`: una tarea de GitHub Actions cada seis horas contra el mismo
+      endpoint. La tarea de Vercel nunca apareció en el panel y no se pudo verificar. Corrección
+      razonada en `research.md`, D-03
 - [x] T067 [US6] **Verificado por invocacion manual, no por el panel.** La comprobacion se
       disparó con una peticion firmada con `CRON_SECRET` contra el despliegue real y devolvió
       `204`; la fila de `salud` pasó de las 15:45 a las 22:21. Eso prueba el secreto, la clave de
