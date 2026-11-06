@@ -18,6 +18,16 @@ def test_no_publica_documentacion_interactiva():
         assert publicada not in rutas
 
 
+def test_solo_existen_las_rutas_del_contrato():
+    """La reescritura de la plataforma conserva el prefijo /api, comprobado en el despliegue
+    del 2026-11-06. Si alguien vuelve a anadir rutas sin prefijo, son inalcanzables: el
+    servicio solo recibe lo que empieza por /api."""
+    rutas = {r.path for r in app.routes if r.path.startswith("/")}
+    assert {"/api/estado", "/api/cookie-prueba"} <= rutas
+    assert "/estado" not in rutas
+    assert "/cookie-prueba" not in rutas
+
+
 def test_estado_devuelve_lo_pactado():
     respuesta = estado()
     assert respuesta.status_code == 200
