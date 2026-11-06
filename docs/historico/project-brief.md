@@ -1,6 +1,12 @@
-# Datafolio — Brief de proyecto (entrada para SDD)
+# Datafolio — Brief de proyecto (entrada histórica para SDD)
 
-> Estado: **borrador en revisión**. Este documento es la _entrada_ al flujo Spec-Driven Development.
+> Estado: **histórico**. Aquí se ordenó la idea y se tomaron las decisiones de producto, en nueve rondas,
+> antes de que existiera cualquier spec. Ya no es la autoridad de nada: manda la constitución sobre cómo se
+> trabaja y manda la spec de cada feature sobre qué se construye. Se conserva por dos razones: es el registro
+> de por qué el proyecto es como es, y es la entrada de la que saldrán las specs de las features 02 a 07,
+> que todavía no están escritas. Donde una spec aprobada diga otra cosa, la spec gana sin discusión.
+>
+> Este documento es la _entrada_ al flujo Spec-Driven Development.
 > Orden previsto: `/speckit.constitution` → `/speckit.specify` (por feature) → `/speckit.clarify` → `/speckit.plan` → `/speckit.tasks` → `/speckit.implement`.
 > Nada de código hasta que las specs estén aprobadas.
 >
@@ -473,10 +479,10 @@ Alcance acordado, deliberadamente acotado:
 
 ## 12. División propuesta en features para SDD
 
-1. **`01-sitio-base`** — **prueba de despliegue de Astro + función Python en un mismo proyecto, primero que todo**; luego monorepo, Astro + Tailwind, enrutado bilingüe con slugs traducidos, archivo de tokens de `design-tokens.md`, modo oscuro, navegación por teclado, responsive, tabla de rutas estáticas contra renderizadas en servidor, tarea programada que mantiene despierta la base de datos, SEO y despliegue en Vercel.
-2. **`02-contenido-estatico`** — home, experiencia con línea de tiempo filtrable, contacto, política de datos, descarga de CV, vCard, botón de Claude.
-3. **`03-admin-y-autenticacion`** — FastAPI en Vercel, login, hash, cambio de contraseña, sesión de 10 horas, restablecimiento por SMTP de Gmail, límites de tasa, secretos, estructura del panel. **Antes que cualquier CRUD.**
-4. **`04-proyectos`** — base de datos, catálogo, buscador, ficha, README con caché y botón de refresco, CRUD bilingüe con borradores.
+1. **`01-sitio-base`** — **prueba de despliegue de Astro + función Python en un mismo proyecto, primero que todo**; luego monorepo, Astro + Tailwind, enrutado bilingüe con slugs traducidos, archivo de tokens de `design-tokens.md`, modo oscuro, navegación por teclado, responsive, tabla de rutas estáticas contra renderizadas en servidor, creación del proyecto de base de datos vacío, tarea programada que lo mantiene despierto y avisa por correo si falla —lo que trae aquí la configuración del envío de correo—, SEO con el sitio bloqueado a buscadores hasta la feature 02, y despliegue en Vercel.
+2. **`02-contenido-estatico`** — home, experiencia con línea de tiempo filtrable, contacto, política de datos, descarga de CV, vCard, botón de Claude. Al tener contenido real, se levanta el bloqueo de indexación.
+3. **`03-admin-y-autenticacion`** — FastAPI en Vercel, login, hash, cambio de contraseña, sesión de 10 horas, restablecimiento por correo —el envío ya quedó configurado en la feature 01—, primer esquema de la base de datos, límites de tasa, secretos, estructura del panel. **Antes que cualquier CRUD.**
+4. **`04-proyectos`** — tablas de proyectos, catálogo, buscador, ficha, README con caché y botón de refresco, CRUD bilingüe con borradores.
 5. **`05-blog-y-comentarios`** — artículos bilingües, plantilla, editor con previsualización, borradores, comentarios con moderación previa en artículos y en fichas de proyecto.
 6. **`06-analitica`** — registro agregado de eventos por hora y panel histórico con filtros.
 7. **`07-diseno-visual`** — composición, ritmo y tratamiento de las fotografías, sobre los tokens ya fijados.

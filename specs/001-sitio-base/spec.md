@@ -6,7 +6,7 @@
 
 **Status**: Draft
 
-**Input**: Feature 1 de la división en `docs/project-brief.md` §12. Alcance: prueba de despliegue conjunto, monorepo, enrutado bilingüe con slugs traducidos, archivo único de tokens, modo claro y oscuro, navegación por teclado, responsive, rutas estáticas contra renderizadas, tarea programada de salud, SEO y despliegue. Sin animaciones.
+**Input**: Feature 1 de la división en `docs/historico/project-brief.md` §12. Alcance: prueba de despliegue conjunto, monorepo, enrutado bilingüe con slugs traducidos, archivo único de tokens, modo claro y oscuro, navegación por teclado, responsive, rutas estáticas contra renderizadas, tarea programada de salud, SEO y despliegue. Sin animaciones.
 
 ## Clarifications
 
@@ -220,7 +220,7 @@ El titular no tiene que acordarse de entrar al sitio para que siga funcionando. 
 
 ## Assumptions
 
-- **La pila tecnológica no se decide aquí**: está fijada en `docs/project-brief.md` §7 y en la constitución. Esta especificación describe qué debe lograrse; el cómo corresponde al plan.
+- **La pila tecnológica no se decide aquí**: está fijada en `docs/historico/project-brief.md` §7 y en la constitución. Esta especificación describe qué debe lograrse; el cómo corresponde al plan.
 - **El contenido real llega en la feature 02.** Esta feature entrega la estructura; las secciones muestran su armazón y una indicación de que el contenido está pendiente, nunca texto de relleno que parezca real.
 - **Los valores visuales ya están decididos** en `docs/design-tokens.md`. Esta feature los implementa en un único archivo; la composición y el ritmo visual corresponden a la feature 07.
 - **El sitio vive en el subdominio gratuito de la plataforma de despliegue.** No hay dominio propio y no está planeado.

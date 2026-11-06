@@ -53,7 +53,7 @@ El límite de duración del plan gratuito es de 300 segundos, de sobra para un i
 
 ## 4. RESUELTO — Qué páginas son estáticas y cuáles se renderizan en servidor
 
-La tabla de rutas quedó decidida y vive en `project-brief.md`, §7: estáticas el home, la experiencia, el contacto, la política, el 404 y los archivos de SEO; renderizadas en servidor con caché de CDN de 60 segundos el catálogo de proyectos, las fichas, el índice del blog y los artículos; sin caché el panel y la API.
+La tabla de rutas quedó decidida y vive en `historico/project-brief.md`, §7: estáticas el home, la experiencia, el contacto, la política, el 404 y los archivos de SEO; renderizadas en servidor con caché de CDN de 60 segundos el catálogo de proyectos, las fichas, el índice del blog y los artículos; sin caché el panel y la API.
 
 ## 5. RESUELTO — La versión de Node
 

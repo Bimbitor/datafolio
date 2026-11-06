@@ -32,6 +32,6 @@
 ## Notes
 
 - **Cero marcadores de clarificación.** El brief resolvió sus 52 pendientes antes de escribir esta spec, así que no quedaba nada ambiguo que preguntar.
-- **Sobre "sin detalles de implementación":** la historia P1 trata de una prueba de despliegue, que roza lo técnico por naturaleza. Se redactó en términos de resultado observable —dos direcciones respondiendo bajo un mismo dominio y una cookie que viaja— sin nombrar plataforma ni framework. Los nombres propios de la pila viven en `docs/project-brief.md` §7 y en Assumptions, no en los requisitos.
+- **Sobre "sin detalles de implementación":** la historia P1 trata de una prueba de despliegue, que roza lo técnico por naturaleza. Se redactó en términos de resultado observable —dos direcciones respondiendo bajo un mismo dominio y una cookie que viaja— sin nombrar plataforma ni framework. Los nombres propios de la pila viven en `docs/historico/project-brief.md` §7 y en Assumptions, no en los requisitos.
 - **Trazabilidad:** los requisitos de esta spec derivan de RF-01 a RF-07 y de §7 y §9.3 del brief. Las reglas de contraste a las que apuntan FR-027 y los escenarios de la historia 4 están en `docs/design-tokens.md`.
 - Las historias 2 a 6 son incrementos independientes: cada una se puede construir, probar y enseñar por separado una vez resuelta la historia 1.
