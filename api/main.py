@@ -7,6 +7,7 @@ tanto que la autenticacion de la feature 03 sea posible.
 Contrato: specs/001-sitio-base/contracts/http.md, seccion 4.
 """
 
+import hashlib
 import os
 
 from fastapi import FastAPI, Request, Response
@@ -48,8 +49,14 @@ def estado() -> Response:
         "ADMIN_EMAIL",
     )
     presentes = ",".join('"%s":%s' % (v, "true" if os.environ.get(v) else "false") for v in esperadas)
+    # Huella del secreto: ocho hexadecimales del SHA-256. No se puede revertir, y sirve
+    # para que el titular compare contra el token que esta enviando sin que ninguno de los
+    # dos valores viaje. Si las huellas difieren, son secretos distintos y se acabo la duda.
+    secreto = os.environ.get("CRON_SECRET", "")
+    huella = hashlib.sha256(secreto.encode()).hexdigest()[:8] if secreto else "sin-valor"
     return Response(
-        content='{"servicio":"api","version":"%s","variables":{%s}}' % (VERSION, presentes),
+        content='{"servicio":"api","version":"%s","variables":{%s},"huella_cron_secret":"%s","largo":%d}'
+        % (VERSION, presentes, huella, len(secreto)),
         media_type="application/json",
         headers={"Cache-Control": "no-store"},
     )
