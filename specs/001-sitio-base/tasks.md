@@ -89,7 +89,11 @@ empieza hasta que la US1 pase**.
       `# atajo: endpoint de verificacion, se borra al terminar la historia P1`
 - [x] T015 Crear una página mínima en `web/src/pages/index.astro` que construya sin errores, solo para
       que el servicio del sitio tenga algo que servir en el despliegue de prueba
-- [ ] T016 Conectar el repositorio al proyecto de Vercel en el plan gratuito, fijar `main` como su rama de
+- [ ] T016 **A medias.** El proyecto de Vercel ya existe: `javigiraldo`, plan gratuito, raiz del
+      repositorio, `main` como rama de produccion, dominio `https://javigiraldo.vercel.app`. Falta
+      configurar las siete variables de entorno, que solo puede poner el titular: la conexion
+      automatica de Vercel no tiene permiso de escritura. Ninguna hace falta para la historia P1.
+      Conectar el repositorio al proyecto de Vercel en el plan gratuito, fijar `main` como su rama de
       producción, y configurar las siete variables de entorno **en la plataforma**, nunca en un archivo
       del repositorio
 
