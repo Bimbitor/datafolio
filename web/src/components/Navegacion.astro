@@ -1,0 +1,36 @@
+---
+import { rutaDe, rutas, type Clave, type Idioma } from "../i18n/rutas";
+import { textos } from "../i18n/textos";
+
+interface Props {
+  idioma: Idioma;
+  activa: Clave | "error";
+}
+
+const { idioma, activa } = Astro.props;
+const t = textos[idioma];
+
+// Los enlaces salen del mapa de rutas, nunca de una lista propia: asi anadir una seccion
+// es una linea en un solo archivo.
+const enlaces = rutas.filter((r) => r.enNavegacion);
+---
+
+<header class="border-b border-border-subtle">
+  <nav
+    aria-label={t.navegacion}
+    class="mx-auto flex w-full max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-4 sm:px-6 lg:px-8"
+  >
+    {enlaces.map((enlace) => (
+      <a
+        href={rutaDe(enlace.clave, idioma)}
+        aria-current={enlace.clave === activa ? "page" : undefined}
+        class:list={[
+          "text-ui underline-offset-4 hover:underline",
+          enlace.clave === activa ? "font-medium text-brand" : "text-text-secondary",
+        ]}
+      >
+        {t.secciones[enlace.clave]}
+      </a>
+    ))}
+  </nav>
+</header>

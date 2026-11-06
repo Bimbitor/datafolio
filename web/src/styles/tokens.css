@@ -1,0 +1,164 @@
+@import "tailwindcss";
+
+/*
+ * Origen UNICO de los valores visuales del sitio. Ningun componente escribe un color, un
+ * tamano, un radio ni una sombra: todos usan las utilidades que leen estas variables.
+ *
+ * Cambiar un valor de aqui tiene que repintar el sitio entero sin tocar un componente. Si
+ * hay que editar un componente para que un cambio se vea, ese componente esta mal escrito.
+ *
+ * Los valores y las reglas de contraste vienen de docs/design-tokens.md, donde estan
+ * medidos contra los dos fondos en los dos temas.
+ */
+
+/* El tema oscuro se activa por atributo en <html>, no por clase en cada componente. */
+@custom-variant oscuro (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme {
+  /* --- Color, tema claro ------------------------------------------------ */
+  --color-surface: #ffffff;
+  --color-surface-raised: #f8f4ed;
+  --color-border-subtle: #d9dce6;
+  --color-border-strong: #878d9e;
+  --color-text: #0b0e1a;
+  --color-text-secondary: #3a4055;
+  --color-text-muted: #696f84;
+  --color-brand-deep: #141b4d;
+  --color-brand: #2f40b1;
+  --color-accent: #5466bd;
+  --color-success: #1d7a64;
+  --color-warning: #9a6212;
+  --color-danger: #a32433;
+  --color-info: #1f5fa8;
+
+  /* --- Tipografia -------------------------------------------------------- */
+  /* Inter Display no esta en Google Fonts: llega autoalojada con la feature 07. Hasta
+     entonces la familia cae en la del sistema, que no rompe nada. */
+  --font-display: "Inter Display", "Inter", system-ui, sans-serif;
+  --font-texto: "Inter", system-ui, sans-serif;
+
+  --text-display-xl: 56px;
+  --text-display-xl--line-height: 58px;
+  --text-display-xl--font-weight: 600;
+  --text-display-xl--letter-spacing: -0.02em;
+
+  --text-display-l: 40px;
+  --text-display-l--line-height: 44px;
+  --text-display-l--font-weight: 600;
+  --text-display-l--letter-spacing: -0.015em;
+
+  --text-titulo: 28px;
+  --text-titulo--line-height: 34px;
+  --text-titulo--font-weight: 600;
+  --text-titulo--letter-spacing: -0.01em;
+
+  --text-seccion: 20px;
+  --text-seccion--line-height: 26px;
+  --text-seccion--font-weight: 600;
+
+  --text-cuerpo-l: 18px;
+  --text-cuerpo-l--line-height: 29px;
+
+  --text-cuerpo: 16px;
+  --text-cuerpo--line-height: 26px;
+
+  --text-ui: 14px;
+  --text-ui--line-height: 22px;
+
+  --text-cifra: 15px;
+  --text-cifra--line-height: 22px;
+  --text-cifra--font-weight: 500;
+
+  --text-pie: 13px;
+  --text-pie--line-height: 20px;
+
+  --text-etiqueta: 12px;
+  --text-etiqueta--line-height: 16px;
+  --text-etiqueta--font-weight: 500;
+  --text-etiqueta--letter-spacing: 0.1em;
+
+  /* --- Espaciado: escala de 4px ------------------------------------------ */
+  --spacing: 4px;
+
+  /* --- Radios ------------------------------------------------------------ */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-full: 999px;
+
+  /* --- Sombras: dos niveles y nada mas ----------------------------------- */
+  --shadow-1: 0 1px 2px rgb(20 27 77 / 0.1);
+  --shadow-2: 0 8px 24px rgb(20 27 77 / 0.14);
+}
+
+/* --- Color, tema oscuro --------------------------------------------------
+   Mismos nombres, otros valores. Por eso cambiar de tema no toca ningun componente. */
+[data-theme="dark"] {
+  --color-surface: #181b2e;
+  --color-surface-raised: #2b2e4b;
+  --color-border-subtle: #404564;
+  --color-border-strong: #73779a;
+  --color-text: #f1f1f7;
+  --color-text-secondary: #c0c2d1;
+  --color-text-muted: #9396aa;
+  --color-brand-deep: #6772c7;
+  --color-brand: #8792e2;
+  --color-accent: #aab2e7;
+  --color-success: #31ae91;
+  --color-warning: #d9a745;
+  --color-danger: #ef7a86;
+  --color-info: #75b5ee;
+
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 0.5);
+  --shadow-2: 0 8px 24px rgb(0 0 0 / 0.6);
+}
+
+/* Si el script de tema no llego a correr -JavaScript desactivado del todo- se respeta la
+   preferencia del sistema. El atributo manda cuando existe, asi que esto solo actua cuando
+   no existe. Es el requisito de degradacion, FR-034. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --color-surface: #181b2e;
+    --color-surface-raised: #2b2e4b;
+    --color-border-subtle: #404564;
+    --color-border-strong: #73779a;
+    --color-text: #f1f1f7;
+    --color-text-secondary: #c0c2d1;
+    --color-text-muted: #9396aa;
+    --color-brand-deep: #6772c7;
+    --color-brand: #8792e2;
+    --color-accent: #aab2e7;
+    --color-success: #31ae91;
+    --color-warning: #d9a745;
+    --color-danger: #ef7a86;
+    --color-info: #75b5ee;
+
+    --shadow-1: 0 1px 2px rgb(0 0 0 / 0.5);
+    --shadow-2: 0 8px 24px rgb(0 0 0 / 0.6);
+  }
+}
+
+/* --- Lo minimo que no es una utilidad ------------------------------------ */
+
+html {
+  color-scheme: light dark;
+}
+
+body {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font-family: var(--font-texto);
+  /* Sin animaciones en esta version. Los cambios de estado son inmediatos o de 150 ms. */
+  transition: none;
+}
+
+/* El foco se ve siempre y en los dos temas. Nunca se quita sin poner otro. */
+:focus-visible {
+  outline: 3px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+/* Cifras tabulares donde haya numeros en columna. */
+.cifra {
+  font-variant-numeric: tabular-nums;
+}

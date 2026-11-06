@@ -1,0 +1,27 @@
+---
+import { rutaDe, type Idioma } from "../i18n/rutas";
+import { textos } from "../i18n/textos";
+
+interface Props {
+  idioma: Idioma;
+}
+
+const { idioma } = Astro.props;
+const t = textos[idioma];
+---
+
+<!--
+  El contenido de la pagina de error, en un solo sitio. Lo usan tanto el 404 general como
+  las rutas de detalle mientras no exista contenido que mostrar: una direccion inventada y
+  una ficha que no existe son el mismo caso para quien navega.
+-->
+<h1 class="font-display text-display-l text-text">{t.error.titulo}</h1>
+<p class="mt-4 max-w-prose text-cuerpo-l text-text-secondary">{t.error.cuerpo}</p>
+<p class="mt-8">
+  <a
+    href={rutaDe("inicio", idioma)}
+    class="text-cuerpo font-medium text-brand underline underline-offset-4"
+  >
+    {t.error.volver}
+  </a>
+</p>

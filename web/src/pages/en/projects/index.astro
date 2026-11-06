@@ -1,0 +1,23 @@
+---
+import Base from "../../../layouts/Base.astro";
+import ContenidoPendiente from "../../../components/ContenidoPendiente.astro";
+import { textos } from "../../../i18n/textos";
+import type { Idioma } from "../../../i18n/rutas";
+
+// Renderizada en servidor porque su contenido vendra de datos administrables. Nace ya en
+// su modo definitivo: cambiarlo despues obligaria a rehacer la estructura.
+// Cache de CDN corta, segun contracts/http.md, seccion 3.
+export const prerender = false;
+
+const idioma: Idioma = "en";
+const t = textos[idioma];
+
+Astro.response.headers.set("Cache-Control", "public, s-maxage=60");
+---
+
+<Base idioma={idioma} clave="proyectos">
+  <h1 class="font-display text-display-l text-text">{t.secciones.proyectos}</h1>
+  <div class="mt-8">
+    <ContenidoPendiente idioma={idioma} />
+  </div>
+</Base>

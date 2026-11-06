@@ -1,0 +1,21 @@
+---
+import { textos } from "../i18n/textos";
+import type { Idioma } from "../i18n/rutas";
+
+interface Props {
+  idioma: Idioma;
+}
+
+const { idioma } = Astro.props;
+const t = textos[idioma];
+---
+
+<!--
+  El armazon de una seccion cuyo contenido llega en la feature 02. Dice que esta vacia en
+  lugar de simular texto: un relleno que parece contenido real enganaria a quien lo vea, y
+  el requisito FR-009 lo prohibe expresamente.
+-->
+<div class="rounded-lg border border-border-subtle bg-surface-raised px-6 py-10">
+  <p class="text-seccion font-display text-text">{t.pendiente.titulo}</p>
+  <p class="mt-2 max-w-prose text-cuerpo text-text-secondary">{t.pendiente.cuerpo}</p>
+</div>

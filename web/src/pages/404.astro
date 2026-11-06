@@ -1,0 +1,20 @@
+---
+import Base from "../layouts/Base.astro";
+import PaginaDeError from "../components/PaginaDeError.astro";
+import { IDIOMA_POR_DEFECTO, type Idioma } from "../i18n/rutas";
+
+// En servidor y no estatica: una sola pagina estatica solo puede estar en un idioma, y el
+// correcto depende de la direccion que se pidio. Quien pidio /es/algo-que-no-existe esta
+// leyendo en espanol. Un 404 es una respuesta rara, asi que no tiene presupuesto de
+// rendimiento que defender. Ver research.md, D-07 bis.
+export const prerender = false;
+
+const ruta = Astro.url.pathname;
+const idioma: Idioma = ruta.startsWith("/es/") || ruta === "/es" ? "es" : IDIOMA_POR_DEFECTO;
+
+Astro.response.headers.set("Cache-Control", "no-store");
+---
+
+<Base idioma={idioma} clave="error">
+  <PaginaDeError idioma={idioma} />
+</Base>

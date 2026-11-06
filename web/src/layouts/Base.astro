@@ -1,0 +1,57 @@
+---
+import Navegacion from "../components/Navegacion.astro";
+import { textos } from "../i18n/textos";
+import { rutaDe, type Clave, type Idioma } from "../i18n/rutas";
+import "../styles/tokens.css";
+
+interface Props {
+  idioma: Idioma;
+  clave: Clave | "error";
+  titulo?: string;
+}
+
+const { idioma, clave, titulo } = Astro.props;
+const t = textos[idioma];
+const tituloPagina = titulo ?? t.secciones[clave];
+
+// La direccion de correo sale de una variable de entorno, nunca escrita aqui.
+const correo = import.meta.env.PUBLIC_CONTACT_EMAIL;
+---
+
+<!doctype html>
+<html lang={t.etiquetaIdioma}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{tituloPagina} — Javi Giraldo</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+
+  <body class="min-h-screen flex flex-col">
+    <!-- Primer elemento enfocable: quien navega con teclado no tiene que recorrer el menu
+         entero en cada pagina para llegar al contenido. -->
+    <a
+      href="#contenido"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-surface-raised focus:px-4 focus:py-2 focus:text-text"
+    >
+      {t.irAContenido}
+    </a>
+
+    <Navegacion idioma={idioma} activa={clave} />
+
+    <main id="contenido" class="mx-auto w-full max-w-5xl flex-1 px-4 py-12 sm:px-6 lg:px-8">
+      <slot />
+    </main>
+
+    <footer class="border-t border-border-subtle">
+      <div class="mx-auto flex w-full max-w-5xl flex-col gap-2 px-4 py-8 text-ui text-text-secondary sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+        <p>{t.pie}</p>
+        {correo && (
+          <a href={`mailto:${correo}`} class="font-medium text-brand underline underline-offset-4">
+            {t.escribeme}
+          </a>
+        )}
+      </div>
+    </footer>
+  </body>
+</html>

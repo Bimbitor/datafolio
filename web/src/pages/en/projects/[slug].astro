@@ -1,0 +1,20 @@
+---
+import Base from "../../../layouts/Base.astro";
+import PaginaDeError from "../../../components/PaginaDeError.astro";
+import type { Idioma } from "../../../i18n/rutas";
+
+// Mientras no exista contenido, cualquier identificador devuelve 404 con la misma pagina
+// de error que cualquier otra direccion inexistente. Es el comportamiento definitivo: la
+// feature 04 solo anadira el caso del identificador que si existe (FR-036).
+// Sin cache: un 404 cacheado seguiria sirviendose cuando se publique el primer contenido.
+export const prerender = false;
+
+const idioma: Idioma = "en";
+
+Astro.response.status = 404;
+Astro.response.headers.set("Cache-Control", "no-store");
+---
+
+<Base idioma={idioma} clave="error">
+  <PaginaDeError idioma={idioma} />
+</Base>
