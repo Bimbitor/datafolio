@@ -50,7 +50,8 @@ desplegado, perfil de móvil, mediana de tres ejecuciones
 transiciones de 150 ms como máximo. Ningún secreto en el repositorio, que es público. Nada del
 visitante se almacena
 
-**Scale/Scope**: Dieciocho direcciones públicas —nueve secciones en dos idiomas—, un único usuario
+**Scale/Scope**: Doce direcciones fijas y cuatro de detalle —seis más dos secciones en dos idiomas—, un
+único usuario
 administrador que aún no existe, tráfico de portafolio personal. Una tarea programada
 
 ## Constitution Check
@@ -137,8 +138,8 @@ web/                     # Servicio del sitio
 │   │   ├── BotonTema.astro        # Flotante, abajo a la derecha
 │   │   └── SelectorIdioma.astro   # Lleva a la página equivalente, no al inicio
 │   └── pages/
-│       ├── index.astro            # Única ruta en servidor del sitio: redirige por idioma
-│       ├── 404.astro
+│       ├── index.astro            # Ruta en servidor: redirige por idioma
+│       ├── 404.astro              # Ruta en servidor: idioma del prefijo pedido, estado 404
 │       ├── sitemap.xml.ts         # Generado desde rutas.ts
 │       ├── en/                    # home, experience, projects, project, blog, post,
 │       └── es/                    # contact, data-policy — con los slugs ya traducidos

@@ -118,7 +118,7 @@ El titular no tiene que acordarse de entrar al sitio para que siga funcionando. 
 
 **Acceptance Scenarios**:
 
-1. **Given** el sitio desplegado, **When** pasa un día, **Then** la comprobación programada se ha ejecutado y ha dejado constancia del resultado.
+1. **Given** el sitio desplegado, **When** pasan seis horas, **Then** la comprobación programada se ha ejecutado y ha dejado constancia del resultado.
 2. **Given** la comprobación, **When** se ejecuta, **Then** consulta el servicio de datos de forma que cuente como actividad.
 3. **Given** siete días seguidos sin ninguna visita, **When** alguien abre el sitio al octavo, **Then** funciona con normalidad.
 4. **Given** una comprobación fallida, **When** termina su ejecución, **Then** el titular recibe un aviso por correo que dice qué falló.
@@ -162,7 +162,7 @@ El titular no tiene que acordarse de entrar al sitio para que siga funcionando. 
 - **FR-011**: Las direcciones de cada sección MUST estar traducidas al idioma al que pertenecen.
 - **FR-012**: La raíz del sitio MUST llevar al idioma detectado en el navegador del visitante, con el inglés como destino cuando no se pueda determinar o no sea español.
 - **FR-013**: Un selector de idioma MUST estar visible y MUST llevar a la página equivalente en el otro idioma, no al inicio.
-- **FR-014**: La elección manual de idioma MUST persistir entre páginas y entre visitas, y MUST prevalecer sobre la detección.
+- **FR-014**: La elección manual de idioma MUST quedar reflejada en la dirección, de modo que persista al navegar y al recargar. La raíz MUST seguir resolviendo el idioma por detección del navegador: **no se guarda ninguna cookie ni dato del visitante para recordar la elección**.
 - **FR-015**: Cada página MUST declarar a los buscadores su dirección canónica, su equivalencia con la del otro idioma y cuál es la versión por defecto.
 - **FR-016**: El sitio MUST publicar un índice de sus direcciones para buscadores, incluyendo los dos idiomas, y MUST excluir de la indexación la zona de administración.
 
@@ -198,13 +198,13 @@ El titular no tiene que acordarse de entrar al sitio para que siga funcionando. 
 **Degradación**
 
 - **FR-034**: Si el navegador no permite guardar preferencias, el sitio MUST seguir funcionando con el idioma por defecto y el tema del sistema, sin errores visibles.
-- **FR-035**: Una dirección inexistente MUST llevar a la página de error en el idioma del visitante, con salida hacia el inicio.
+- **FR-035**: Una dirección inexistente MUST llevar a la página de error con estado 404, en el idioma del prefijo de la dirección pedida —o en inglés si la dirección no tiene prefijo—, con salida hacia el inicio.
 
 ## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 
-- **SC-001**: Las dieciocho direcciones públicas —nueve secciones en dos idiomas— responden correctamente al abrirlas directamente.
+- **SC-001**: Las **doce direcciones fijas** —seis secciones en dos idiomas— responden correctamente al abrirlas directamente. Las cuatro rutas de detalle —proyecto y artículo, en dos idiomas— responden con cualquier identificador, mostrando el armazón de contenido pendiente. La raíz redirige y una dirección inexistente devuelve 404.
 - **SC-002**: Desde cualquier página, un visitante alcanza cualquier otra sección en un clic, y un canal de contacto en un clic.
 - **SC-003**: Medido con una auditoría de laboratorio sobre el sitio desplegado, con perfil de móvil de gama media y red móvil simulada, tomando la mediana de tres ejecuciones: el contenido principal de la página de inicio aparece en menos de 2,5 segundos y el desplazamiento involuntario de la página mientras carga se mantiene por debajo de 0,1.
 - **SC-004**: En la misma auditoría, cada página pública se carga con menos de 100 KB de código ejecutable en el navegador, comprimido tal como lo sirve la plataforma.
@@ -224,6 +224,7 @@ El titular no tiene que acordarse de entrar al sitio para que siga funcionando. 
 - **El contenido real llega en la feature 02.** Esta feature entrega la estructura; las secciones muestran su armazón y una indicación de que el contenido está pendiente, nunca texto de relleno que parezca real.
 - **Los valores visuales ya están decididos** en `docs/design-tokens.md`. Esta feature los implementa en un único archivo; la composición y el ritmo visual corresponden a la feature 07.
 - **El sitio vive en el subdominio gratuito de la plataforma de despliegue.** No hay dominio propio y no está planeado.
+- **La elección de idioma no se guarda en ninguna parte.** El contrato llegó a prometer que la raíz respetaría una elección guardada, lo cual es imposible: la raíz la resuelve el servidor y el servidor no ve el almacenamiento del navegador. Honrarlo exigiría una cookie, y el Principio V manda construir lo mínimo que cumple: la dirección ya lleva el idioma, así que navegar y recargar lo conservan sin guardar nada. **Lo que se pierde a cambio**: quien escriba la raíz a pelo en una visita posterior vuelve al idioma detectado, no al que eligió. El tema sí se guarda, porque lo aplica el navegador y nadie tiene que leerlo desde el servidor.
 - **El rendimiento se verifica en laboratorio, no con visitantes.** Todavía no hay tráfico del que sacar datos reales, y medir en el navegador del visitante chocaría con el principio de no guardar nada suyo y gastaría parte del propio presupuesto de JavaScript. La auditoría es la puerta antes de integrar a `main`.
 - **Hay un único entorno de datos.** No existe base de pruebas: la verificación se hace sobre el sitio desplegado, y lo que se cree al probar se elimina.
 - **El correo sale de una cuenta gratuita del titular**, con una contraseña de aplicación guardada como variable de entorno en la plataforma. La dirección de administración que recibe los avisos no es la dirección pública de contacto.

@@ -23,7 +23,7 @@ acordados.
 | Artículo              | `/en/blog/[slug]/`     | `/es/blog/[slug]/`       | Servidor + caché de CDN 60 s                          |
 | Contacto              | `/en/contact/`         | `/es/contacto/`          | Estática                                              |
 | Política de datos     | `/en/data-policy/`     | `/es/politica-de-datos/` | Estática                                              |
-| Error                 | cualquier otra         | cualquier otra           | Estática, estado **404**                              |
+| Error                 | cualquier otra         | cualquier otra           | **Servidor**, sin caché, estado **404** (ver §2 bis)  |
 
 **Nota sobre las rutas de servidor**: en esta feature no hay contenido administrable, así que sirven
 un armazón con la indicación de contenido pendiente. Nacen ya renderizadas en servidor porque cambiar
@@ -32,10 +32,10 @@ cuesta lo mismo hoy y nada mañana.
 
 **Archivos de apoyo**
 
-| Dirección      | Contenido                                                                                 | Entrega  |
-| -------------- | ----------------------------------------------------------------------------------------- | -------- |
-| `/sitemap.xml` | Las dieciséis direcciones indexables de los dos idiomas, generadas desde el mapa de rutas | Estática |
-| `/robots.txt`  | Excluye `/admin`, declara el sitemap                                                      | Estática |
+| Dirección      | Contenido                                                                                                                         | Entrega  |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `/sitemap.xml` | Las direcciones indexables de los dos idiomas —las secciones con `enIndice`, excluido el error—, generadas desde el mapa de rutas | Estática |
+| `/robots.txt`  | Excluye `/admin`, declara el sitemap                                                                                              | Estática |
 
 ---
 
@@ -45,18 +45,39 @@ cuesta lo mismo hoy y nada mañana.
 GET /
 ```
 
-| Condición                                                    | Respuesta                     |
-| ------------------------------------------------------------ | ----------------------------- |
-| Elección de idioma guardada en el navegador                  | `302` a la raíz de ese idioma |
-| Cabecera `Accept-Language` que pide español                  | `302` a `/es/`                |
-| Cualquier otro caso, incluida la cabecera ausente o ilegible | `302` a `/en/`                |
+| Condición                                                    | Respuesta      |
+| ------------------------------------------------------------ | -------------- |
+| Cabecera `Accept-Language` que pide español                  | `302` a `/es/` |
+| Cualquier otro caso, incluida la cabecera ausente o ilegible | `302` a `/en/` |
 
 Cabeceras de la respuesta: `Cache-Control: no-store`. La redirección depende de la petición, así que
 no se puede cachear.
 
+**La raíz no recuerda nada.** No hay cookie de idioma, así que resuelve por detección en cada visita.
+Una vez dentro, la dirección lleva el idioma y eso basta para conservarlo al navegar y al recargar.
+
 **No se registra nada** de la petición: ni la cabecera, ni la dirección de origen, ni el resultado.
 
 ---
+
+## 2 bis. Página de error
+
+```http
+GET /cualquier-cosa-que-no-existe
+```
+
+| Condición                               | Respuesta                               |
+| --------------------------------------- | --------------------------------------- |
+| La dirección pedida empieza por `/es/`  | `404` con la página de error en español |
+| La dirección pedida empieza por `/en/`  | `404` con la página de error en inglés  |
+| La dirección no tiene prefijo de idioma | `404` con la página de error en inglés  |
+
+Cabeceras: `Cache-Control: no-store`.
+
+**Por qué en servidor y no estática**: una única página de error estática solo puede estar en un
+idioma, y el idioma correcto depende de la dirección que se pidió. Resolverlo en servidor es la forma
+más corta que funciona de verdad, y un 404 es una respuesta rara: no tiene presupuesto de
+rendimiento que defender.
 
 ## 3. Cabeceras de toda respuesta del sitio
 

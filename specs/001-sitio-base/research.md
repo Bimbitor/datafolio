@@ -164,6 +164,25 @@ lo que recomiendan varias guías de la comunidad, pero incumple el requisito de 
 
 ---
 
+## D-06 bis. La elección de idioma no se guarda
+
+**Hallazgo del análisis cruzado**, no de la investigación inicial: el contrato prometía que la raíz
+respetaría la elección de idioma guardada en el navegador. Es imposible. La raíz la resuelve el
+servidor, y el servidor no puede leer el almacenamiento del navegador.
+
+**Decisión**: no se guarda el idioma en ninguna parte. La dirección lo lleva, así que navegar y
+recargar lo conservan. La raíz resuelve por detección en cada visita.
+
+**Razón**: la alternativa era una cookie de preferencia. No viola el Principio IV —no identifica a
+nadie— pero obliga a tocar la política de datos en el mismo cambio, y el Principio V manda construir
+lo mínimo que cumple. Lo que la cookie añadiría es un solo caso: quien escribe la raíz a pelo en una
+visita posterior. A cambio, cero datos del visitante y cero párrafos legales nuevos.
+
+**Lo que se pierde, dicho de frente**: con el navegador en alemán y el español elegido a mano, volver
+a escribir la raíz lleva al inglés. El tema sí se recuerda, porque lo aplica el propio navegador.
+
+---
+
 ## D-07. La raíz es la única página que se renderiza en servidor
 
 **Decisión**: `/` se renderiza en servidor —`prerender = false` solo en esa ruta— lee el idioma
@@ -172,6 +191,23 @@ preferido del navegador y redirige a `/en/` o a `/es/`. Todo lo demás del sitio
 **Razón**: la detección de idioma necesita leer la cabecera de la petición, y `Astro.preferredLocale`
 solo existe cuando hay una petición que leer. Hacer el sitio entero dinámico por una redirección
 sería pagar latencia y presupuesto de rendimiento en todas las páginas para resolver una sola.
+
+---
+
+## D-07 bis. La página de error también se renderiza en servidor
+
+**Hallazgo del análisis cruzado**: las tareas pedían una página de error "en el idioma del
+visitante" con un único archivo estático, que solo puede estar en un idioma.
+
+**Decisión**: el 404 se renderiza en servidor y toma el idioma del **prefijo de la dirección
+pedida**; inglés cuando no hay prefijo.
+
+**Razón**: es el idioma correcto por definición —quien pidió `/es/algo-que-no-existe` está leyendo en
+español— y no cuesta presupuesto, porque un 404 es una respuesta rara. La alternativa, dos páginas
+estáticas más una regla de enrutado por prefijo, es más piezas para el mismo resultado.
+
+Así que el sitio tiene **dos** rutas en servidor, no una: la raíz y el error. Todo lo demás que no
+depende de datos administrables sigue siendo estático.
 
 ---
 

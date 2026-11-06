@@ -36,7 +36,7 @@ de la salud del sistema.
 
 ## 2. Mapa de rutas — `web/src/i18n/rutas.ts`
 
-No es una tabla, es una estructura en el código, y es la fuente de verdad de las dieciocho direcciones
+No es una tabla, es una estructura en el código, y es la fuente de verdad de las direcciones
 públicas del sitio. Se declara una vez y de ella salen los enlaces, el selector de idioma, las
 etiquetas de buscador y el índice del sitio.
 
@@ -60,21 +60,14 @@ Estas tres son exactamente lo que cubren las pruebas de Vitest asignadas en la i
 
 ---
 
-## 3. Idioma y tema del visitante
+## 3. Tema del visitante
 
-No son datos del sistema: viven en el navegador de quien visita y **nunca** se envían ni se almacenan
-en el servidor. Se documentan aquí porque tienen reglas de precedencia que hay que respetar igual.
+No es un dato del sistema: vive en el navegador de quien visita y **nunca** se envía ni se almacena
+en el servidor. Se documenta aquí porque tiene reglas de precedencia que hay que respetar igual.
 
-| Dato           | Dónde vive                         | Precedencia                            |
-| -------------- | ---------------------------------- | -------------------------------------- |
-| Idioma elegido | Almacenamiento local del navegador | Manda sobre la cabecera del navegador  |
-| Tema elegido   | Almacenamiento local del navegador | Manda sobre la preferencia del sistema |
-
-**Orden de resolución del idioma** al entrar por la raíz:
-
-1. Elección manual guardada, si existe.
-2. Cabecera de idioma del navegador, si pide español.
-3. Inglés.
+| Dato         | Dónde vive                         | Precedencia                            |
+| ------------ | ---------------------------------- | -------------------------------------- |
+| Tema elegido | Almacenamiento local del navegador | Manda sobre la preferencia del sistema |
 
 **Orden de resolución del tema**:
 
@@ -82,11 +75,19 @@ en el servidor. Se documentan aquí porque tienen reglas de precedencia que hay 
 2. Preferencia del sistema.
 3. Claro.
 
-**Si el almacenamiento está bloqueado** —navegación privada restringida, permisos denegados— ambas
-lecturas fallan sin romper nada y se cae al siguiente nivel de la lista. Ese es el requisito de
-degradación, y es la razón por la que todo acceso al almacenamiento va envuelto en `try`/`catch`.
+**El idioma no se guarda.** La dirección lleva el idioma, así que navegar y recargar lo conservan
+sin que haya nada que almacenar. La raíz resuelve el idioma por detección en cada visita:
 
----
+1. Cabecera de idioma del navegador, si pide español.
+2. Inglés.
+
+No hay cookie de idioma, y eso es una decisión, no un olvido: la raíz la resuelve el servidor, que no
+puede leer el almacenamiento del navegador, y la única forma de que la respetara sería guardar algo
+del visitante. Ver la suposición correspondiente en `spec.md`.
+
+**Si el almacenamiento está bloqueado** —navegación privada restringida, permisos denegados— la
+lectura del tema falla sin romper nada y se cae a la preferencia del sistema. Ese es el requisito de
+degradación, y es la razón por la que todo acceso al almacenamiento va envuelto en `try`/`catch`.
 
 ## Lo que esta feature NO modela
 

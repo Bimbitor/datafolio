@@ -63,10 +63,14 @@ npm run test --workspace web   # mapa de rutas: slugs completos, sin duplicados
 
 Sobre el sitio desplegado:
 
-- [ ] Las dieciocho direcciones del contrato HTTP, §1, responden al abrirlas directamente.
+- [ ] Las doce direcciones fijas del contrato HTTP, §1, responden al abrirlas directamente.
+- [ ] Las cuatro rutas de detalle —proyecto y artículo, en dos idiomas— responden con cualquier
+      identificador, mostrando el armazón de contenido pendiente.
 - [ ] Desde cualquier página, el menú lleva a todas las secciones.
 - [ ] Desde cualquier página se alcanza un canal de contacto en un clic.
 - [ ] Una dirección inventada devuelve la página de error con estado **404** y salida al inicio.
+- [ ] `/es/no-existe` devuelve el error **en español**; `/en/nope` y `/nope`, en inglés
+      (`contracts/http.md` §2 bis).
 - [ ] En móvil, tableta y escritorio no hay desbordes horizontales. Se comprueba también con el texto
       ampliado al 200 %.
 - [ ] Las secciones sin contenido muestran su armazón y la indicación de contenido pendiente. **No**
@@ -85,9 +89,12 @@ Sobre el sitio desplegado:
 - [ ] Con el navegador en español, `/` acaba en `/es/`.
 - [ ] Con el navegador en cualquier otro idioma, `/` acaba en `/en/`.
 - [ ] El selector de idioma desde `/es/experiencia/` lleva a `/en/experience/`, **no** al inicio.
-- [ ] Tras elegir idioma a mano, navegar a otra sección y recargar mantiene esa elección.
+- [ ] Tras elegir idioma a mano, navegar a otra sección y recargar mantiene esa elección, porque la
+      dirección la lleva.
+- [ ] **No existe** cookie ni entrada de almacenamiento para el idioma: la raíz resuelve por detección
+      en cada visita, y eso es lo esperado (`research.md` D-06 bis).
 - [ ] El código fuente de cualquier página trae `canonical`, los dos `alternate` y `x-default`.
-- [ ] `/sitemap.xml` lista las dieciséis direcciones indexables de los dos idiomas.
+- [ ] `/sitemap.xml` lista las direcciones indexables de los dos idiomas y **no** incluye el error.
 - [ ] La respuesta de cualquier página trae la cabecera `X-Robots-Tag: noindex`.
 
 ```bash
@@ -163,6 +170,9 @@ Un resultado fuera de presupuesto se revisa antes de seguir, no se promedia a la
 ## Definición de hecho de esta feature
 
 - [ ] Las seis historias verificadas, en orden.
+- [ ] SC-010 comprobado **ocho días después de integrar**: el sitio responde tras una semana sin
+      visitas y el historial de la tarea no tiene fallos.
+- [ ] Consumo del mes en cero en las dos plataformas (SC-011).
 - [ ] Vitest y pytest en verde.
 - [ ] La puerta de rendimiento superada.
 - [ ] El endpoint temporal `/api/cookie-prueba` **eliminado**.
