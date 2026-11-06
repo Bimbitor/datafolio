@@ -2,7 +2,7 @@
 
 > **Aprobado como base por el titular el 2026-11-04.** Se publica con estos contenidos; quedan por sustituir los `‹pendiente›`.
 >
-> **Borrador para revisión del titular.** No es asesoría legal. Está redactado para reflejar exactamente lo que el sistema definido en `historico/project-brief.md` hace con los datos, ni más ni menos. Si el comportamiento del sitio cambia, esta política cambia con él.
+> **Borrador para revisión del titular.** No es asesoría legal. Está redactado para reflejar exactamente lo que el sistema definido en las specs de `specs/` hace con los datos, ni más ni menos. Si el comportamiento del sitio cambia, esta política cambia con él.
 >
 > Destino: `/es/politica-de-datos` y, traducida, `/en/data-policy` (RF-37).
 > Marco de referencia: Ley 1581 de 2012 y Decreto 1377 de 2013 de Colombia (habeas data).

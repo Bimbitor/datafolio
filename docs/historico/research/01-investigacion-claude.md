@@ -10,7 +10,7 @@
 ## TL;DR
 
 - **Lo que pesa:** 2–3 proyectos realistas y bien documentados, con problema de negocio, arquitectura, decisiones y métricas, enlazados a repos impecables. Diseño llamativo, barras de "nivel de skill" y proyectos tipo Titanic/Iris no suman, e incluso restan. El sitio solo hace de puerta de entrada.
-- **Stack recomendado:** Astro (contenido en Markdown/MDX, cero JavaScript por defecto, i18n nativo) + Tailwind + Mermaid/Excalidraw. Hosting gratis en GitHub Pages o Cloudflare Pages desde el día 1. Luego se migra a S3 + CloudFront (plan *flat-rate* gratuito) con Terraform y CI/CD en GitHub Actions como proyecto de AWS. Evita Vercel Hobby si algún día vas a monetizar.
+- **Stack recomendado:** Astro (contenido en Markdown/MDX, cero JavaScript por defecto, i18n nativo) + Tailwind + Mermaid/Excalidraw. Hosting gratis en GitHub Pages o Cloudflare Pages desde el día 1. Luego se migra a S3 + CloudFront (plan _flat-rate_ gratuito) con Terraform y CI/CD en GitHub Actions como proyecto de AWS. Evita Vercel Hobby si algún día vas a monetizar.
 - **Posicionamiento:** "Data Engineer que también entiende modelos". Un proyecto insignia de punta a punta en el sector turismo/viajes, con datos abiertos de Aerocivil, Airflow, Spark, AWS, un modelo de pronóstico y una capa LLM/RAG evaluada. Todo con un `AI_USAGE.md` que cuente qué hizo la IA y qué hiciste tú. Sitio en ES/EN, modo oscuro, foto real opcional pero recomendable.
 
 ---
@@ -22,7 +22,7 @@
 **Hay tres patrones dominantes:**
 
 1. **"Repo-portafolio" en GitHub.** Es el formato más común entre juniors y personas en transición. Es un README índice con tabla de proyectos, stack y enlaces, a menudo con diagramas Mermaid incrustados.
-   - Canyon White (github.com/canyonwhite/data-engineer-portfolio) organiza cinco proyectos en estados *in progress* / *planned* y dibuja cada arquitectura con Mermaid (p. ej., "AWS S3 raw files and manifests", "Airflow orchestration").
+   - Canyon White (github.com/canyonwhite/data-engineer-portfolio) organiza cinco proyectos en estados _in progress_ / _planned_ y dibuja cada arquitectura con Mermaid (p. ej., "AWS S3 raw files and manifests", "Airflow orchestration").
    - Douglas Merelo (dmerelo.github.io/data-engineering-portfolio) se centra en un proyecto insignia: "AWS Incremental Data Pipeline" con PySpark estilo Glue, Airflow, watermark, idempotencia y reprocesamiento.
    - Vedanth Baliga (github.com/vedanthv/data-engineering-portfolio) usa una tabla índice por tecnología y dominio.
 2. **Sitio personal + blog técnico.** Es el patrón de los perfiles más visibles del sector:
@@ -47,20 +47,20 @@ Estos ejemplos vienen de la recopilación "24 Best Data Science Portfolio Exampl
 
 ### 2. Secciones que aportan valor vs. relleno
 
-| Sección | Valor | Por qué |
-|---|---|---|
-| Hero con propuesta de valor en una frase + CTA a proyecto insignia y CV | **Alto** | El reclutador decide en segundos. Ej.: "Data Engineer (AWS · Airflow · Spark) con base en ciencia de datos. Construyo pipelines que terminan en modelos y decisiones." |
-| Proyectos destacados (3) en formato caso de estudio | **Crítico** | Es lo que se evalúa y lo que se pregunta en entrevista. |
-| CV descargable (PDF, ES y EN) | **Alto** | Muchos procesos lo exigen. Que sea idéntico en contenido al sitio. |
-| Sobre mí (breve, con foto) | **Medio** | Contexto humano: transición desde SQL Server/SSIS, estudios nocturnos, Bogotá, disponibilidad remota. |
-| Blog / notas técnicas | **Medio-alto** | Es el canal que en HN más se asocia a contactos entrantes de reclutadores. Demuestra comunicación escrita en inglés. |
-| "Cómo construyo con IA" / Lab | **Medio-alto (para ti)** | Diferenciador si es verificable (ver §7). |
-| Now page / changelog | **Bajo-medio** | Señal de actividad. Barata de mantener. |
-| Contacto (email + LinkedIn + GitHub) | **Alto** | Sin fricción, sin formularios innecesarios. |
-| Barras o porcentajes de "nivel" en skills | **Relleno/negativo** | No significan nada y en entrevista se vuelven en tu contra. Usa una lista de stack agrupada y enlazada a dónde la usaste. |
-| Galería de 15 notebooks de cursos | **Negativo** | Diluye a los 3 buenos. |
-| Testimonios genéricos, contadores animados, carruseles | **Relleno** | Distraen y pesan. |
-| Logos de certificaciones sin contexto | **Bajo** | Mejor una línea en el CV y en LinkedIn. En el sitio, solo si son AWS relevantes. |
+| Sección                                                                 | Valor                    | Por qué                                                                                                                                                                |
+| ----------------------------------------------------------------------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Hero con propuesta de valor en una frase + CTA a proyecto insignia y CV | **Alto**                 | El reclutador decide en segundos. Ej.: "Data Engineer (AWS · Airflow · Spark) con base en ciencia de datos. Construyo pipelines que terminan en modelos y decisiones." |
+| Proyectos destacados (3) en formato caso de estudio                     | **Crítico**              | Es lo que se evalúa y lo que se pregunta en entrevista.                                                                                                                |
+| CV descargable (PDF, ES y EN)                                           | **Alto**                 | Muchos procesos lo exigen. Que sea idéntico en contenido al sitio.                                                                                                     |
+| Sobre mí (breve, con foto)                                              | **Medio**                | Contexto humano: transición desde SQL Server/SSIS, estudios nocturnos, Bogotá, disponibilidad remota.                                                                  |
+| Blog / notas técnicas                                                   | **Medio-alto**           | Es el canal que en HN más se asocia a contactos entrantes de reclutadores. Demuestra comunicación escrita en inglés.                                                   |
+| "Cómo construyo con IA" / Lab                                           | **Medio-alto (para ti)** | Diferenciador si es verificable (ver §7).                                                                                                                              |
+| Now page / changelog                                                    | **Bajo-medio**           | Señal de actividad. Barata de mantener.                                                                                                                                |
+| Contacto (email + LinkedIn + GitHub)                                    | **Alto**                 | Sin fricción, sin formularios innecesarios.                                                                                                                            |
+| Barras o porcentajes de "nivel" en skills                               | **Relleno/negativo**     | No significan nada y en entrevista se vuelven en tu contra. Usa una lista de stack agrupada y enlazada a dónde la usaste.                                              |
+| Galería de 15 notebooks de cursos                                       | **Negativo**             | Diluye a los 3 buenos.                                                                                                                                                 |
+| Testimonios genéricos, contadores animados, carruseles                  | **Relleno**              | Distraen y pesan.                                                                                                                                                      |
+| Logos de certificaciones sin contexto                                   | **Bajo**                 | Mejor una línea en el CV y en LinkedIn. En el sitio, solo si son AWS relevantes.                                                                                       |
 
 **Cómo se interconectan:** cada caso de estudio enlaza a su repo, demo, post del blog que lo explica y la sección del CV donde aparece. Cada repo enlaza de vuelta al caso de estudio en el sitio. El README de perfil de GitHub apunta al sitio y a los 3 repos fijados. LinkedIn (sección "Destacados") enlaza al sitio y al proyecto insignia. Los posts del blog terminan con "Ver el proyecto completo →". El objetivo es que cualquier punto de entrada (LinkedIn, GitHub, Google, un post) lleve al proyecto insignia en dos clics como máximo.
 
@@ -88,27 +88,27 @@ Estos ejemplos vienen de la recopilación "24 Best Data Science Portfolio Exampl
 
 - **Diagrama de arquitectura** como pieza central. Usa Mermaid en el MDX (se renderiza también en GitHub) o Excalidraw/draw.io exportado a SVG.
 - **Captura del grafo del DAG en Airflow** y de la vista Gantt de una ejecución real, con duración y reintentos.
-- **"Evidencia de ejecución":** logs resumidos, tabla de *data quality checks* pasados/fallados, tiempos de Spark antes y después de una optimización.
+- **"Evidencia de ejecución":** logs resumidos, tabla de _data quality checks_ pasados/fallados, tiempos de Spark antes y después de una optimización.
 - **Documentación navegable:** si usas dbt, publica el sitio estático de `dbt docs` (linaje incluido) en GitHub Pages y enlázalo.
 - **Notebooks:** Quarto o nbconvert los renderiza a HTML para incrustarlos o enlazarlos. No obligues al reclutador a abrir Jupyter.
 - **Demo interactiva:**
   - Streamlit Community Cloud sigue siendo gratis. Según la documentación oficial de Streamlit, las apps duermen tras 12 horas sin tráfico y la memoria va de 690 MB mínimo a 2,7 GB máximo.
-  - **Ojo con Hugging Face Spaces:** la documentación oficial (Spaces Overview) dice ahora que "Gradio and Docker Spaces run on compute and require a paid plan to create" (PRO para cuentas personales). Los *Static Spaces* siguen gratis y las cuentas gratuitas pueden tener hasta 2 Spaces de Gradio en ZeroGPU. Varios blogs que aún dicen "CPU Basic es gratis" están desactualizados.
+  - **Ojo con Hugging Face Spaces:** la documentación oficial (Spaces Overview) dice ahora que "Gradio and Docker Spaces run on compute and require a paid plan to create" (PRO para cuentas personales). Los _Static Spaces_ siguen gratis y las cuentas gratuitas pueden tener hasta 2 Spaces de Gradio en ZeroGPU. Varios blogs que aún dicen "CPU Basic es gratis" están desactualizados.
 - **Video de 2 minutos** (Loom o similar) recorriendo la ejecución. Hiring managers de IA lo recomiendan explícitamente.
 
 ### 4. Stack técnico: recomendación y comparación
 
 **Recomendación: Astro (v6/v7) + Tailwind CSS v4 + Content Collections en Markdown/MDX + Mermaid + i18n nativo.**
 
-| Opción | Pros | Contras | Veredicto para Javi |
-|---|---|---|---|
-| **Astro** | Cero JavaScript por defecto ("islands"), ideal para contenido. MDX nativo. i18n en el router. Cientos de plantillas (Starfolio, Astro Nano, AstroPaper, Dante, Astro TUI Portfolio). Exporta archivos estáticos a cualquier host. | Curva de JS/TS ligera. | **Elegido.** Equilibrio entre mantenimiento bajo y libertad para piezas interactivas (gráficos, widget de métricas). |
-| **Quarto** | Nativo para ciencia de datos: renderiza `.ipynb`/`.qmd`, ecuaciones y gráficos de Python. Publica a GitHub Pages en una línea. Lo usan Hamel Husain y muchos estudiantes. | Diseño más "académico". Menos flexible para un sitio de marca personal. i18n más artesanal. | Excelente **complemento**: úsalo para notebooks/reportes dentro de los repos y enlázalos. |
-| **Hugo** | El más rápido compilando. Sin dependencias de Node. | Plantillas Go poco amigables. Sin modelo de componentes (difícil incrustar gráficos interactivos). | Bueno si solo quieres blog. |
-| **Next.js** | Máxima potencia y ecosistema React/shadcn. | Envía unos 80 KB+ de runtime aunque la página sea texto. Más mantenimiento. Su hogar natural (Vercel Hobby) es solo no comercial. | Exceso para un portafolio. |
-| **Jekyll** | Integración histórica con GitHub Pages (tema Chirpy). | Ruby, ecosistema estancado. | Solo si quieres cero configuración. |
-| **MkDocs/Docusaurus/Starlight** | Excelentes para documentación. | No son sitios de marca personal. | Úsalos para docs de un proyecto grande, no para el portafolio. |
-| **Gatsby** | — | Pierde mantenimiento y comunidad; compila lento. | Evitar. |
+| Opción                          | Pros                                                                                                                                                                                                                              | Contras                                                                                                                           | Veredicto para Javi                                                                                                  |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| **Astro**                       | Cero JavaScript por defecto ("islands"), ideal para contenido. MDX nativo. i18n en el router. Cientos de plantillas (Starfolio, Astro Nano, AstroPaper, Dante, Astro TUI Portfolio). Exporta archivos estáticos a cualquier host. | Curva de JS/TS ligera.                                                                                                            | **Elegido.** Equilibrio entre mantenimiento bajo y libertad para piezas interactivas (gráficos, widget de métricas). |
+| **Quarto**                      | Nativo para ciencia de datos: renderiza `.ipynb`/`.qmd`, ecuaciones y gráficos de Python. Publica a GitHub Pages en una línea. Lo usan Hamel Husain y muchos estudiantes.                                                         | Diseño más "académico". Menos flexible para un sitio de marca personal. i18n más artesanal.                                       | Excelente **complemento**: úsalo para notebooks/reportes dentro de los repos y enlázalos.                            |
+| **Hugo**                        | El más rápido compilando. Sin dependencias de Node.                                                                                                                                                                               | Plantillas Go poco amigables. Sin modelo de componentes (difícil incrustar gráficos interactivos).                                | Bueno si solo quieres blog.                                                                                          |
+| **Next.js**                     | Máxima potencia y ecosistema React/shadcn.                                                                                                                                                                                        | Envía unos 80 KB+ de runtime aunque la página sea texto. Más mantenimiento. Su hogar natural (Vercel Hobby) es solo no comercial. | Exceso para un portafolio.                                                                                           |
+| **Jekyll**                      | Integración histórica con GitHub Pages (tema Chirpy).                                                                                                                                                                             | Ruby, ecosistema estancado.                                                                                                       | Solo si quieres cero configuración.                                                                                  |
+| **MkDocs/Docusaurus/Starlight** | Excelentes para documentación.                                                                                                                                                                                                    | No son sitios de marca personal.                                                                                                  | Úsalos para docs de un proyecto grande, no para el portafolio.                                                       |
+| **Gatsby**                      | —                                                                                                                                                                                                                                 | Pierde mantenimiento y comunidad; compila lento.                                                                                  | Evitar.                                                                                                              |
 
 **Piezas del stack:**
 
@@ -119,17 +119,17 @@ Estos ejemplos vienen de la recopilación "24 Best Data Science Portfolio Exampl
 
 ### 5. Hosting gratuito, dominio y CI/CD
 
-| Host | Límites gratuitos clave (2026) | Comentario |
-|---|---|---|
-| **GitHub Pages** | Gratis para repos públicos. Límite blando de 100 GB/mes de ancho de banda. No permitido para e-commerce o negocio online. | Arranque más simple. Deploy con GitHub Actions. |
-| **Cloudflare Pages** | Ancho de banda y peticiones estáticas ilimitadas. 500 builds/mes. Permite uso comercial. | **Mejor plan B/espejo.** CDN global rápida en LATAM. |
-| **Netlify Free** | 300 créditos/mes (a 20 créditos/GB de ancho de banda y 15 créditos por deploy de producción, equivale a ≈15 GB o 20 deploys). Los proyectos **se pausan** al agotarse. | Riesgo innecesario. |
-| **Vercel Hobby** | 100 GB, generoso en builds, pero **"restricted to non-commercial personal use only"**. | Válido para portafolio personal, pero no lo atas a nada monetizable. |
+| Host                    | Límites gratuitos clave (2026)                                                                                                                                                                                                                | Comentario                                                                            |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| **GitHub Pages**        | Gratis para repos públicos. Límite blando de 100 GB/mes de ancho de banda. No permitido para e-commerce o negocio online.                                                                                                                     | Arranque más simple. Deploy con GitHub Actions.                                       |
+| **Cloudflare Pages**    | Ancho de banda y peticiones estáticas ilimitadas. 500 builds/mes. Permite uso comercial.                                                                                                                                                      | **Mejor plan B/espejo.** CDN global rápida en LATAM.                                  |
+| **Netlify Free**        | 300 créditos/mes (a 20 créditos/GB de ancho de banda y 15 créditos por deploy de producción, equivale a ≈15 GB o 20 deploys). Los proyectos **se pausan** al agotarse.                                                                        | Riesgo innecesario.                                                                   |
+| **Vercel Hobby**        | 100 GB, generoso en builds, pero **"restricted to non-commercial personal use only"**.                                                                                                                                                        | Válido para portafolio personal, pero no lo atas a nada monetizable.                  |
 | **AWS S3 + CloudFront** | Plan **flat-rate Free de CloudFront** (lanzado en noviembre de 2025): $0/mes, 1 millón de peticiones, 100 GB de transferencia, 5 GB de créditos S3, WAF y DDoS incluidos y **sin cargos por excedente**. Hasta 3 planes gratuitos por cuenta. | **Suma puntos para tu perfil AWS** si lo haces con IaC y lo documentas como proyecto. |
 
 **¿Alojarlo en AWS suma puntos?** Sí, pero solo si el hosting es parte de la evidencia: Terraform/SAM, OIDC de GitHub Actions a un rol IAM con mínimo privilegio, S3 privado con Origin Access Control y CloudFront. Es el espíritu de la **Cloud Resume Challenge** de Forrest Brazeal, reto de 16 pasos que pide certificación Cloud Practitioner, S3, CloudFront, DNS, API Gateway + Lambda + DynamoDB para un contador de visitas, IaC y CI/CD, con un compromiso proyectado de 50–70 horas en 6 semanas según el libro de Brazeal. Tú puedes hacer la **versión de datos**: en lugar de un contador de visitas, una API que sirve métricas producidas por tu pipeline.
 
-**Cuidado con la cuenta AWS:** desde el 15 de julio de 2025, las cuentas nuevas eligen entre plan Free y Paid. Ambas reciben $100 en créditos más hasta $100 adicionales por actividades. El **plan Free se cierra a los 6 meses o al agotar créditos**. Para un sitio que debe vivir años necesitas el **plan Paid** con AWS Budgets y alertas, y apoyarte en el plan flat-rate gratuito de CloudFront y en los servicios *always free*. Por eso la ruta sensata es **arrancar en GitHub Pages o Cloudflare Pages** y migrar a AWS cuando tengas la IaC lista, conservando el host gratuito como respaldo.
+**Cuidado con la cuenta AWS:** desde el 15 de julio de 2025, las cuentas nuevas eligen entre plan Free y Paid. Ambas reciben $100 en créditos más hasta $100 adicionales por actividades. El **plan Free se cierra a los 6 meses o al agotar créditos**. Para un sitio que debe vivir años necesitas el **plan Paid** con AWS Budgets y alertas, y apoyarte en el plan flat-rate gratuito de CloudFront y en los servicios _always free_. Por eso la ruta sensata es **arrancar en GitHub Pages o Cloudflare Pages** y migrar a AWS cuando tengas la IaC lista, conservando el host gratuito como respaldo.
 
 **Dominio propio:** sí vale la pena (p. ej., `javi-datos.dev` o `nombreapellido.com`). Da control sobre lo que aparece al buscar tu nombre, un correo profesional y permite mover el sitio de host sin romper enlaces. Un `.com` suele costar del orden de 10–15 USD/año. Compara precio de **renovación**, no solo el del primer año.
 
@@ -162,8 +162,8 @@ El consenso de 2026 es claro: usar IA no resta, **ocultarla o no poder explicar 
 - **`AI_USAGE.md` por repo (mapa de contribución):** qué hizo la IA (scaffolding, tests candidatos, explicar una API), qué hiciste tú (modelado, decisiones, lógica de negocio) y **una sugerencia de la IA que rechazaste y por qué**. Guías de entrevistas de 2026 proponen exactamente este paquete: mapa de contribución, registro de decisiones, diff legible, evidencia de verificación y una sugerencia rechazada.
 - **`DECISIONS.md` (ADRs):** por qué Airflow y no Step Functions, por qué Parquet particionado por mes, por qué este tamaño de chunk en RAG.
 - **Evals:** si hay LLM, incluye un set de 30–50 preguntas con respuestas esperadas y métricas (exactitud, fidelidad al contexto, latencia, costo por consulta). La verificación es la señal más valorada.
-- **Proyecto con LLM *aplicado a datos*, no un chatbot genérico.** Ejemplos: un agente que traduce preguntas de negocio a SQL sobre tu warehouse con *guardrails* (solo SELECT, límite de filas, catálogo de tablas), o un RAG sobre políticas de viaje corporativo. Los chatbots, analizadores de sentimiento y fine-tunes triviales en Hugging Face ya los tiene "cada otro candidato".
-- **Post del blog "Cómo uso Claude Code / Copilot / Cursor en un pipeline de datos":** flujo, *prompts* reutilizables, revisión y tests. En el CV, sigue la fórmula **herramienta + contexto + resultado**, no "entusiasta de la IA".
+- **Proyecto con LLM _aplicado a datos_, no un chatbot genérico.** Ejemplos: un agente que traduce preguntas de negocio a SQL sobre tu warehouse con _guardrails_ (solo SELECT, límite de filas, catálogo de tablas), o un RAG sobre políticas de viaje corporativo. Los chatbots, analizadores de sentimiento y fine-tunes triviales en Hugging Face ya los tiene "cada otro candidato".
+- **Post del blog "Cómo uso Claude Code / Copilot / Cursor en un pipeline de datos":** flujo, _prompts_ reutilizables, revisión y tests. En el CV, sigue la fórmula **herramienta + contexto + resultado**, no "entusiasta de la IA".
 - **Puedes ser capaz de reproducir lo clave sin el asistente.** Prepárate para eso en la entrevista.
 
 ### 8. ¿Multilenguaje? Sí: inglés como versión completa, español como versión nativa
@@ -178,8 +178,8 @@ export default defineConfig({
   i18n: {
     locales: ["es", "en"],
     defaultLocale: "es",
-    routing: { prefixDefaultLocale: false } // /proyectos (es) · /en/projects (en)
-  }
+    routing: { prefixDefaultLocale: false }, // /proyectos (es) · /en/projects (en)
+  },
 });
 ```
 
@@ -219,6 +219,7 @@ export default defineConfig({
   - nada de credenciales.
 
   Joseph Machado (Start Data Engineering) ofrece plantillas libres que ya traen esta estructura: Airflow, Postgres, DuckDB, Spark, MinIO como S3 local, Quarto para el dashboard, IaC, CI/CD y checks de calidad. Es un buen punto de partida que luego debes adaptar a tu dominio.
+
 - **LinkedIn:** titular con las mismas palabras clave que el hero. "Destacados" con el sitio y el proyecto insignia. Un post por proyecto terminado. Experiencia actual reescrita con resultados (p. ej., "migré X paquetes SSIS…, reduje tiempo de carga de reportes SSRS en Y%").
 - **CV descargable:** PDF de 1 página por idioma, generado desde la misma fuente que el sitio (p. ej., JSON Resume o Markdown → PDF en CI) para que nunca diverjan.
 - **Blog:** publica en **tu dominio** (dueño del contenido y del SEO) y **repúblicalo** en dev.to, Hashnode o Medium con URL canónica apuntando a tu sitio. AWS Builder Center sirve para posts orientados a AWS y te da visibilidad en esa comunidad. Cadencia realista: 1 post por mes o por proyecto.
@@ -241,35 +242,45 @@ status: "En producción (ejecución diaria)"
 ---
 
 ## 1. Resumen en 30 segundos
+
 Problema → solución → resultado principal (1 métrica) + diagrama.
 
 ## 2. Contexto y problema de negocio
+
 Quién usaría esto (p. ej., un equipo de viajes corporativos que negocia tarifas) y qué decisión habilita.
 
 ## 3. Datos
+
 Fuentes, volumen (filas/GB), frecuencia, problemas encontrados (nulos, cambios de esquema, códigos IATA inconsistentes).
 
 ## 4. Arquitectura
+
 Diagrama (Mermaid/Excalidraw) + recorrido por capas: ingesta → raw (S3) → transformación (Spark) → curated (Parquet particionado) → consumo (Athena/dashboard/modelo).
 
 ## 5. Decisiones técnicas y trade-offs
+
 3–5 decisiones con alternativa descartada y motivo (formato ADR breve).
 
 ## 6. Calidad, pruebas y observabilidad
+
 Checks de datos, tests unitarios, idempotencia/reprocesamiento, alertas, costos.
 
 ## 7. Modelo / análisis (si aplica)
+
 Baseline vs. modelo, métrica de validación (MAPE, AUC…), cómo se reentrena.
 
 ## 8. Resultados
+
 Métricas concretas: tiempo de ejecución, costo mensual en AWS, precisión, filas/día.
 
 ## 9. Uso de IA en el desarrollo
+
 Qué hizo la IA / qué hice yo / sugerencia rechazada / cómo verifiqué (enlace a AI_USAGE.md).
 
 ## 10. Qué haría distinto y próximos pasos
 
 ## 11. Enlaces
+
 Repo · Demo · Post del blog · Video de 2 min · dbt docs / notebook renderizado
 ```
 

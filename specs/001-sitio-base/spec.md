@@ -114,7 +114,7 @@ El titular no tiene que acordarse de entrar al sitio para que siga funcionando. 
 
 **Why this priority**: Resuelve un fallo conocido y silencioso: el servicio de datos del plan gratuito se suspende tras una semana sin actividad, y un portafolio nuevo pasa semanas sin visitas. El fallo aparecería justo ante el primer visitante tras una pausa.
 
-**Independent Test**: Se comprueba que la tarea queda registrada con ejecución diaria y que su última ejecución consta como correcta.
+**Independent Test**: Se comprueba que la tarea queda registrada con su intervalo de seis horas y que su última ejecución consta como correcta.
 
 **Acceptance Scenarios**:
 
@@ -220,7 +220,7 @@ El titular no tiene que acordarse de entrar al sitio para que siga funcionando. 
 
 ## Assumptions
 
-- **La pila tecnológica no se decide aquí**: está fijada en `docs/historico/project-brief.md` §7 y en la constitución. Esta especificación describe qué debe lograrse; el cómo corresponde al plan.
+- **La pila tecnológica no se decide aquí**: está fijada en la constitución, y su concreción para esta feature en `plan.md`. Esta especificación describe qué debe lograrse; el cómo corresponde al plan.
 - **El contenido real llega en la feature 02.** Esta feature entrega la estructura; las secciones muestran su armazón y una indicación de que el contenido está pendiente, nunca texto de relleno que parezca real.
 - **Los valores visuales ya están decididos** en `docs/design-tokens.md`. Esta feature los implementa en un único archivo; la composición y el ritmo visual corresponden a la feature 07.
 - **El sitio vive en el subdominio gratuito de la plataforma de despliegue.** No hay dominio propio y no está planeado.
@@ -228,5 +228,5 @@ El titular no tiene que acordarse de entrar al sitio para que siga funcionando. 
 - **Hay un único entorno de datos.** No existe base de pruebas: la verificación se hace sobre el sitio desplegado, y lo que se cree al probar se elimina.
 - **El correo sale de una cuenta gratuita del titular**, con una contraseña de aplicación guardada como variable de entorno en la plataforma. La dirección de administración que recibe los avisos no es la dirección pública de contacto.
 - **La comprobación programada se ejecuta cada seis horas.** La investigación de la Fase 0 corrigió dos errores de esta suposición: el plan gratuito permite más de una ejecución diaria, y una sola al día no garantiza evitar la suspensión, porque el proveedor advierte que su propio umbral de actividad no está asegurado con poco tráfico. Cuatro escrituras diarias siguen siendo gratis y dejan holgura. Ver `research.md`, D-04.
-- **Se asume que la convivencia del sitio y las funciones de servidor en un mismo despliegue es posible.** La historia P1 existe precisamente para confirmarlo antes de construir encima; si no lo fuera, se aplica la disposición alternativa ya prevista en `docs/viabilidad-tecnica.md`, que conserva el origen único.
+- **Se asume que la convivencia del sitio y las funciones de servidor en un mismo despliegue es posible.** La historia P1 existe precisamente para confirmarlo antes de construir encima; si no lo fuera, se aplican los planes alternativos de `research.md`, D-01, que conservan el origen único.
 - **El servicio de datos se crea aquí, casi vacío.** Una única tabla de una sola fila, para la propia comprobación: sin ella no hay forma de hacer una escritura que cuente como actividad ni dónde dejar el resultado. El esquema de la aplicación llega en la feature 03. Ver `research.md`, D-05. Se crea ahora porque el plazo de suspensión del plan gratuito empieza a contar desde que el proyecto existe, y porque así las credenciales y la tarea programada se verifican en el mismo despliegue de prueba de la historia P1.

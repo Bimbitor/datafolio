@@ -2,10 +2,10 @@
 
 Material de referencia que alimentó las specs. No es vinculante: si algo aquí contradice una spec en `specs/`, manda la spec.
 
-| Archivo | Fuente | Fecha | Enfoque |
-|---|---|---|---|
-| [01-investigacion-claude.md](01-investigacion-claude.md) | Claude (Advanced Research) | 2026-11-01 | Portafolio para Data Engineer híbrido, Astro, hosting, AWS, IA, i18n, foto, plan de 12 semanas |
-| [02-investigacion-gemini.md](02-investigacion-gemini.md) | Gemini (Deep Research) | 2026-11 | Astro vs Quarto, UX por sección, estructura de repos de datos, proyectos Lakehouse/Streaming/RAG |
+| Archivo                                                  | Fuente                     | Fecha      | Enfoque                                                                                          |
+| -------------------------------------------------------- | -------------------------- | ---------- | ------------------------------------------------------------------------------------------------ |
+| [01-investigacion-claude.md](01-investigacion-claude.md) | Claude (Advanced Research) | 2026-11-01 | Portafolio para Data Engineer híbrido, Astro, hosting, AWS, IA, i18n, foto, plan de 12 semanas   |
+| [02-investigacion-gemini.md](02-investigacion-gemini.md) | Gemini (Deep Research)     | 2026-11    | Astro vs Quarto, UX por sección, estructura de repos de datos, proyectos Lakehouse/Streaming/RAG |
 
 ## Coincidencias entre ambas
 

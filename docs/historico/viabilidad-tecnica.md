@@ -1,4 +1,22 @@
-# Viabilidad técnica del stack
+# Viabilidad técnica del stack (superado)
+
+> **Estado: histórico, y parcialmente superado.** Esta revisión se hizo antes de la primera spec y
+> cumplió su función: señaló dónde mirar. La investigación de la Fase 0 de la feature 01
+> —`specs/001-sitio-base/research.md`— la sustituye con fuentes oficiales y decisiones tomadas.
+> Dos de sus hallazgos quedaron obsoletos y el documento se conserva sin corregirlos, porque es un
+> registro, no una guía:
+>
+> - **Punto 1 (crítico, un proyecto o dos):** resuelto. Vercel documenta **Services**, que despliega
+>   el sitio y la API como un solo proyecto bajo un solo dominio, y está disponible en el plan
+>   gratuito. La carpeta `api/` en la raíz que este documento proponía pasa a ser el plan B. Ver
+>   `research.md`, D-01.
+> - **Punto 2 (alto, la pausa de Supabase):** la mitigación propuesta era insuficiente. Este
+>   documento afirma que una comprobación al día "sobra con mucho margen" y que el plan gratuito
+>   solo permite una; las dos cosas son falsas. El proveedor advierte que su umbral de actividad no
+>   está garantizado con poco tráfico, y la plataforma admite más frecuencia. La comprobación corre
+>   cada seis horas. Ver `research.md`, D-04.
+>
+> Los puntos 3 a 7 siguen siendo correctos y se incorporaron a la spec y al plan.
 
 > Revisión hecha el 2026-11-05 contra documentación de Vercel y Supabase, antes de escribir la primera spec.
 > Criterio: buscar lo que sea **más barato cambiar ahora que después**. No es una lista de todo lo que puede fallar, sino de lo que obligaría a rehacer trabajo si se descubre tarde.

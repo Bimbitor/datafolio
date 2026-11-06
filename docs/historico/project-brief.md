@@ -11,7 +11,7 @@
 > Nada de código hasta que las specs estén aprobadas.
 >
 > Todo lo marcado `[P-xx]` está **sin decidir** y debe resolverse antes del `/speckit.plan` de la feature que lo contiene.
-> Si algo aquí contradice `docs/research/`, manda este documento; si contradice una spec en `specs/`, manda la spec.
+> Si algo aquí contradice `docs/historico/research/`, manda este documento; si contradice una spec en `specs/`, manda la spec.
 >
 > **Rondas de decisiones** (todas el 2026-11-04):
 >
@@ -491,10 +491,10 @@ Alcance acordado, deliberadamente acotado:
 
 ## 13. Notas de contexto
 
-- `docs/research/README.md` referencia rutas `specs/02-architecture/` y `specs/04-content/` que todavía no existen. Si se adopta la división de la sección 12, esas referencias deben actualizarse.
+- `docs/historico/research/README.md` referencia rutas `specs/02-architecture/` y `specs/04-content/` que todavía no existen. Si se adopta la división de la sección 12, esas referencias deben actualizarse.
 - La constitución anterior se eliminó a propósito; se reescribe desde cero antes de la primera spec.
 - La investigación recomienda evitar Vercel en plan gratuito si en el futuro se monetiza el sitio, y propone S3 + CloudFront como proyecto de AWS. Queda registrado; la decisión del titular es Vercel gratuito, y el sitio no es comercial.
 - Los CVs viven hoy en `G:\My Drive\Documentos\CV\`. Para que RF-12 funcione tienen que estar versionados en `public/cv/`, con metadatos limpios.
 - El `.gitignore` del repo ya ignora `.env` y `.env.*` y permite `.env.example`, que es lo que RS-03 necesita.
-- `docs/viabilidad-tecnica.md` recoge la revisión del stack hecha antes de la primera spec: qué se verificó contra documentación oficial, qué queda por comprobar con una prueba de despliegue y qué sería caro de cambiar más adelante.
+- `docs/historico/viabilidad-tecnica.md` recoge la revisión del stack hecha antes de la primera spec: qué se verificó contra documentación oficial, qué queda por comprobar con una prueba de despliegue y qué sería caro de cambiar más adelante.
 - `package.json` fija `"node": "26.x"`, la LTS activa desde el 28 de octubre de 2026 y la versión por defecto de Vercel. Node 24 pasó a mantenimiento ese mismo mes.

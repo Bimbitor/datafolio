@@ -107,6 +107,14 @@ Estas restricciones son vinculantes y solo se cambian enmendando esta constituci
 - **Stack fijo**: Astro con islas interactivas y Tailwind en el frontend; FastAPI en Python
   como única puerta de escritura; Supabase como base de datos; monorepo; despliegue en
   Vercel.
+- **Un solo origen**: el sitio y la API responden siempre bajo el mismo dominio. No es una
+  preferencia de despliegue sino un requisito de seguridad: la cookie de sesión del administrador
+  es `SameSite=Strict` y solo viaja si las dos partes comparten origen. Ninguna feature puede
+  dejar la API en un dominio aparte.
+- **El correo se espera antes de responder**: todo envío de correo desde el servidor se completa
+  antes de devolver la respuesta HTTP, y nunca corre en un entorno de ejecución sin sockets TCP.
+  Una función sin servidor descarta el trabajo pendiente al responder, así que un envío no
+  esperado se pierde en silencio.
 - **Costo cero**: todo debe funcionar dentro de los planes gratuitos de Vercel y Supabase, y
   con cuentas de Gmail. No hay dominio propio ni hosting de pago. Cualquier propuesta que
   introduzca un costo recurrente requiere aprobación explícita del titular antes de
@@ -163,11 +171,12 @@ Estas restricciones son vinculantes y solo se cambian enmendando esta constituci
   - Integrar los documentos no cierra la rama: sigue viva con el código, y **se pone al día
     con `main`** antes de seguir, para que las dos no divergan.
 - **Documentos que no pertenecen a ninguna feature**: la constitución, los tokens de diseño
-  y la política de datos viven en `main` y se mantienen al día. El brief de origen y el
-  estudio de viabilidad son material de entrada ya consumido: se conservan por su valor
-  histórico, no se actualizan, y ninguno de los dos dicta nada. La cadena de autoridad es
-  constitución → spec → plan → tareas → código, y nada de fuera de esa cadena entra en
-  ella.
+  y la política de datos viven en `main` y se mantienen al día. El brief de origen, el estudio de
+  viabilidad y las investigaciones previas son material de entrada ya consumido: viven en
+  `docs/historico/`, no se actualizan, y nada de lo que hay ahí dicta nada. Donde un documento
+  archivado contradiga una spec, queda constancia en su cabecera y manda la spec. La cadena de
+  autoridad es constitución → spec → plan → tareas → código, y nada de fuera de esa cadena entra
+  en ella.
 - **Un solo entorno de datos.** Hay un único proyecto de Supabase, el de producción. No hay
   base de pruebas ni pila local: las vistas previa comparten la base de producción y la
   verificación se hace sobre el sitio desplegado. Es una decisión tomada a conciencia, y
@@ -212,4 +221,4 @@ entrada de las features que todavía no tienen spec. La spec y los tokens se act
 cuando una decisión cambia, en el mismo cambio que la aplica; el brief histórico no se
 mantiene al día.
 
-**Version**: 1.4.0 | **Ratified**: 2026-11-05 | **Last Amended**: 2026-11-05
+**Version**: 1.5.0 | **Ratified**: 2026-11-05 | **Last Amended**: 2026-11-05

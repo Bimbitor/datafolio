@@ -102,6 +102,6 @@ Dos niveles y nada más.
 
 ## Cómo se implementa
 
-- Un único archivo de variables CSS en `:root`, con el bloque del tema oscuro sobrescribiendo los mismos nombres. Tailwind consume esas variables; no se duplican valores en la configuración.
+- Un único archivo de variables CSS en `:root`, con el bloque del tema oscuro sobrescribiendo los mismos nombres. Tailwind consume esas variables; no se duplican valores en la configuración. El archivo es `web/src/styles/tokens.css`, y el mecanismo concreto —`@theme` con el plugin de Vite de Tailwind— está decidido en `specs/001-sitio-base/research.md`, D-08.
 - El cambio de tema alterna un atributo en `<html>`, no una clase por componente.
 - Cambiar un valor de esta tabla y el archivo de tokens debe repintar el sitio completo. Si hay que tocar un componente para que el cambio se vea, ese componente está mal escrito.
