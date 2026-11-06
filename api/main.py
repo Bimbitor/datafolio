@@ -7,7 +7,6 @@ tanto que la autenticacion de la feature 03 sea posible.
 Contrato: specs/001-sitio-base/contracts/http.md, seccion 4.
 """
 
-import hashlib
 import os
 
 from fastapi import FastAPI, Request, Response
@@ -35,28 +34,8 @@ VERSION = "0.1.0"
 @app.get("/api/estado")
 def estado() -> Response:
     """Estado del servicio. Sin autenticacion y sin registrar nada de la peticion."""
-    # shortcut: diagnostico temporal, se borra al cerrar la historia P1 de la US6.
-    # Dice si cada variable LLEGA al servicio, nunca su valor. Los nombres ya son
-    # publicos -estan en .env.example, y el repositorio es publico-, asi que esto no
-    # revela nada nuevo. Existe para distinguir "el secreto no coincide" de "el
-    # servicio no recibe variables", que dan el mismo 401 y tienen arreglos opuestos.
-    esperadas = (
-        "CRON_SECRET",
-        "SUPABASE_URL",
-        "SUPABASE_SERVICE_ROLE_KEY",
-        "SMTP_USER",
-        "SMTP_PASSWORD",
-        "ADMIN_EMAIL",
-    )
-    presentes = ",".join('"%s":%s' % (v, "true" if os.environ.get(v) else "false") for v in esperadas)
-    # Huella del secreto: ocho hexadecimales del SHA-256. No se puede revertir, y sirve
-    # para que el titular compare contra el token que esta enviando sin que ninguno de los
-    # dos valores viaje. Si las huellas difieren, son secretos distintos y se acabo la duda.
-    secreto = os.environ.get("CRON_SECRET", "")
-    huella = hashlib.sha256(secreto.encode()).hexdigest()[:8] if secreto else "sin-valor"
     return Response(
-        content='{"servicio":"api","version":"%s","variables":{%s},"huella_cron_secret":"%s","largo":%d}'
-        % (VERSION, presentes, huella, len(secreto)),
+        content='{"servicio":"api","version":"%s"}' % VERSION,
         media_type="application/json",
         headers={"Cache-Control": "no-store"},
     )

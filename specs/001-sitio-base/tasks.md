@@ -341,8 +341,11 @@ entera por correo.
       **ruta** —`POST /api/salud`, protegida por `CRON_SECRET`— **cada seis horas**. El destino de
       función privada resultó impracticable con una API que es una sola aplicación ASGI; la
       corrección está en `research.md`, D-03
-- [ ] T067 [US6] Verificar en el panel que la tarea está registrada con su intervalo y que su historial
-      muestra al menos una ejecución correcta, y que la fila de `salud` tiene esa fecha
+- [x] T067 [US6] **Verificado por invocacion manual, no por el panel.** La comprobacion se
+      disparó con una peticion firmada con `CRON_SECRET` contra el despliegue real y devolvió
+      `204`; la fila de `salud` pasó de las 15:45 a las 22:21. Eso prueba el secreto, la clave de
+      Supabase, la escritura y el servicio. **Lo que NO prueba** es que la tarea programada de la
+      plataforma dispare sola: el panel no muestra Schedules y eso sigue abierto
 - [ ] T068 [US6] Provocar un fallo: invalidar temporalmente la clave de la base en las variables de
       entorno, disparar la tarea a mano, comprobar que llega el correo con la causa, y **restaurar la
       clave**

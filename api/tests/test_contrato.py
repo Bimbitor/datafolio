@@ -30,41 +30,15 @@ def test_solo_existen_las_rutas_del_contrato():
 
 def test_estado_devuelve_lo_pactado():
     respuesta = estado()
-    cuerpo = json.loads(respuesta.body)
     assert respuesta.status_code == 200
-    assert cuerpo["servicio"] == "api"
-    assert cuerpo["version"] == "0.1.0"
+    assert json.loads(respuesta.body) == {"servicio": "api", "version": "0.1.0"}
     assert respuesta.headers["cache-control"] == "no-store"
 
 
-def test_el_diagnostico_no_filtra_ningun_valor(monkeypatch):
-    """Dice si la variable llega, nunca que contiene. Es temporal, pero mientras exista
-    tiene que ser incapaz de filtrar un secreto."""
-    monkeypatch.setenv("CRON_SECRET", "valor-secretisimo-que-no-debe-salir")
-    monkeypatch.setenv("SUPABASE_SERVICE_ROLE_KEY", "sb_secret_tampoco_este")
-    crudo = estado().body.decode()
-    assert "valor-secretisimo-que-no-debe-salir" not in crudo
-    assert "sb_secret_tampoco_este" not in crudo
-    assert json.loads(crudo)["variables"]["CRON_SECRET"] is True
 
 
-def test_la_huella_identifica_el_secreto_sin_revelarlo(monkeypatch):
-    """Ocho hexadecimales del SHA-256: suficiente para comparar, imposible de revertir."""
-    import hashlib
-
-    secreto = "un-secreto-cualquiera-de-prueba"
-    monkeypatch.setenv("CRON_SECRET", secreto)
-    cuerpo = json.loads(estado().body)
-    assert cuerpo["huella_cron_secret"] == hashlib.sha256(secreto.encode()).hexdigest()[:8]
-    assert cuerpo["largo"] == len(secreto)
-    assert secreto not in estado().body.decode()
 
 
-def test_sin_secreto_la_huella_lo_dice(monkeypatch):
-    monkeypatch.delenv("CRON_SECRET", raising=False)
-    cuerpo = json.loads(estado().body)
-    assert cuerpo["huella_cron_secret"] == "sin-valor"
-    assert cuerpo["largo"] == 0
 
 
 def test_cookie_de_prueba_viaja_con_las_defensas_puestas():
