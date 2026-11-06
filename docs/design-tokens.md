@@ -8,34 +8,51 @@
 
 Dos temas: claro y oscuro. Todo token existe en los dos. El tema claro es el primario.
 
-| Token            | Claro     | Oscuro    | Para qué                                                                                  |
-| ---------------- | --------- | --------- | ----------------------------------------------------------------------------------------- |
-| `surface`        | `#ffffff` | `#121e22` | Fondo base de la página. Todo lo demás se mide contra este.                               |
-| `surface-raised` | `#f2f3f8` | `#21333a` | Tarjeta de proyecto, tarjeta de artículo, bloque citado, fila alterna de tabla.           |
-| `border-subtle`  | `#d9dce6` | `#354a52` | Separador decorativo y borde de tabla. **No sirve para delimitar un control.**            |
-| `border-strong`  | `#8e94a4` | `#58707a` | Borde de campo, casilla e interruptor. Cumple 3:1 en los dos temas.                       |
-| `text`           | `#0b0e1a` | `#ebf3f4` | Texto principal.                                                                          |
-| `text-secondary` | `#3a4055` | `#b8c5cb` | Texto secundario, etiquetas de formulario, metadatos de artículo.                         |
-| `text-muted`     | `#696f84` | `#85989f` | Texto terciario, fechas, estado deshabilitado. Pasa 4.5:1 también sobre `surface-raised`. |
-| `brand-deep`     | `#06303d` | `#2f6f80` | Azul petróleo. Color maestro: titulares, barra de navegación, fondos de portada.          |
-| `brand`          | `#0b5263` | `#268ba0` | Enlaces, estado activo de navegación, primera serie de gráfico.                           |
-| `accent`         | `#1d7a64` | `#31ae91` | Verde esmeralda. Etiquetas de tecnología, hitos de la línea de tiempo, acentos.           |
-| `highlight`      | `#2a9d5c` | `#50d188` | Verde claro. **Una sola llamada de atención por página.**                                 |
-| `success`        | `#1d7a64` | `#31ae91` | Comentario aprobado, artículo publicado, formulario enviado.                              |
-| `warning`        | `#9a6212` | `#d9a745` | Borrador, comentario pendiente de moderación, campo incompleto.                           |
-| `danger`         | `#a32433` | `#ef7a86` | Error de validación, fallo de envío, acción destructiva en el panel.                      |
-| `info`           | `#1f5fa8` | `#75b5ee` | Aviso neutro, nota informativa.                                                           |
+| Token            | Claro     | Oscuro    | Para qué                                                                       |
+| ---------------- | --------- | --------- | ------------------------------------------------------------------------------ |
+| `surface`        | `#ffffff` | `#181b2e` | Fondo base de la página. Todo lo demás se mide contra este.                    |
+| `surface-raised` | `#f8f4ed` | `#2b2e4b` | Tarjeta, bloque citado, fila alterna de tabla. En claro es una crema cálida.   |
+| `border-subtle`  | `#d9dce6` | `#404564` | Separador decorativo y borde de tabla. **No sirve para delimitar un control.** |
+| `border-strong`  | `#878d9e` | `#73779a` | Borde de campo, casilla e interruptor. Pasa 3:1 sobre los dos fondos.          |
+| `text`           | `#0b0e1a` | `#f1f1f7` | Texto principal.                                                               |
+| `text-secondary` | `#3a4055` | `#c0c2d1` | Texto secundario, etiquetas de formulario, metadatos.                          |
+| `text-muted`     | `#696f84` | `#9396aa` | Texto terciario, fechas, estado deshabilitado.                                 |
+| `brand-deep`     | `#141b4d` | `#6772c7` | Índigo profundo. Color maestro: titulares, navegación, fondos de portada.      |
+| `brand`          | `#2f40b1` | `#8792e2` | Enlaces, estado activo, llamada a la acción, primera serie de gráfico.         |
+| `accent`         | `#5466bd` | `#aab2e7` | Etiquetas de tecnología, hitos de la línea de tiempo, segunda serie.           |
+| `success`        | `#1d7a64` | `#31ae91` | Comentario aprobado, artículo publicado, formulario enviado.                   |
+| `warning`        | `#9a6212` | `#d9a745` | Borrador, comentario pendiente de moderación, campo incompleto.                |
+| `danger`         | `#a32433` | `#ef7a86` | Error de validación, fallo de envío, acción destructiva en el panel.           |
+| `info`           | `#1f5fa8` | `#75b5ee` | Aviso neutro, nota informativa.                                                |
+
+Los tres índigos son valores exactos del sistema de origen. La crema, los fondos oscuros, los
+bordes y los textos del tema oscuro están derivados y medidos: cada uno se movió solo en
+claridad, conservando matiz y saturación, hasta alcanzar su objetivo de contraste.
 
 ### Reglas de color que no se negocian
 
-- **`highlight` nunca es texto en tema claro.** Da 3.46:1 sobre blanco: alcanza para una forma, un punto o una barra, no para una letra.
-- **`border-subtle` no delimita controles.** No llega a 3:1 contra `surface`. Para el borde de un input, de una casilla o de cualquier control, va `border-strong`.
-- **`warning` y `accent` tienen la misma luminosidad.** Se distinguen por matiz, así que en escala de grises o para alguien con daltonismo se funden. Donde esos dos estados convivan — por ejemplo la cola de moderación, con comentarios aprobados y pendientes — **el ícono o el texto son obligatorios**: el color nunca es la única señal.
-- `success` es deliberadamente el mismo verde que `accent`. Con una paleta verde, un verde de éxito distinto contrastaría tan poco con el acento que serían indistinguibles.
+- **Todo se mide contra los dos fondos, no solo contra `surface`.** Un campo de formulario
+  dentro de una tarjeta se apoya en `surface-raised`, que es el fondo exigente. Es el error que
+  tenía la versión anterior de este documento: `border-strong` daba 3.03 sobre el fondo base y
+  2.77 sobre la tarjeta, así que el borde de cualquier campo dentro de una tarjeta estaba por
+  debajo del mínimo. Los valores de la tabla cumplen contra los dos.
+- **`border-subtle` no delimita controles.** Queda por debajo de 3:1 a propósito: es una línea
+  decorativa. Para el borde de un input, una casilla o cualquier control, va `border-strong`.
+- **Un estado nunca se comunica solo con color.** Siempre lleva además un ícono o una palabra.
+  No es una recomendación: medidas en escala de grises, `accent`, `success` y `warning` se
+  separan entre 1.00 y 1.35, y `brand` e `info` entre 1.31 y 1.33. Por debajo de 1.40 son
+  indistinguibles para quien tiene deficiencia de visión cromática, y en una impresión en
+  blanco y negro lo son para todo el mundo.
+- **`brand` y `accent` sí se separan**, 1.41 en oscuro y 1.61 en claro, para que un enlace no
+  se confunda con una etiqueta.
+- **`success` tiene verde propio.** Con la paleta anterior hubo que hacerlo igual que `accent`
+  porque dos verdes contrastaban 1.02 entre sí. Con marca índigo esa restricción desaparece.
 
 ### Portada genérica de artículo (RF-22)
 
-Un artículo sin imagen de portada muestra un bloque de color sólido con el título encima en `surface`. El color se elige de forma determinista a partir del slug, entre `brand-deep`, `brand` y `accent`, para que artículos distintos no se vean iguales y el mismo artículo se vea siempre igual. Los tres superan 5:1 con texto blanco. Sin degradados.
+Un artículo sin imagen de portada muestra un bloque de color sólido con el título encima en blanco. El color se elige de forma determinista a partir del slug, entre `brand-deep`, `brand` y `accent`, para que artículos distintos no se vean iguales y el mismo artículo se vea siempre igual.
+
+**El bloque conserva los valores del tema claro en los dos temas**, como haría una fotografía. Así el texto blanco encima mide siempre lo mismo: 16.23, 8.44 y 5.23. Si el bloque cambiara con el tema, en oscuro el blanco caería a 3.99 sobre `brand` y a 2.76 sobre `accent`. Sin degradados.
 
 ## Tipografía
 
@@ -95,10 +112,10 @@ Escala de 4px. Todo margen, relleno y separación sale de aquí.
 
 Dos niveles y nada más.
 
-| Token      | Claro                              | Oscuro                          | Para qué                                                  |
-| ---------- | ---------------------------------- | ------------------------------- | --------------------------------------------------------- |
-| `shadow-1` | `0 1px 2px rgba(6, 48, 61, 0.10)`  | `0 1px 2px rgba(0, 0, 0, 0.5)`  | Tarjeta en reposo.                                        |
-| `shadow-2` | `0 8px 24px rgba(6, 48, 61, 0.14)` | `0 8px 24px rgba(0, 0, 0, 0.6)` | Menú desplegable, panel flotante, botón flotante de tema. |
+| Token      | Claro                               | Oscuro                          | Para qué                                                  |
+| ---------- | ----------------------------------- | ------------------------------- | --------------------------------------------------------- |
+| `shadow-1` | `0 1px 2px rgba(20, 27, 77, 0.10)`  | `0 1px 2px rgba(0, 0, 0, 0.5)`  | Tarjeta en reposo.                                        |
+| `shadow-2` | `0 8px 24px rgba(20, 27, 77, 0.14)` | `0 8px 24px rgba(0, 0, 0, 0.6)` | Menú desplegable, panel flotante, botón flotante de tema. |
 
 ## Cómo se implementa
 
