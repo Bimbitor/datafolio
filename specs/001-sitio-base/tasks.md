@@ -61,8 +61,9 @@ buscadores **antes** del primer despliegue público.
       reglas de `Cache-Control` del contrato: `no-store` en `/`, `/admin/*` y `/api/*`
       (`contracts/http.md` §3). Esta tarea va antes del primer despliegue: el sitio no debe llegar
       indexable a internet ni un minuto
-- [ ] T010 [P] Crear `.env.example` con los seis nombres de variable del contrato —`SUPABASE_URL`,
-      `SUPABASE_SERVICE_ROLE_KEY`, `SMTP_USER`, `SMTP_PASSWORD`, `ADMIN_EMAIL`, `SITE_URL`— **sin
+- [ ] T010 [P] Crear `.env.example` con los siete nombres de variable del contrato —`SUPABASE_URL`,
+      `SUPABASE_SERVICE_ROLE_KEY`, `SMTP_USER`, `SMTP_PASSWORD`, `ADMIN_EMAIL`, `SITE_URL`,
+      `PUBLIC_CONTACT_EMAIL`— **sin
       ningún valor** (`contracts/http.md` §6)
 - [ ] T011 [P] Crear `web/public/robots.txt` con `Disallow: /admin` y la declaración del sitemap
 
@@ -86,7 +87,7 @@ empieza hasta que la US1 pase**.
 - [ ] T015 Crear una página mínima en `web/src/pages/index.astro` que construya sin errores, solo para
       que el servicio del sitio tenga algo que servir en el despliegue de prueba
 - [ ] T016 Conectar el repositorio al proyecto de Vercel en el plan gratuito fijar `main` como su rama de
-      producción, y configurar las seis variables de entorno **en la plataforma**, nunca en un archivo
+      producción, y configurar las siete variables de entorno **en la plataforma**, nunca en un archivo
       del repositorio
 
 **Checkpoint**: hay dos servicios declarados y cada uno tiene algo que responder. Se puede desplegar.
@@ -175,15 +176,20 @@ historias US3, US4 y US5 se apoyan en ella.
 - [ ] T034 [US2] Declarar el modo de entrega de cada ruta según `contracts/http.md` §1: estáticas el
       inicio, la experiencia, el contacto y la política; servidor con caché de CDN de 60 s el catálogo
       y las fichas de proyecto, el índice del blog y los artículos
-- [ ] T035 [US2] Mostrar en cada sección sin contenido su armazón y una indicación visible de que el
+- [ ] T035 [US2] Hacer que las cuatro rutas de detalle devuelvan **404** con cualquier identificador
+      mientras no exista contenido, en lugar de una página válida y vacía (FR-036). La plantilla de la
+      ficha se construye, pero no se sirve hasta que haya algo dentro
+- [ ] T036 [US2] Mostrar en cada sección sin contenido su armazón y una indicación visible de que el
       contenido está pendiente. **Sin texto de relleno que simule contenido real** (FR-009)
-- [ ] T036 [P] [US2] Crear `web/src/pages/404.astro` **renderizada en servidor**
+- [ ] T037 [P] [US2] Crear `web/src/pages/404.astro` **renderizada en servidor**
       (`prerender = false`), que responde estado **404** con `Cache-Control: no-store` y toma el idioma
       del **prefijo de la dirección pedida** —inglés si no hay prefijo—, con salida hacia el inicio.
       Una única página estática solo podría estar en un idioma (`contracts/http.md` §2 bis,
       `research.md` D-07 bis)
-- [ ] T037 [US2] Enlazar un canal de contacto alcanzable en un clic desde cualquier página (FR-008)
-- [ ] T038 [US2] Hacer el sitio utilizable y legible en móvil, tableta y escritorio sin desbordes
+- [ ] T038 [US2] Añadir en el pie de `web/src/layouts/Base.astro` un enlace de correo hacia
+      `PUBLIC_CONTACT_EMAIL`, presente en todas las páginas. La dirección se lee de la variable de
+      entorno, nunca escrita en el código (FR-008)
+- [ ] T039 [US2] Hacer el sitio utilizable y legible en móvil, tableta y escritorio sin desbordes
       horizontales, con los puntos de ruptura estándar y comprobado también con el texto ampliado al
       200 %
 
@@ -202,31 +208,31 @@ destino, cambiar de idioma a mano y verificar que la elección sobrevive a la na
 
 ### Tests for User Story 3
 
-- [ ] T039 [P] [US3] Prueba en `web/tests/idioma.test.ts`: la negociación devuelve español con una
+- [ ] T040 [P] [US3] Prueba en `web/tests/idioma.test.ts`: la negociación devuelve español con una
       cabecera que pide español, inglés con cualquier otro idioma, e inglés cuando la cabecera está
       **ausente o es ilegible** (`contracts/http.md` §2)
-- [ ] T040 [P] [US3] Prueba en `web/tests/rutas.test.ts`: para toda sección, el mapa resuelve su
+- [ ] T041 [P] [US3] Prueba en `web/tests/rutas.test.ts`: para toda sección, el mapa resuelve su
       página equivalente en el otro idioma, que es lo que sostiene el selector y SC-006
 
 ### Implementation for User Story 3
 
-- [ ] T041 [US3] Crear `web/src/i18n/idioma.ts` con la negociación del idioma en el orden de
+- [ ] T042 [US3] Crear `web/src/i18n/idioma.ts` con la negociación del idioma en el orden de
       `data-model.md` §3: elección guardada, cabecera del navegador si pide español, inglés
-- [ ] T042 [US3] Configurar `i18n` en `web/astro.config.mjs` con `defaultLocale: "en"`, los dos locales
+- [ ] T043 [US3] Configurar `i18n` en `web/astro.config.mjs` con `defaultLocale: "en"`, los dos locales
       y `prefixDefaultLocale: true`, para que ningún idioma quede en posición privilegiada
       (`research.md` D-06)
-- [ ] T043 [US3] Convertir `web/src/pages/index.astro` en la **única** ruta del sitio renderizada en
+- [ ] T044 [US3] Convertir `web/src/pages/index.astro` en la **única** ruta del sitio renderizada en
       servidor (`prerender = false`), que lee el idioma preferido y responde `302` a `/en/` o a `/es/`
       con `Cache-Control: no-store`, sin registrar nada de la petición (`research.md` D-07)
-- [ ] T044 [US3] Crear `web/src/components/SelectorIdioma.astro`, que lleva a la **página equivalente**
+- [ ] T045 [US3] Crear `web/src/components/SelectorIdioma.astro`, que lleva a la **página equivalente**
       en el otro idioma usando el mapa de rutas, nunca al inicio (FR-013)
-- [ ] T045 [US3] Comprobar que la elección de idioma se conserva al navegar y al recargar **por la
+- [ ] T046 [US3] Comprobar que la elección de idioma se conserva al navegar y al recargar **por la
       propia dirección**, sin guardar nada: no debe existir cookie ni entrada de almacenamiento para el
       idioma. La raíz resuelve por detección en cada visita (FR-014, `research.md` D-06 bis)
-- [ ] T046 [US3] Emitir en `web/src/layouts/Base.astro` las cuatro etiquetas de encabezado del contrato:
+- [ ] T047 [US3] Emitir en `web/src/layouts/Base.astro` las cuatro etiquetas de encabezado del contrato:
       `canonical`, `alternate` para cada idioma y `alternate` `x-default` apuntando al inglés, todas
       generadas desde el mapa de rutas (`contracts/http.md` §3)
-- [ ] T047 [US3] Crear `web/src/pages/sitemap.xml.ts`, que genera el índice desde el mapa de rutas
+- [ ] T048 [US3] Crear `web/src/pages/sitemap.xml.ts`, que genera el índice desde el mapa de rutas
       incluyendo los dos idiomas y excluyendo las secciones con `enIndice` en falso
 
 **Checkpoint**: el sitio es bilingüe de verdad, con direcciones traducidas y equivalencias declaradas.
@@ -241,18 +247,18 @@ ningún destello al cargar.
 **Independent Test**: abrir el sitio con el sistema en claro y luego en oscuro, alternar con el botón,
 recargar con red lenta simulada y comprobar que no hay destello del tema contrario.
 
-- [ ] T048 [US4] Añadir en el encabezado de `web/src/layouts/Base.astro` un script **en línea y
+- [ ] T049 [US4] Añadir en el encabezado de `web/src/layouts/Base.astro` un script **en línea y
       bloqueante**, antes de cualquier CSS, que lee la preferencia guardada o la del sistema y escribe
       `data-theme` en `<html>`, con el acceso al almacenamiento en `try`/`catch`. En línea y bloqueante
       no es un detalle: cualquier otra forma corre después del primer pintado, que es cuando el destello
       ya ocurrió (`research.md` D-09)
-- [ ] T049 [US4] Crear `web/src/components/BotonTema.astro`, flotante en la esquina inferior derecha,
+- [ ] T050 [US4] Crear `web/src/components/BotonTema.astro`, flotante en la esquina inferior derecha,
       disponible en todas las páginas, que solo cambia el atributo `data-theme` y guarda la elección
-- [ ] T050 [US4] Verificar que el cambio de tema es inmediato o con una transición de **150 ms como
+- [ ] T051 [US4] Verificar que el cambio de tema es inmediato o con una transición de **150 ms como
       máximo**, y que no hay ninguna animación (FR-023)
-- [ ] T051 [US4] Comprobar el contraste de texto y de bordes de control en los dos temas contra
+- [ ] T052 [US4] Comprobar el contraste de texto y de bordes de control en los dos temas contra
       `docs/design-tokens.md`, revisando una por una sus tres reglas no negociables
-- [ ] T052 [US4] Prueba del archivo único: cambiar un color en `web/src/styles/tokens.css`, desplegar,
+- [ ] T053 [US4] Prueba del archivo único: cambiar un color en `web/src/styles/tokens.css`, desplegar,
       comprobar que el cambio se ve en todas las secciones **sin haber tocado ningún componente**, y
       revertir. Es el criterio de aceptación del principio "un valor, un solo lugar" (SC-008)
 
@@ -267,16 +273,16 @@ recargar con red lenta simulada y comprobar que no hay destello del tema contrar
 **Independent Test**: recorrer el sitio entero con tabulador y entrada, comprobando que se alcanza todo
 elemento interactivo y que siempre se ve dónde está el foco.
 
-- [ ] T053 [US5] Asegurar que todo elemento interactivo es alcanzable y operable con el teclado en un
+- [ ] T054 [US5] Asegurar que todo elemento interactivo es alcanzable y operable con el teclado en un
       orden que sigue el orden visual, usando elementos nativos en lugar de contenedores con
       comportamiento añadido (FR-024)
-- [ ] T054 [US5] Definir en `web/src/styles/tokens.css` un indicador de foco visible y comprobarlo en
+- [ ] T055 [US5] Definir en `web/src/styles/tokens.css` un indicador de foco visible y comprobarlo en
       los **dos** temas (FR-025)
-- [ ] T055 [US5] Hacer que el menú de navegación en móvil se abra, se recorra y se cierre con teclado,
+- [ ] T056 [US5] Hacer que el menú de navegación en móvil se abra, se recorra y se cierre con teclado,
       y que el foco **no quede atrapado** dentro de él
-- [ ] T056 [P] [US5] Dar texto alternativo en el idioma de la página a toda imagen con contenido, y
+- [ ] T057 [P] [US5] Dar texto alternativo en el idioma de la página a toda imagen con contenido, y
       marcar las decorativas para que un lector de pantalla las omita (FR-026)
-- [ ] T057 [US5] Comprobar que con la preferencia de movimiento reducido activada no hay ninguna
+- [ ] T058 [US5] Comprobar que con la preferencia de movimiento reducido activada no hay ninguna
       diferencia perceptible, porque no hay animaciones
 
 **Checkpoint**: el compromiso de accesibilidad del proyecto se cumple en el esqueleto, que es donde
@@ -294,37 +300,37 @@ entera por correo.
 
 ### Tests for User Story 6
 
-- [ ] T058 [P] [US6] Prueba en `api/tests/test_salud.py`: una escritura correcta deja `resultado` en
+- [ ] T059 [P] [US6] Prueba en `api/tests/test_salud.py`: una escritura correcta deja `resultado` en
       `correcto` y `detalle` nulo; un fallo deja `resultado` en `fallido` con la causa en `detalle`
-- [ ] T059 [P] [US6] Prueba en `api/tests/test_salud.py`: cuando la escritura falla **y** el envío del
+- [ ] T060 [P] [US6] Prueba en `api/tests/test_salud.py`: cuando la escritura falla **y** el envío del
       correo también falla, la función no se rompe y el fallo original se propaga al registro
 
 ### Implementation for User Story 6
 
-- [ ] T060 [US6] Crear el proyecto de Supabase en el plan gratuito y guardar `SUPABASE_URL` y
+- [ ] T061 [US6] Crear el proyecto de Supabase en el plan gratuito y guardar `SUPABASE_URL` y
       `SUPABASE_SERVICE_ROLE_KEY` en las variables de entorno de Vercel. La clave **solo** la lee el
       servicio de la API
-- [ ] T061 [US6] Crear la migración de la tabla `salud` con exactamente estos campos y restricciones
+- [ ] T062 [US6] Crear la migración de la tabla `salud` con exactamente estos campos y restricciones
       (`data-model.md` §1): `id smallint` clave primaria fijo en `1` con `CHECK (id = 1)` para impedir
       una segunda fila; `comprobado_en timestamptz` **nunca nulo**; `resultado text` **nunca nulo**, con
       valores `correcto` o `fallido`; `detalle text` nulo cuando el resultado es `correcto`. La tabla
       **no** se expone a lectura anónima
-- [ ] T062 [US6] Insertar la fila única inicial con `id = 1`, `resultado = 'correcto'` y la fecha de
+- [ ] T063 [US6] Insertar la fila única inicial con `id = 1`, `resultado = 'correcto'` y la fecha de
       creación. A partir de ahí la fila solo se actualiza, nunca se borra
-- [ ] T063 [P] [US6] Crear `api/correo.py` con el envío por SMTP usando `smtplib` y `email.message` de
+- [ ] T064 [P] [US6] Crear `api/correo.py` con el envío por SMTP usando `smtplib` y `email.message` de
       la biblioteca estándar, al puerto **587** con **STARTTLS**, **esperando** a que el envío termine
       antes de devolver. Sin dependencias nuevas (`research.md` D-11, y la restricción de la
       constitución)
-- [ ] T064 [US6] Crear `api/salud.py`: escribe la fila de `salud` con `urllib.request` contra el
+- [ ] T065 [US6] Crear `api/salud.py`: escribe la fila de `salud` con `urllib.request` contra el
       endpoint REST del proyecto de datos; si falla, envía el correo de aviso a `ADMIN_EMAIL` con la
       causa; si el correo también falla, deja el fallo original en el registro de la plataforma
       (`contracts/http.md` §5)
-- [ ] T065 [US6] Declarar en `vercel.json` una tarea programada de **Vercel Schedules** con destino
+- [ ] T066 [US6] Declarar en `vercel.json` una tarea programada de **Vercel Schedules** con destino
       **función privada** —sin URL pública— que ejecute `api/salud.py` **cada seis horas**
       (`research.md` D-03, D-04)
-- [ ] T066 [US6] Verificar en el panel que la tarea está registrada con su intervalo y que su historial
+- [ ] T067 [US6] Verificar en el panel que la tarea está registrada con su intervalo y que su historial
       muestra al menos una ejecución correcta, y que la fila de `salud` tiene esa fecha
-- [ ] T067 [US6] Provocar un fallo: invalidar temporalmente la clave de la base en las variables de
+- [ ] T068 [US6] Provocar un fallo: invalidar temporalmente la clave de la base en las variables de
       entorno, disparar la tarea a mano, comprobar que llega el correo con la causa, y **restaurar la
       clave**
 
@@ -336,22 +342,22 @@ entera por correo.
 
 **Purpose**: cerrar la feature, quitar los andamios y pasar las puertas de calidad.
 
-- [ ] T068 **Eliminar** `GET /api/cookie-prueba` de `api/main.py`. Era un andamio de la historia US1 y
+- [ ] T069 **Eliminar** `GET /api/cookie-prueba` de `api/main.py`. Era un andamio de la historia US1 y
       su borrado es un punto de la Definición de hecho, no un recordatorio
-- [ ] T069 [P] Ejecutar la verificación completa de `quickstart.md`, historia por historia, marcando
+- [ ] T070 [P] Ejecutar la verificación completa de `quickstart.md`, historia por historia, marcando
       cada casilla
-- [ ] T070 Pasar la puerta de rendimiento con PageSpeed Insights sobre la dirección pública, perfil de
+- [ ] T071 Pasar la puerta de rendimiento con PageSpeed Insights sobre la dirección pública, perfil de
       móvil, **mediana de tres ejecuciones**: contenido principal por debajo de 2,5 s, desplazamiento
       involuntario por debajo de 0,1, menos de 100 KB de JavaScript por página (`research.md` D-14). Un
       resultado fuera de presupuesto se revisa, no se promedia hasta que pase
-- [ ] T071 [P] Comprobar que `npm test` y `pytest` pasan, y que el gancho de pre-commit no encuentra
+- [ ] T072 [P] Comprobar que `npm test` y `pytest` pasan, y que el gancho de pre-commit no encuentra
       ningún secreto
-- [ ] T072 [P] Verificar que la cabecera `X-Robots-Tag: noindex` sigue puesta en todas las rutas y
+- [ ] T073 [P] Verificar que la cabecera `X-Robots-Tag: noindex` sigue puesta en todas las rutas y
       anotar en la spec de la feature 02 que levantarla es tarea suya
-- [ ] T073 Comprobar SC-010 **ocho días después de integrar**: abrir el sitio tras una semana sin
+- [ ] T074 Comprobar SC-010 **ocho días después de integrar**: abrir el sitio tras una semana sin
       visitas y verificar que responde con normalidad y que el historial de la tarea programada no tiene
       fallos. Es el único criterio de la feature que necesita que pase el tiempo
-- [ ] T074 Integrar la rama a `main` y comprobar el sitio en producción. Según la constitución 1.5.0,
+- [ ] T075 Integrar la rama a `main` y comprobar el sitio en producción. Según la constitución 1.5.0,
       el código solo entra cuando cumple la Definición de hecho y se ha revisado en la vista previa.
       Comprobar además en el panel de las dos plataformas que el consumo del mes es cero (SC-011)
 
@@ -393,11 +399,11 @@ Setup → Foundational → US1 (puerta)
 ### Parallel Opportunities
 
 - Fase 1: T003, T010 y T011 en paralelo.
-- Fase 4: las tres pruebas T024 a T026 en paralelo; después T029, T031 y T036 en paralelo.
-- Fase 5: T039 y T040 en paralelo.
-- Fase 8: T058 y T059 en paralelo; T063 en paralelo con la migración.
+- Fase 4: las tres pruebas T024 a T026 en paralelo; después T029, T031 y T037 en paralelo.
+- Fase 5: T040 y T041 en paralelo.
+- Fase 8: T059 y T060 en paralelo; T064 en paralelo con la migración.
 - **US6 completa en paralelo con US2, US3, US4 y US5**: no comparte ningún archivo con el sitio.
-- Fase 9: T069, T071 y T072 en paralelo.
+- Fase 9: T070, T072 y T073 en paralelo.
 
 ---
 

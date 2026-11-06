@@ -18,15 +18,16 @@ acordados.
 | Inicio                | `/en/`                 | `/es/`                   | Estática                                              |
 | Experiencia           | `/en/experience/`      | `/es/experiencia/`       | Estática                                              |
 | Catálogo de proyectos | `/en/projects/`        | `/es/proyectos/`         | Servidor + caché de CDN 60 s                          |
-| Ficha de proyecto     | `/en/projects/[slug]/` | `/es/proyectos/[slug]/`  | Servidor + caché de CDN 60 s                          |
+| Ficha de proyecto     | `/en/projects/[slug]/` | `/es/proyectos/[slug]/`  | Servidor; **404** mientras no haya contenido          |
 | Índice del blog       | `/en/blog/`            | `/es/blog/`              | Servidor + caché de CDN 60 s                          |
-| Artículo              | `/en/blog/[slug]/`     | `/es/blog/[slug]/`       | Servidor + caché de CDN 60 s                          |
+| Artículo              | `/en/blog/[slug]/`     | `/es/blog/[slug]/`       | Servidor; **404** mientras no haya contenido          |
 | Contacto              | `/en/contact/`         | `/es/contacto/`          | Estática                                              |
 | Política de datos     | `/en/data-policy/`     | `/es/politica-de-datos/` | Estática                                              |
 | Error                 | cualquier otra         | cualquier otra           | **Servidor**, sin caché, estado **404** (ver §2 bis)  |
 
-**Nota sobre las rutas de servidor**: en esta feature no hay contenido administrable, así que sirven
-un armazón con la indicación de contenido pendiente. Nacen ya renderizadas en servidor porque cambiar
+**Nota sobre las rutas de servidor**: en esta feature no hay contenido administrable. El catálogo y el
+índice del blog sirven un armazón con la indicación de contenido pendiente; las **rutas de detalle
+devuelven 404** con cualquier identificador, porque no existe lo que piden. Nacen ya renderizadas en servidor porque cambiar
 el modo de entrega de una ruta después obliga a rehacer su estructura; nacer en el modo definitivo
 cuesta lo mismo hoy y nada mañana.
 
@@ -167,16 +168,18 @@ proteja.
 ## 6. Variables de entorno
 
 Nombres, nunca valores. Todos se configuran en la plataforma, en ningún archivo del repositorio.
+Son **siete**.
 `.env.example` lleva solo esta lista.
 
-| Variable                    | Para qué                                                                         | Qué servicio la lee |
-| --------------------------- | -------------------------------------------------------------------------------- | ------------------- |
-| `SUPABASE_URL`              | Dirección del proyecto de datos                                                  | API                 |
-| `SUPABASE_SERVICE_ROLE_KEY` | Clave de servicio para escribir en `salud`                                       | API                 |
-| `SMTP_USER`                 | Cuenta de Gmail que envía                                                        | API                 |
-| `SMTP_PASSWORD`             | Contraseña de aplicación de esa cuenta                                           | API                 |
-| `ADMIN_EMAIL`               | Dirección que recibe los avisos de fallo. No es la dirección pública de contacto | API                 |
-| `SITE_URL`                  | Dominio público, para construir `canonical` y `hreflang`                         | Sitio               |
+| Variable                    | Para qué                                                                                   | Qué servicio la lee |
+| --------------------------- | ------------------------------------------------------------------------------------------ | ------------------- |
+| `SUPABASE_URL`              | Dirección del proyecto de datos                                                            | API                 |
+| `SUPABASE_SERVICE_ROLE_KEY` | Clave de servicio para escribir en `salud`                                                 | API                 |
+| `SMTP_USER`                 | Cuenta de Gmail que envía                                                                  | API                 |
+| `SMTP_PASSWORD`             | Contraseña de aplicación de esa cuenta                                                     | API                 |
+| `ADMIN_EMAIL`               | Dirección que recibe los avisos de fallo. No es la dirección pública de contacto           | API                 |
+| `SITE_URL`                  | Dominio público, para construir `canonical` y `hreflang`                                   | Sitio               |
+| `PUBLIC_CONTACT_EMAIL`      | Dirección pública del titular, para el enlace de correo del pie. Distinta de `ADMIN_EMAIL` | Sitio               |
 
 La clave de la base de datos y la del correo **solo** las lee el servicio de la API. El sitio no tiene
 acceso a ninguna de las dos, y eso es una propiedad de la arquitectura, no una convención.

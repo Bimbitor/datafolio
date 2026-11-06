@@ -19,7 +19,7 @@ Lo que tiene que estar hecho por el titular, y que ningún comando puede hacer p
 - [ ] Segunda cuenta de Gmail, **nunca publicada**, que recibirá los avisos de fallo.
 - [ ] Contraseña de aplicación **nueva** de la cuenta que envía el correo. La contraseña que se pegó en
       una conversación está quemada y hay que revocarla.
-- [ ] Las seis variables de entorno del contrato HTTP, §6, configuradas en Vercel. Ninguna en un
+- [ ] Las siete variables de entorno del contrato HTTP, §6, configuradas en Vercel. Ninguna en un
       archivo del repositorio.
 
 ---
@@ -64,10 +64,11 @@ npm run test --workspace web   # mapa de rutas: slugs completos, sin duplicados
 Sobre el sitio desplegado:
 
 - [ ] Las doce direcciones fijas del contrato HTTP, §1, responden al abrirlas directamente.
-- [ ] Las cuatro rutas de detalle —proyecto y artículo, en dos idiomas— responden con cualquier
-      identificador, mostrando el armazón de contenido pendiente.
+- [ ] Las cuatro rutas de detalle —proyecto y artículo, en dos idiomas— responden **404** con
+      cualquier identificador, porque no existe ningún contenido (FR-036).
 - [ ] Desde cualquier página, el menú lleva a todas las secciones.
-- [ ] Desde cualquier página se alcanza un canal de contacto en un clic.
+- [ ] Desde cualquier página, el enlace de correo del pie abre un mensaje dirigido a la dirección
+      pública del titular.
 - [ ] Una dirección inventada devuelve la página de error con estado **404** y salida al inicio.
 - [ ] `/es/no-existe` devuelve el error **en español**; `/en/nope` y `/nope`, en inglés
       (`contracts/http.md` §2 bis).

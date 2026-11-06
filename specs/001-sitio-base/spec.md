@@ -16,6 +16,8 @@
 - Q: ¿Esta feature crea ya el proyecto de base de datos, aunque esté vacío, para que la comprobación diaria tenga algo que consultar? → A: Sí. Se crea vacío en esta feature y la comprobación lo consulta desde el primer despliegue; el esquema llega en la feature 03.
 - Q: ¿Cómo se entera el titular de que la comprobación diaria falló, si el panel de administración no existe hasta la feature 03? → A: Por correo. La comprobación avisa al titular cuando falla, así que el canal de correo se configura en esta feature.
 - Q: ¿Con qué método se comprueba que el sitio cumple los números de rendimiento del criterio de aceptación? → A: Con una auditoría de laboratorio sobre el sitio desplegado, perfil de móvil y red simulada, tomando la mediana de tres ejecuciones, antes de integrar a `main`.
+- Q: ¿Qué debe responder una ruta de detalle —un proyecto o un artículo— cuando todavía no existe ningún contenido? → A: **404**. Es el comportamiento definitivo, así que la feature 04 solo añadirá el caso del identificador que sí existe.
+- Q: ¿Qué es el canal de contacto de esta feature, si la sección de contacto no tiene contenido hasta la 02? → A: Un enlace de correo real en el pie, en todas las páginas. Funciona aunque el resto del sitio esté vacío, y el riesgo de spam se asume.
 
 ## User Scenarios & Testing _(mandatory)_
 
@@ -48,7 +50,7 @@ Cualquier persona con el enlace abre el portafolio en internet y llega a cualqui
 
 1. **Given** la dirección pública del sitio, **When** un visitante la abre, **Then** ve el inicio con una navegación que lleva a todas las secciones.
 2. **Given** cualquier sección, **When** el visitante copia su dirección y la abre en otra pestaña, **Then** llega directamente a esa sección sin pasar por el inicio.
-3. **Given** cualquier página, **When** el visitante quiere contactar, **Then** alcanza un canal de contacto en un solo clic.
+3. **Given** cualquier página, **When** el visitante quiere contactar, **Then** alcanza en un solo clic un enlace de correo que abre un mensaje dirigido al titular.
 4. **Given** una pantalla de móvil, de tableta o de escritorio, **When** se recorre el sitio, **Then** el contenido se lee sin desbordes horizontales y la navegación sigue siendo utilizable.
 5. **Given** una dirección que no existe, **When** el visitante la abre, **Then** ve una página de error con salida hacia el inicio, en su idioma.
 
@@ -135,6 +137,7 @@ El titular no tiene que acordarse de entrar al sitio para que siga funcionando. 
 - **El dispositivo es muy estrecho o el texto está muy ampliado**: el contenido debe seguir leyéndose sin desbordes horizontales.
 - **La comprobación programada falla varios días seguidos**: cada ejecución fallida avisa. Cuatro correos al día durante una caída son ruido aceptable frente a no enterarse.
 - **El aviso de fallo no se puede enviar** (credenciales caducadas, proveedor de correo caído): el fallo original debe quedar igualmente registrado en la plataforma, para que no desaparezca en silencio.
+- **El visitante abre la ficha de un proyecto o un artículo que no existe**: recibe la página de error, no una página válida y vacía. En esta feature eso ocurre con cualquier identificador, porque no hay contenido todavía.
 - **El visitante abre una dirección de la zona de administración**, que todavía no existe: debe recibir la página de error, y esa zona no debe aparecer en los buscadores.
 
 ## Requirements _(mandatory)_
@@ -153,7 +156,7 @@ El titular no tiene que acordarse de entrar al sitio para que siga funcionando. 
 - **FR-005**: El sitio MUST ofrecer nueve secciones con dirección propia: inicio, experiencia, proyectos, detalle de proyecto, blog, artículo, contacto, política de datos y una página de error.
 - **FR-006**: Cada sección MUST ser alcanzable directamente por su dirección, sin pasar por el inicio.
 - **FR-007**: Una navegación persistente MUST dar acceso a todas las secciones desde cualquier página.
-- **FR-008**: Un canal de contacto MUST estar alcanzable en un clic desde cualquier página.
+- **FR-008**: Un canal de contacto **que funcione** MUST estar alcanzable en un clic desde cualquier página: un enlace de correo en el pie, hacia la dirección pública del titular. Un enlace a la sección de contacto, que en esta feature está vacía, NO MUST contar como canal.
 - **FR-009**: Las secciones cuyo contenido llega en features posteriores MUST mostrar su estructura y una indicación visible de que su contenido está pendiente, sin texto de relleno que simule contenido real.
 
 **Idioma**
@@ -199,13 +202,14 @@ El titular no tiene que acordarse de entrar al sitio para que siga funcionando. 
 
 - **FR-034**: Si el navegador no permite guardar preferencias, el sitio MUST seguir funcionando con el idioma por defecto y el tema del sistema, sin errores visibles.
 - **FR-035**: Una dirección inexistente MUST llevar a la página de error con estado 404, en el idioma del prefijo de la dirección pedida —o en inglés si la dirección no tiene prefijo—, con salida hacia el inicio.
+- **FR-036**: Las rutas de detalle —ficha de proyecto y artículo— MUST responder **404** mientras no exista el contenido que piden, que es el caso en toda esta feature. NO MUST devolver una página válida para un identificador cualquiera: el sitio no tiene direcciones infinitas. La plantilla de esas fichas se construye aquí y se ve con el primer contenido real, en las features 04 y 05.
 
 ## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 
-- **SC-001**: Las **doce direcciones fijas** —seis secciones en dos idiomas— responden correctamente al abrirlas directamente. Las cuatro rutas de detalle —proyecto y artículo, en dos idiomas— responden con cualquier identificador, mostrando el armazón de contenido pendiente. La raíz redirige y una dirección inexistente devuelve 404.
-- **SC-002**: Desde cualquier página, un visitante alcanza cualquier otra sección en un clic, y un canal de contacto en un clic.
+- **SC-001**: Las **doce direcciones fijas** —seis secciones en dos idiomas— responden correctamente al abrirlas directamente. Las cuatro rutas de detalle —proyecto y artículo, en dos idiomas— responden **404** con cualquier identificador, porque no existe ningún contenido. La raíz redirige y una dirección inexistente devuelve 404.
+- **SC-002**: Desde cualquier página, un visitante alcanza cualquier otra sección en un clic, y en un clic un enlace de correo que abre un mensaje al titular.
 - **SC-003**: Medido con una auditoría de laboratorio sobre el sitio desplegado, con perfil de móvil de gama media y red móvil simulada, tomando la mediana de tres ejecuciones: el contenido principal de la página de inicio aparece en menos de 2,5 segundos y el desplazamiento involuntario de la página mientras carga se mantiene por debajo de 0,1.
 - **SC-004**: En la misma auditoría, cada página pública se carga con menos de 100 KB de código ejecutable en el navegador, comprimido tal como lo sirve la plataforma.
 - **SC-005**: Un visitante con el navegador en español llega a la versión en español y uno con el navegador en cualquier otro idioma llega a la inglesa, en el 100 % de los casos.
@@ -224,6 +228,7 @@ El titular no tiene que acordarse de entrar al sitio para que siga funcionando. 
 - **El contenido real llega en la feature 02.** Esta feature entrega la estructura; las secciones muestran su armazón y una indicación de que el contenido está pendiente, nunca texto de relleno que parezca real.
 - **Los valores visuales ya están decididos** en `docs/design-tokens.md`. Esta feature los implementa en un único archivo; la composición y el ritmo visual corresponden a la feature 07.
 - **El sitio vive en el subdominio gratuito de la plataforma de despliegue.** No hay dominio propio y no está planeado.
+- **El correo público queda a la vista, con el riesgo asumido.** El enlace del pie expone la dirección pública a los robots de spam. Se acepta a conciencia: esa dirección va a aparecer igual en la sección de contacto de la feature 02, el sitio va con `noindex` mientras dure esta, y un canal que funciona desde el primer día vale más que el spam que evita esconderlo. La dirección es una variable de entorno, no un literal en el código.
 - **La elección de idioma no se guarda en ninguna parte.** El contrato llegó a prometer que la raíz respetaría una elección guardada, lo cual es imposible: la raíz la resuelve el servidor y el servidor no ve el almacenamiento del navegador. Honrarlo exigiría una cookie, y el Principio V manda construir lo mínimo que cumple: la dirección ya lleva el idioma, así que navegar y recargar lo conservan sin guardar nada. **Lo que se pierde a cambio**: quien escriba la raíz a pelo en una visita posterior vuelve al idioma detectado, no al que eligió. El tema sí se guarda, porque lo aplica el navegador y nadie tiene que leerlo desde el servidor.
 - **El rendimiento se verifica en laboratorio, no con visitantes.** Todavía no hay tráfico del que sacar datos reales, y medir en el navegador del visitante chocaría con el principio de no guardar nada suyo y gastaría parte del propio presupuesto de JavaScript. La auditoría es la puerta antes de integrar a `main`.
 - **Hay un único entorno de datos.** No existe base de pruebas: la verificación se hace sobre el sitio desplegado, y lo que se cree al probar se elimina.
