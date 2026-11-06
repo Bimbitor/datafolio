@@ -41,6 +41,37 @@ y sus propias dependencias, así que no hay ambigüedad entre el build de Astro 
 | Funciones Python en una carpeta `/api` en la raíz        | Sigue soportado, pero la documentación lo encuadra como soporte a proyectos existentes, y deja a Astro y a Python compartiendo raíz, donde la detección de framework es ambigua. Queda como **plan B**. |
 | Dos proyectos de Vercel y una reescritura de uno al otro | Dos despliegues, dos configuraciones de variables, y la reescritura como único punto de fallo. Es lo que el estudio de viabilidad previó, y queda como **plan C**.                                      |
 
+---
+
+### Resultado, 2026-11-06: **el plan A funciona**
+
+Comprobado sobre el despliegue de vista previa de la rama, no deducido:
+
+| Comprobación         | Resultado                                                                 |
+| -------------------- | ------------------------------------------------------------------------- |
+| `/`                  | `200`, página del sitio                                                   |
+| `/api/estado`        | `200`, **cero redirecciones**, mismo dominio, cuerpo según contrato       |
+| `/api/cookie-prueba` | `204` con `datafolio_prueba=1; HttpOnly; Path=/; SameSite=strict; Secure` |
+| Petición siguiente   | el cliente envía `Cookie: datafolio_prueba=1`                             |
+| `X-Robots-Tag`       | `noindex`, presente en las respuestas del sitio                           |
+
+El cuarto es el que importá. Una cookie `SameSite=Strict` puesta por la API vuelve en la
+petición siguiente al sitio, así que **el navegador ve un solo origen** y la sesión del
+administrador de la feature 03 es posible tal como está especificada. Ni el plan B ni el C
+hacen falta.
+
+**Dato adicional**: la reescritura **conserva** el prefijo, o sea que el servicio recibe
+`/api/estado` tal cual. Se dedujo pidiendo `/api/api/estado`, que devolvió `404`: si la
+plataforma quitara el prefijo, esa dirección habría llegado al servicio como `/api/estado` y
+habría devuelto `200`. Con eso se eliminaron las rutas duplicadas que existían mientras la
+duda estaba abierta.
+
+**Lo que todavía no está probado**: producción. Lo anterior vale para la vista previa. La
+misma comprobación se repite sobre el dominio de producción al integrar la rama, y por eso el
+endpoint de la cookie no se borra hasta entonces.
+
+---
+
 **Riesgo**: Services está en **beta**: "Behavior, APIs, and limits may change before general
 availability". La historia P1 existe para comprobarlo en una hora de trabajo, antes de construir
 encima. Si falla, se baja al plan B sin tocar nada del sitio.

@@ -114,21 +114,21 @@ siguiente.
 **Esta historia es una puerta, no un incremento.** Si falla, no se sigue: se cambia de plan y se
 repite.
 
-- [ ] T017 [US1] Empujar la rama `001-sitio-base` y esperar el despliegue de vista previa que la
+- [x] T017 [US1] Empujar la rama `001-sitio-base` y esperar el despliegue de vista previa que la
       plataforma genera para ella
-- [ ] T018 [US1] Verificar que `/` responde la página del sitio bajo el dominio del despliegue
+- [x] T018 [US1] Verificar que `/` responde la página del sitio bajo el dominio del despliegue
       (`quickstart.md`, historia P1, paso 1)
-- [ ] T019 [US1] Verificar que `/api/estado` responde `200` **bajo el mismo dominio**, sin redirección
+- [x] T019 [US1] Verificar que `/api/estado` responde `200` **bajo el mismo dominio**, sin redirección
       a otro host (paso 2)
-- [ ] T020 [US1] Verificar que `/api/cookie-prueba` entrega la cookie `datafolio_prueba` con
+- [x] T020 [US1] Verificar que `/api/cookie-prueba` entrega la cookie `datafolio_prueba` con
       `SameSite=Strict` (paso 3)
-- [ ] T021 [US1] Verificar que el navegador **devuelve** esa cookie en la petición siguiente a
+- [x] T021 [US1] Verificar que el navegador **devuelve** esa cookie en la petición siguiente a
       `/api/estado`, con `curl -b` o con las herramientas de desarrollo (paso 4). **Este es el paso que
       decide la feature**
-- [ ] T022 [US1] Si T021 falla: aplicar el plan B de `research.md` D-01 —funciones Python en una
+- [x] T022 [US1] **No hizo falta**: la T021 paso. Si hubiera fallado: aplicar el plan B de `research.md` D-01 —funciones Python en una
       carpeta `/api` en la raíz, sin servicios— y repetir T017 a T021. Si vuelve a fallar, aplicar el
       plan C —dos proyectos con una reescritura que haga de proxy— y repetir
-- [ ] T023 [US1] Registrar en `research.md` D-01 cuál de los tres planes quedó en pie y qué se observó.
+- [x] T023 [US1] Registrar en `research.md` D-01 cuál de los tres planes quedó en pie y qué se observó.
       Un resultado que no se escribe se vuelve a investigar dentro de tres meses
 
 **Checkpoint**: la incógnita está cerrada. A partir de aquí se puede construir sin riesgo de rehacer la
