@@ -150,13 +150,27 @@ olvido. `atajo: endpoint de verificación, se borra al terminar la historia P1.`
 
 ## 5. Comprobación programada
 
-**No tiene dirección pública.** Es una función privada invocada por la tarea programada de la
-plataforma cada seis horas.
+```http
+POST /api/salud
+Authorization: Bearer <CRON_SECRET>
+```
+
+| Condición                                                  | Respuesta                                                        |
+| ---------------------------------------------------------- | ---------------------------------------------------------------- |
+| Cabecera correcta                                          | `204`, tras ejecutar la comprobación                             |
+| Cabecera ausente, distinta, o `CRON_SECRET` sin configurar | `401`, **sin hacer nada**                                        |
+| La comprobación falla                                      | `500`, para que la ejecución conste como fallida en el historial |
+
+Cabeceras de la respuesta: `Cache-Control: no-store`.
+
+**La ruta es pública, y el secreto es lo que la protege.** El destino de función privada de la
+plataforma haría privada toda la API, que es una sola aplicación ASGI; la corrección está en
+`research.md`, D-03. La plataforma envía el secreto en cada petición suya, y el manejador lo
+comprueba **antes** de cualquier trabajo.
 
 **Dos términos, dos cosas distintas**, y conviene no mezclarlos: la **comprobación programada** es
-esta función, el código que escribe en la base y avisa; la **tarea programada** es el disparador de
-la plataforma que la invoca. No se puede disparar desde internet, así que no necesita secreto que la
-proteja.
+el código que escribe en la base y avisa; la **tarea programada** es el disparador de la plataforma
+que lo invoca.
 
 **Qué hace, en orden:**
 
@@ -176,18 +190,19 @@ proteja.
 ## 6. Variables de entorno
 
 Nombres, nunca valores. Todos se configuran en la plataforma, en ningún archivo del repositorio.
-Son **siete**.
+Son **ocho**.
 `.env.example` lleva solo esta lista.
 
-| Variable                    | Para qué                                                                                   | Qué servicio la lee |
-| --------------------------- | ------------------------------------------------------------------------------------------ | ------------------- |
-| `SUPABASE_URL`              | Dirección del proyecto de datos                                                            | API                 |
-| `SUPABASE_SERVICE_ROLE_KEY` | Clave de servicio para escribir en `salud`                                                 | API                 |
-| `SMTP_USER`                 | Cuenta de Gmail que envía                                                                  | API                 |
-| `SMTP_PASSWORD`             | Contraseña de aplicación de esa cuenta                                                     | API                 |
-| `ADMIN_EMAIL`               | Dirección que recibe los avisos de fallo. No es la dirección pública de contacto           | API                 |
-| `SITE_URL`                  | Dominio público, para construir `canonical` y `hreflang`                                   | Sitio               |
-| `PUBLIC_CONTACT_EMAIL`      | Dirección pública del titular, para el enlace de correo del pie. Distinta de `ADMIN_EMAIL` | Sitio               |
+| Variable                    | Para qué                                                                                                        | Qué servicio la lee |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------- | ------------------- |
+| `SUPABASE_URL`              | Dirección del proyecto de datos                                                                                 | API                 |
+| `SUPABASE_SERVICE_ROLE_KEY` | Clave de servicio para escribir en `salud`                                                                      | API                 |
+| `SMTP_USER`                 | Cuenta de Gmail que envía                                                                                       | API                 |
+| `SMTP_PASSWORD`             | Contraseña de aplicación de esa cuenta                                                                          | API                 |
+| `ADMIN_EMAIL`               | Dirección que recibe los avisos de fallo. No es la dirección pública de contacto                                | API                 |
+| `SITE_URL`                  | Dominio público, para construir `canonical` y `hreflang`                                                        | Sitio               |
+| `PUBLIC_CONTACT_EMAIL`      | Dirección pública del titular, para el enlace de correo del pie. Distinta de `ADMIN_EMAIL`                      | Sitio               |
+| `CRON_SECRET`               | Secreto que la plataforma envía al disparar la comprobación programada. Cadena aleatoria de 16 caracteres o más | API                 |
 
 La clave de la base de datos y la del correo **solo** las lee el servicio de la API. El sitio no tiene
 acceso a ninguna de las dos, y eso es una propiedad de la arquitectura, no una convención.

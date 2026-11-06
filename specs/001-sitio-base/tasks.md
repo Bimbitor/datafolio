@@ -291,7 +291,7 @@ elemento interactivo y que siempre se ve dónde está el foco.
       y que el foco **no quede atrapado** dentro de él
 - [ ] T057 [P] [US5] Dar texto alternativo en el idioma de la página a toda imagen con contenido, y
       marcar las decorativas para que un lector de pantalla las omita (FR-026)
-- [ ] T058 [US5] Comprobar que con la preferencia de movimiento reducido activada no hay ninguna
+- [x] T058 [US5] Comprobar que con la preferencia de movimiento reducido activada no hay ninguna
       diferencia perceptible, porque no hay animaciones
 
 **Checkpoint**: el compromiso de accesibilidad del proyecto se cumple en el esqueleto, que es donde
@@ -309,9 +309,9 @@ entera por correo.
 
 ### Tests for User Story 6
 
-- [ ] T059 [P] [US6] Prueba en `api/tests/test_salud.py`: una escritura correcta deja `resultado` en
+- [x] T059 [P] [US6] Prueba en `api/tests/test_salud.py`: una escritura correcta deja `resultado` en
       `correcto` y `detalle` nulo; un fallo deja `resultado` en `fallido` con la causa en `detalle`
-- [ ] T060 [P] [US6] Prueba en `api/tests/test_salud.py`: cuando la escritura falla **y** el envío del
+- [x] T060 [P] [US6] Prueba en `api/tests/test_salud.py`: cuando la escritura falla **y** el envío del
       correo también falla, la función no se rompe y el fallo original se propaga al registro
 
 ### Implementation for User Story 6
@@ -329,17 +329,18 @@ entera por correo.
       **no** se expone a lectura anónima
 - [x] T063 [US6] Insertar la fila única inicial con `id = 1`, `resultado = 'correcto'` y la fecha de
       creación. A partir de ahí la fila solo se actualiza, nunca se borra
-- [ ] T064 [P] [US6] Crear `api/correo.py` con el envío por SMTP usando `smtplib` y `email.message` de
+- [x] T064 [P] [US6] Crear `api/correo.py` con el envío por SMTP usando `smtplib` y `email.message` de
       la biblioteca estándar, al puerto **587** con **STARTTLS**, **esperando** a que el envío termine
       antes de devolver. Sin dependencias nuevas (`research.md` D-11, y la restricción de la
       constitución)
-- [ ] T065 [US6] Crear `api/salud.py`: escribe la fila de `salud` con `urllib.request` contra el
+- [x] T065 [US6] Crear `api/salud.py`: escribe la fila de `salud` con `urllib.request` contra el
       endpoint REST del proyecto de datos; si falla, envía el correo de aviso a `ADMIN_EMAIL` con la
       causa; si el correo también falla, deja el fallo original en el registro de la plataforma
       (`contracts/http.md` §5)
-- [ ] T066 [US6] Declarar en `vercel.json` una tarea programada de **Vercel Schedules** con destino
-      **función privada** —sin URL pública— que ejecute `api/salud.py` **cada seis horas**
-      (`research.md` D-03, D-04)
+- [x] T066 [US6] Declarar en `vercel.json` una tarea programada de **Vercel Schedules** con destino
+      **ruta** —`POST /api/salud`, protegida por `CRON_SECRET`— **cada seis horas**. El destino de
+      función privada resultó impracticable con una API que es una sola aplicación ASGI; la
+      corrección está en `research.md`, D-03
 - [ ] T067 [US6] Verificar en el panel que la tarea está registrada con su intervalo y que su historial
       muestra al menos una ejecución correcta, y que la fila de `salud` tiene esa fecha
 - [ ] T068 [US6] Provocar un fallo: invalidar temporalmente la clave de la base en las variables de

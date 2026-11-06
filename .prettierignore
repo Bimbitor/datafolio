@@ -3,6 +3,7 @@ dist/
 .vercel/
 .pytest_cache/
 package-lock.json
+.env.example
 
 # Plantillas de spec-kit y skills instaladas: las gestiona su propia herramienta
 .specify/
